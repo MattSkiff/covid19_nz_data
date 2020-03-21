@@ -65,6 +65,9 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                )
         )
     ),
+    fluidRow(
+        column(12,h3(textOutput("info")))
+    ),
     wellPanel(
         fluidRow(
             tabsetPanel(type = "tabs",
@@ -73,7 +76,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                      column(12,plotlyOutput("mainPlot",height = 600))
                                  ),
                                  fluidRow(
-                                     column(12,h3(textOutput("info")))
+                                     column(12,plotlyOutput("mainPlot2",height = 600))
                                  )
                         ),
                         tabPanel("Other",
@@ -87,6 +90,9 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                         ),
                         tabPanel("Raw Data",
                                  DT::dataTableOutput("rawData")
+                        ),
+                        tabPanel("About",
+                                 uiOutput("about")
                         )
             )
         )
@@ -121,6 +127,11 @@ server <- function(input, output,session) {
                                   levels(covid.df$Gender)[levels(covid.df$Gender) == ""] <- "Not Reported"
                                   levels(covid.df$Location)[levels(covid.df$Location) == ""] <- "Not Reported"
                                   levels(covid.df$Age)[levels(covid.df$Age) == ""] <- "Not Reported"
+                                  
+                                  # sort levels by frequency of location
+                                  covid.df$Location <- fct_infreq(covid.df$Location, ordered = NA)
+                                  covid.df$Age <- fct_infreq(covid.df$Age, ordered = NA)
+                                  
                                   #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
@@ -130,7 +141,7 @@ server <- function(input, output,session) {
             summarise(n = length(Case))
         
         main.g <- ggplot(data = covid_main.df) +
-            geom_col(mapping = aes(x = reorder(covid_main.df$Location, -n),y = n,fill = Age)) +
+            geom_col(mapping = aes(x = Location,y = n,fill = Age)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
             labs(title = "New Zealand COVID cases by Age and Region",subtitle = Sys.time(),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
@@ -140,6 +151,27 @@ server <- function(input, output,session) {
             ggplotly(tooltip = c("Region","Age","n")) %>% 
             config(displayModeBar = F) %>% 
             layout(title = list(text = paste0('New Zealand COVID cases by Age and Region',
+                                              '<br>',
+                                              '<sup>',
+                                              Sys.time(),
+                                              '</sup>')))
+    })
+    output$mainPlot2 <- renderPlotly({
+        covid_main.df <- covid.df() %>%
+            group_by(Age,Gender) %>%
+            summarise(n = length(Case))
+        
+        main.g <- ggplot(data = covid_main.df) +
+            geom_col(mapping = aes(x = Age,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
+            labs(title = "New Zealand COVID cases by Age and Gender",subtitle = Sys.time(),x = "Age",y = "Number of cases") +
+            scale_fill_viridis(discrete = T) +
+            theme_light() +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+        
+        main.g %>% 
+            ggplotly(tooltip = c("Gender","n")) %>% 
+            config(displayModeBar = F) %>% 
+            layout(title = list(text = paste0('New Zealand COVID cases by Age and Gender',
                                               '<br>',
                                               '<sup>',
                                               Sys.time(),
@@ -235,6 +267,10 @@ server <- function(input, output,session) {
         }
     )
     
+    output$about <- renderUI({
+        HTML('Developed by Matthew Skiffington.  <br> 
+              Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">GitHub Repo</a>')
+    })
     
     rv$run <- 1
     
