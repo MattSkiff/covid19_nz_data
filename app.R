@@ -73,15 +73,20 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     wellPanel(
         fluidRow(
             tabsetPanel(type = "tabs",
-                        tabPanel("Summary",
+                        tabPanel("Bivariate",
+                                 #stacked barplots
                                  fluidRow(
                                      column(12,plotlyOutput("mainPlot",height = 600))
                                  ),
                                  fluidRow(
                                      column(12,plotlyOutput("mainPlot2",height = 600))
+                                 ),
+                                 fluidRow(
+                                     column(12,plotlyOutput("mainPlot3",height = 600))
                                  )
                         ),
-                        tabPanel("Other",
+                        tabPanel("Univariate",
+                                 # simple barplots
                                  fluidRow(
                                      column(6,plotlyOutput("agePlot",height = 600)),
                                      column(6,plotlyOutput("genderPlot",height = 600))
@@ -144,7 +149,7 @@ server <- function(input, output,session) {
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Location,y = n,fill = Age)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "New Zealand COVID cases by Age and Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
+            labs(title = "New Zealand COVID cases by Region and Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
@@ -152,7 +157,7 @@ server <- function(input, output,session) {
         main.g %>% 
             ggplotly(tooltip = c("Region","Age","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID cases by Age and Region',
+            layout(title = list(text = paste0('New Zealand COVID cases by Region and Age',
                                               '<br>',
                                               '<sup>',
                                               Sys.time() + 13*60*60,
@@ -174,6 +179,27 @@ server <- function(input, output,session) {
             ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>% 
             layout(title = list(text = paste0('New Zealand COVID cases by Age and Gender',
+                                              '<br>',
+                                              '<sup>',
+                                              Sys.time() + 13*60*60,
+                                              '</sup>')))
+    })
+    output$mainPlot3 <- renderPlotly({
+        covid_main.df <- covid.df() %>%
+            group_by(Location,Gender) %>%
+            summarise(n = length(Case))
+        
+        main.g <- ggplot(data = covid_main.df) +
+            geom_col(mapping = aes(x = Location,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
+            labs(title = "New Zealand COVID cases by Region and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
+            scale_fill_viridis(discrete = T) +
+            theme_light() +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+        
+        main.g %>% 
+            ggplotly(tooltip = c("Gender","n")) %>% 
+            config(displayModeBar = F) %>% 
+            layout(title = list(text = paste0('New Zealand COVID cases by Region and Gender',
                                               '<br>',
                                               '<sup>',
                                               Sys.time() + 13*60*60,
