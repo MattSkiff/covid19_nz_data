@@ -43,17 +43,24 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     
     # Sidebar with a slider input for number of bins 
     fluidRow(
-        column(6,
+        column(2,
                wellPanel(
                    actionButton(inputId = "updateButton",
                                 label = "Update")
                )
         ),
-        column(6,
+        column(5,
                wellPanel(
                    actionButton(inputId = "mohLink",
                                 label = "Ministry of Health Cases Page",
                                 onclick = "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases', '_blank')")
+                   #uiOutput("tab")
+               )
+        ),
+        column(5,
+               wellPanel(
+                   downloadButton(outputId = "download",
+                                label = "Download Raw Data")
                    #uiOutput("tab")
                )
         )
@@ -112,8 +119,8 @@ server <- function(input, output,session) {
                                                                                    `Female` = "F"))
                                   
                                   levels(covid.df$Gender)[levels(covid.df$Gender) == ""] <- "Not Reported"
-                                  levels(covid.df$Location)[levels(covid.df$Location) == ""] <- "Not specified"
-                                  levels(covid.df$Age)[levels(covid.df$Age) == ""] <- "Not specified"
+                                  levels(covid.df$Location)[levels(covid.df$Location) == ""] <- "Not Reported"
+                                  levels(covid.df$Age)[levels(covid.df$Age) == ""] <- "Not Reported"
                                   #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
@@ -218,7 +225,19 @@ server <- function(input, output,session) {
     #     tagList("URL link:", url)
     # })
     
+    # Downloadable csv of selected dataset ----
+    output$download <- downloadHandler(
+        filename = function() {
+            paste("covid_19_",as.numeric(Sys.time()),".csv", sep = "")
+        },
+        content = function(file) {
+            write.csv(covid.df(), file, row.names = FALSE)
+        }
+    )
+    
+    
     rv$run <- 1
+    
 }
 
 # Run the application 
