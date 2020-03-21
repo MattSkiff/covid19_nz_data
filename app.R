@@ -16,7 +16,6 @@ library(shinythemes)
 library(DT)
 
 # set timezone
-Sys.setenv(TZ ='Auckland/Pacific')
 
 # https://datascott.com/blog/subtitles-with-ggplotly/
 
@@ -41,7 +40,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     #useShinyjs(),
     
     # Application title
-    titlePanel(paste("New Zealand COVID19 Cases: ",Sys.Date())),
+    titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
     h3("Data Source: New Zealand Ministry of Health"),
     
     # Sidebar with a slider input for number of bins 
@@ -145,7 +144,7 @@ server <- function(input, output,session) {
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Location,y = n,fill = Age)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "New Zealand COVID cases by Age and Region",subtitle = Sys.time(),x = "Region",y = "Number of cases") +
+            labs(title = "New Zealand COVID cases by Age and Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
@@ -156,7 +155,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID cases by Age and Region',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time(),
+                                              Sys.time() + 13*60*60,
                                               '</sup>')))
     })
     output$mainPlot2 <- renderPlotly({
@@ -166,7 +165,7 @@ server <- function(input, output,session) {
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Age,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "New Zealand COVID cases by Age and Gender",subtitle = Sys.time(),x = "Age",y = "Number of cases") +
+            labs(title = "New Zealand COVID cases by Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
@@ -177,7 +176,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID cases by Age and Gender',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time(),
+                                              Sys.time() + 13*60*60,
                                               '</sup>')))
     })
     output$agePlot <- renderPlotly({
@@ -187,7 +186,7 @@ server <- function(input, output,session) {
         
         age.g <- ggplot(data = covid_age.df) +
             geom_col(mapping = aes(x = reorder(covid_age.df$Age, -n),y = n,fill = Age)) +
-            labs(title = "New Zealand COVID19 cases by Age",subtitle = Sys.time(),x = "Age",y = "Number of cases") +
+            labs(title = "New Zealand COVID19 cases by Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
@@ -197,7 +196,7 @@ server <- function(input, output,session) {
                   layout(title = list(text = paste0('New Zealand COVID19 cases by Age',
                                                     '<br>',
                                                     '<sup>',
-                                                    Sys.time(),
+                                                    Sys.time() + 13*60*60,
                                                     '</sup>')))
     })
     output$regionPlot <- renderPlotly({
@@ -207,7 +206,7 @@ server <- function(input, output,session) {
         
         region.g <- ggplot(data = covid_region.df) +
             geom_col(mapping = aes(x = reorder(covid_region.df$Location, -n),y = n,fill = Location,)) +
-            labs(title = "New Zealand COVID19 cases by Region",subtitle = Sys.time(),x = "Location",y = "Number of cases") +
+            labs(title = "New Zealand COVID19 cases by Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
         
@@ -217,7 +216,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID19 cases by Region',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time(),
+                                              Sys.time() + 13*60*60,
                                               '</sup>')))
     })
     output$genderPlot <- renderPlotly({
@@ -227,7 +226,7 @@ server <- function(input, output,session) {
         
         gender.g <- ggplot(data = covid_gender.df) +
             geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
-            labs(title = "New Zealand COVID19 cases by Gender",subtitle = Sys.time(),x = "Gender",y = "Number of cases") +
+            labs(title = "New Zealand COVID19 cases by Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
@@ -237,7 +236,7 @@ server <- function(input, output,session) {
                      layout(title = list(text = paste0('New Zealand COVID19 cases by Gender',
                                                       '<br>',
                                                       '<sup>',
-                                                      Sys.time(),
+                                                      Sys.time() + 13*60*60,
                                                       '</sup>')))
     })
     
