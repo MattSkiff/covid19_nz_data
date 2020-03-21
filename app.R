@@ -34,12 +34,13 @@ library(DT)
 #                      radius = ~ sqrt(quantity))
 
 # Define UI for application 
+## UI -----------
 ui <- fluidPage(theme = shinytheme("simplex"),
     
     # setup shinyjs
     #useShinyjs(),
     
-    # Application title
+    ## Application title -------------
     titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
     h3("Data Source: New Zealand Ministry of Health"),
     
@@ -95,6 +96,17 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                      column(12,plotlyOutput("regionPlot",height = 600))
                                  )
                         ),
+                        tabPanel("Additional Tables",
+                                 fluidRow(
+                                     column(12,DT::dataTableOutput("regionTable"))
+                                 ),
+                                 fluidRow(
+                                     column(12,DT::dataTableOutput("ageTable"))
+                                 ),
+                                 fluidRow(
+                                     column(12,DT::dataTableOutput("genderTable"))
+                                 )
+                        ),
                         tabPanel("Raw Data",
                                  DT::dataTableOutput("rawData")
                         ),
@@ -111,7 +123,7 @@ server <- function(input, output,session) {
     
     rv <- reactiveValues()
     rv$run <- 0
-    
+    ## Main Scraping and Dataframe ------------
     covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
                               valueExpr = {
                                   # data gen
@@ -142,6 +154,7 @@ server <- function(input, output,session) {
                                   #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
+    ## Stacked Bar Charts -------------------
     output$mainPlot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(Age,Location) %>%
@@ -205,6 +218,7 @@ server <- function(input, output,session) {
                                               Sys.time() + 13*60*60,
                                               '</sup>')))
     })
+    ## Plot - Age -------------------
     output$agePlot <- renderPlotly({
         covid_age.df <- covid.df() %>%
             group_by(Age) %>%
@@ -225,6 +239,7 @@ server <- function(input, output,session) {
                                                     Sys.time() + 13*60*60,
                                                     '</sup>')))
     })
+    ## Plot - Region -------------------
     output$regionPlot <- renderPlotly({
         covid_region.df <- covid.df() %>%
             group_by(Location) %>%
@@ -245,6 +260,7 @@ server <- function(input, output,session) {
                                               Sys.time() + 13*60*60,
                                               '</sup>')))
     })
+    ## Plot - Gender -------------------
     output$genderPlot <- renderPlotly({
         covid_gender.df <- covid.df() %>%
             group_by(Gender) %>%
@@ -265,14 +281,41 @@ server <- function(input, output,session) {
                                                       Sys.time() + 13*60*60,
                                                       '</sup>')))
     })
-    
+    ## Info -------------------
     output$info <- renderText({
         paste("The total number of confirmed cases in New Zealand is:",nrow(covid.df()))
     })
+    ## Tables -------------------
     output$rawData = DT::renderDataTable({
         DT::datatable(covid.df(),options = list(
-            pageLength = 60
-        ))
+            pageLength = 60))
+    })
+    output$regionTable = DT::renderDataTable({
+        
+        covid_region.df <- covid.df() %>%
+            group_by(Location) %>%
+            summarise(n = length(Case)) 
+        
+        DT::datatable(covid_region.df,options = list(
+            pageLength = 60))
+    })
+    output$genderTable = DT::renderDataTable({
+        
+        covid_gender.df <- covid.df() %>%
+            group_by(Gender) %>%
+            summarise(n = length(Case)) 
+        
+        DT::datatable(covid_gender.df,options = list(
+            pageLength = 60))
+    })
+    output$ageTable = DT::renderDataTable({
+        
+        covid_age.df <- covid.df() %>%
+            group_by(Age) %>%
+            summarise(n = length(Case))
+        
+        DT::datatable(covid_age.df,options = list(
+            pageLength = 60))
     })
     
     # output$tab <- renderUI({
