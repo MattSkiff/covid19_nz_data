@@ -38,7 +38,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     #useShinyjs(),
     
     # Application title
-    titlePanel(paste("New Zealand COVID19 Cases: ",Sys.Date())),
+    titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(format(as.POSIXct(Sys.Date()), tz = "Pacific/Auckland",usetz = TRUE)))),
     h3("Data Source: New Zealand Ministry of Health"),
     
     # Sidebar with a slider input for number of bins 
@@ -153,7 +153,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID cases by Age and Region',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time(),
+                                              format(as.POSIXct(Sys.Date()), tz = "Pacific/Auckland",usetz = TRUE),
                                               '</sup>')))
     })
     output$mainPlot2 <- renderPlotly({
@@ -174,7 +174,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID cases by Age and Gender',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time(),
+                                              format(as.POSIXct(Sys.Date()), tz = "Pacific/Auckland",usetz = TRUE),
                                               '</sup>')))
     })
     output$agePlot <- renderPlotly({
@@ -194,7 +194,7 @@ server <- function(input, output,session) {
                   layout(title = list(text = paste0('New Zealand COVID19 cases by Age',
                                                     '<br>',
                                                     '<sup>',
-                                                    Sys.time(),
+                                                    format(as.POSIXct(Sys.Date()), tz = "Pacific/Auckland",usetz = TRUE),
                                                     '</sup>')))
     })
     output$regionPlot <- renderPlotly({
@@ -214,7 +214,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID19 cases by Region',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time(),
+                                              format(as.POSIXct(Sys.Date()), tz = "Pacific/Auckland",usetz = TRUE),
                                               '</sup>')))
     })
     output$genderPlot <- renderPlotly({
@@ -234,7 +234,7 @@ server <- function(input, output,session) {
                      layout(title = list(text = paste0('New Zealand COVID19 cases by Gender',
                                                       '<br>',
                                                       '<sup>',
-                                                      Sys.time(),
+                                                      format(as.POSIXct(Sys.Date()), tz = "Pacific/Auckland",usetz = TRUE),
                                                       '</sup>')))
     })
     
