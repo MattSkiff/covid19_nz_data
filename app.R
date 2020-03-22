@@ -1,19 +1,19 @@
-library(rvest)
+library(rvest) # scraping MoH
 #library(rgdal)
 #library(sp)
 #library(leaflet)
-library(shiny)
-library(magrittr)
-library(reshape2)
-library(dplyr)
+library(shiny) # app
+library(reshape2) # melting
+library(dplyr) # wrangling
 #library(rgeos)
-library(magrittr)
-library(ggplot2)
-library(viridis)
-library(forcats)
-library(plotly)
-library(shinythemes)
-library(DT)
+library(magrittr) # piping
+library(ggplot2) # core plot package
+library(viridis) # nice colour scale
+library(forcats) # factors
+library(plotly) # interactive viz
+library(shinythemes) # for web theme
+library(DT) # for interactive data tables
+library(readr) # to nicely read in data
 
 # set timezone
 
@@ -36,6 +36,16 @@ library(DT)
 # Define UI for application 
 ## UI -----------
 ui <- fluidPage(theme = shinytheme("simplex"),
+    tags$head(
+        tags$meta(charset = "UTF-8"),
+        tags$meta(name = "description", content = "COVID19 Data from NZ - Plots and Tables"),
+        tags$meta(name = "keywords", content = "New Zealand, NZ, COVID19,Coronavirus,Data,Data Visualisation"),
+        tags$meta(name = "viewport", content = "width=device-width, initial-scale=1.0"),
+        tags$meta(name = "og:image", content = "titlecard.jpg"),
+        tags$meta(name = "og:url", content = "https://mks29.shinyapps.io/covid_nz/"),
+        tags$meta(name = "og:type", content = "website"),
+        tags$meta(name = "og:title", content = "COVID19 NZ Shiny App")
+    ),
     
     # setup shinyjs
     #useShinyjs(),
@@ -43,6 +53,9 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     ## Application title -------------
     titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
     h3("Data Source: New Zealand Ministry of Health"),
+    h4("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
+    h5("WHO data will have a 1-day lag against Ministry of Health data"),
+    
     
     # Sidebar with a slider input for number of bins 
     fluidRow(
@@ -74,6 +87,12 @@ ui <- fluidPage(theme = shinytheme("simplex"),
     wellPanel(
         fluidRow(
             tabsetPanel(type = "tabs",
+                        tabPanel("Time Series",
+                                 #stacked barplots
+                                 fluidRow(
+                                     column(12,plotlyOutput("tsPlot",height = 600))
+                                 )
+                        ),
                         tabPanel("Bivariate",
                                  #stacked barplots
                                  fluidRow(
@@ -124,6 +143,16 @@ server <- function(input, output,session) {
     rv <- reactiveValues()
     rv$run <- 0
     ## Main Scraping and Dataframe ------------
+    covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
+                                 valueExpr = {
+                                     url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+                                     covid_ts.df <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")
+                                     covid_ts.df <- covid_ts.df %>% filter(`Country/Region` == "New Zealand") %>% select(-c(Lat,Long,`Province/State`)) 
+                                     covid_ts.df <- covid_ts.df %>% rename(Country = `Country/Region`)
+                                     coivd_ts.df <- melt(covid_ts.df)
+                                     covid_ts.df <- coivd_ts.df %>% filter(value != 0)
+                                     })
+    
     covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
                               valueExpr = {
                                   # data gen
@@ -155,6 +184,31 @@ server <- function(input, output,session) {
                                   covid.df
                               })
     ## Stacked Bar Charts -------------------
+    output$tsPlot <- renderPlotly({
+        ts.df <- covid_ts.df()
+        
+        # recode dates
+        ts.df$variable <- as.Date(ts.df$variable,
+                                  format = "%m/%d/%y")
+        
+        main.g <- ggplot(data = ts.df) +
+            geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
+            geom_point(mapping = aes(x = variable,y = value,group = 1)) +
+            labs(title = "New Zealand COVID cases: Time Series",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
+            theme_bw() +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) #+
+            #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
+        
+        main.g %>% 
+            ggplotly() %>% #tooltip = c("Number of cases")
+            config(displayModeBar = F) %>% 
+            layout(title = list(text = paste0('New Zealand COVID cases - Time Series',
+                                              '<br>',
+                                              '<sup>',
+                                              Sys.time() + 13*60*60,
+                                              '</sup>')))
+    })
+    
     output$mainPlot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(Age,Location) %>%
@@ -331,7 +385,7 @@ server <- function(input, output,session) {
     # Downloadable csv of selected dataset ----
     output$download <- downloadHandler(
         filename = function() {
-            paste("covid_19_",as.numeric(Sys.time()),".csv", sep = "")
+            paste("covid_19_nz_",as.numeric(Sys.time()),".csv", sep = "")
         },
         content = function(file) {
             write.csv(covid.df(), file, row.names = FALSE)
@@ -340,7 +394,9 @@ server <- function(input, output,session) {
     
     output$about <- renderUI({
         HTML('Developed by Matthew Skiffington.  <br> 
-              Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">GitHub Repo</a>')
+              Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">GitHub Repo</a><br> 
+              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases</a><br>
+              Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">Time Series Data Source</a><br>')
     })
     
     rv$run <- 1
