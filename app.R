@@ -14,6 +14,7 @@ library(plotly) # interactive viz
 library(shinythemes) # for web theme
 library(DT) # for interactive data tables
 library(readr) # to nicely read in data
+library(lubridate) # now()
 
 # set timezone
 
@@ -36,105 +37,106 @@ library(readr) # to nicely read in data
 # Define UI for application 
 ## UI -----------
 ui <- fluidPage(theme = shinytheme("simplex"),
-    tags$head(
-        tags$meta(charset = "UTF-8"),
-        tags$meta(name = "description", content = "COVID19 Data from NZ - Plots and Tables"),
-        tags$meta(name = "keywords", content = "New Zealand, NZ, COVID19,Coronavirus,Data,Data Visualisation"),
-        tags$meta(name = "viewport", content = "width=device-width, initial-scale=1.0"),
-        tags$meta(name = "og:image", content = "titlecard.jpg"),
-        tags$meta(name = "og:url", content = "https://mks29.shinyapps.io/covid_nz/"),
-        tags$meta(name = "og:type", content = "website"),
-        tags$meta(name = "og:title", content = "COVID19 NZ Shiny App")
-    ),
-    
-    # setup shinyjs
-    #useShinyjs(),
-    
-    ## Application title -------------
-    titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
-    h3("Data Source: New Zealand Ministry of Health"),
-    h4("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
-    h5("WHO data will have a 1-day lag against Ministry of Health data"),
-    
-    
-    # Sidebar with a slider input for number of bins 
-    fluidRow(
-        column(2,
-               wellPanel(
-                   actionButton(inputId = "updateButton",
-                                label = "Update")
-               )
-        ),
-        column(5,
-               wellPanel(
-                   actionButton(inputId = "mohLink",
-                                label = "Ministry of Health Cases Page",
-                                onclick = "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases', '_blank')")
-                   #uiOutput("tab")
-               )
-        ),
-        column(5,
-               wellPanel(
-                   downloadButton(outputId = "download",
-                                label = "Download Raw Data")
-                   #uiOutput("tab")
-               )
-        )
-    ),
-    fluidRow(
-        column(12,h3(textOutput("info")))
-    ),
-    wellPanel(
-        fluidRow(
-            tabsetPanel(type = "tabs",
-                        tabPanel("Time Series",
-                                 #stacked barplots
-                                 fluidRow(
-                                     column(12,plotlyOutput("tsPlot",height = 600))
-                                 )
-                        ),
-                        tabPanel("Bivariate",
-                                 #stacked barplots
-                                 fluidRow(
-                                     column(12,plotlyOutput("mainPlot",height = 600))
-                                 ),
-                                 fluidRow(
-                                     column(12,plotlyOutput("mainPlot2",height = 600))
-                                 ),
-                                 fluidRow(
-                                     column(12,plotlyOutput("mainPlot3",height = 600))
-                                 )
-                        ),
-                        tabPanel("Univariate",
-                                 # simple barplots
-                                 fluidRow(
-                                     column(6,plotlyOutput("agePlot",height = 600)),
-                                     column(6,plotlyOutput("genderPlot",height = 600))
-                                 ),
-                                 fluidRow(
-                                     column(12,plotlyOutput("regionPlot",height = 600))
-                                 )
-                        ),
-                        tabPanel("Additional Tables",
-                                 fluidRow(
-                                     column(12,DT::dataTableOutput("regionTable"))
-                                 ),
-                                 fluidRow(
-                                     column(12,DT::dataTableOutput("ageTable"))
-                                 ),
-                                 fluidRow(
-                                     column(12,DT::dataTableOutput("genderTable"))
-                                 )
-                        ),
-                        tabPanel("Raw Data",
-                                 DT::dataTableOutput("rawData")
-                        ),
-                        tabPanel("About",
-                                 uiOutput("about")
+                tags$head(
+                    tags$meta(charset = "UTF-8"),
+                    tags$meta(name = "description", content = "COVID19 Data from NZ - Plots and Tables"),
+                    tags$meta(name = "keywords", content = "New Zealand, NZ, COVID19,Coronavirus,Data,Data Visualisation"),
+                    tags$meta(name = "viewport", content = "width=device-width, initial-scale=1.0"),
+                    tags$meta(name = "og:image", content = "titlecard.jpg"),
+                    tags$meta(name = "og:url", content = "https://mks29.shinyapps.io/covid_nz/"),
+                    tags$meta(name = "og:type", content = "website"),
+                    tags$meta(name = "og:title", content = "COVID19 NZ Shiny App")
+                ),
+                
+                # setup shinyjs
+                #useShinyjs(),
+                
+                ## Application title -------------
+                titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
+                h3("Data Source: New Zealand Ministry of Health"),
+                h5("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
+                h5("WHO data will have a 1-day lag against Ministry of Health data"),
+								h5("Always check the Ministry of Health website to see the most up-to-date information"),
+                
+                
+                # Sidebar with a slider input for number of bins 
+                fluidRow(
+                    column(2,
+                           wellPanel(
+                               actionButton(inputId = "updateButton",
+                                            label = "Update")
+                           )
+                    ),
+                    column(5,
+                           wellPanel(
+                               actionButton(inputId = "mohLink",
+                                            label = "Ministry of Health Cases Page",
+                                            onclick = "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases', '_blank')")
+                               #uiOutput("tab")
+                           )
+                    ),
+                    column(5,
+                           wellPanel(
+                               downloadButton(outputId = "download",
+                                              label = "Download Raw Data")
+                               #uiOutput("tab")
+                           )
+                    )
+                ),
+                fluidRow(
+                    column(12,h3(textOutput("info")))
+                ),
+                wellPanel(
+                    fluidRow(
+                        tabsetPanel(type = "tabs",
+                                    tabPanel("Time Series",
+                                             #stacked barplots
+                                             fluidRow(
+                                                 column(12,plotlyOutput("tsPlot",height = 600))
+                                             )
+                                    ),
+                                    tabPanel("Bivariate",
+                                             #stacked barplots
+                                             fluidRow(
+                                                 column(12,plotlyOutput("mainPlot",height = 600))
+                                             ),
+                                             fluidRow(
+                                                 column(12,plotlyOutput("mainPlot2",height = 600))
+                                             ),
+                                             fluidRow(
+                                                 column(12,plotlyOutput("mainPlot3",height = 600))
+                                             )
+                                    ),
+                                    tabPanel("Univariate",
+                                             # simple barplots
+                                             fluidRow(
+                                                 column(6,plotlyOutput("agePlot",height = 600)),
+                                                 column(6,plotlyOutput("genderPlot",height = 600))
+                                             ),
+                                             fluidRow(
+                                                 column(12,plotlyOutput("regionPlot",height = 600))
+                                             )
+                                    ),
+                                    tabPanel("Additional Tables",
+                                             fluidRow(
+                                                 column(12,DT::dataTableOutput("regionTable"))
+                                             ),
+                                             fluidRow(
+                                                 column(12,DT::dataTableOutput("ageTable"))
+                                             ),
+                                             fluidRow(
+                                                 column(12,DT::dataTableOutput("genderTable"))
+                                             )
+                                    ),
+                                    tabPanel("Raw Data",
+                                             DT::dataTableOutput("rawData")
+                                    ),
+                                    tabPanel("About",
+                                             uiOutput("about")
+                                    )
                         )
-            )
-        )
-    )
+                    )
+                )
 )
 
 # Define server logic required to draw a histogram
@@ -151,15 +153,18 @@ server <- function(input, output,session) {
                                      covid_ts.df <- covid_ts.df %>% rename(Country = `Country/Region`)
                                      coivd_ts.df <- melt(covid_ts.df)
                                      covid_ts.df <- coivd_ts.df %>% filter(value != 0)
-                                     })
+                                 })
     
     covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
                               valueExpr = {
                                   # data gen
+                              		#download.file("https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases",destfile="t.html")
+                                  
                                   url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases"
-                                  covid.ls <- url %>%
-                                      html() %>%
-                                      # html_nodes(xpath='//*[@id="mw-content-text"]/table[1]') %>%
+                                  #<- url %>%
+                                  
+                                  
+                                  covid.ls <- read_html("t.html") %>%
                                       html_table()
                                   
                                   covid.df <- covid.ls[[1]]
@@ -178,9 +183,7 @@ server <- function(input, output,session) {
                                   
                                   # sort levels by frequency of location
                                   covid.df$Location <- fct_infreq(covid.df$Location, ordered = NA)
-                                  covid.df$Age <- fct_infreq(covid.df$Age, ordered = NA)
-                                  
-                                  #write.csv(covid.df,"covid19.csv")
+                                  covid.df$Age <- fct_relevel(covid.df$Age, c("Child","Teens","20s","30s","40s","50s","60s","70s")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
     ## Stacked Bar Charts -------------------
@@ -191,15 +194,16 @@ server <- function(input, output,session) {
         ts.df$variable <- as.Date(ts.df$variable,
                                   format = "%m/%d/%y")
         
-        main.g <- ggplot(data = ts.df) +
+        ts.g <- ggplot(data = ts.df) +
             geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
             geom_point(mapping = aes(x = variable,y = value,group = 1)) +
-            labs(title = "New Zealand COVID cases: Time Series",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
+            labs(title = "New Zealand COVID cases: Time Series (1 day lag)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
             theme_bw() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) #+
-            #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
+        	  scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "1 day"), minor_breaks = "1 day")
+        #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
         
-        main.g %>% 
+        ts.g %>% 
             ggplotly() %>% #tooltip = c("Number of cases")
             config(displayModeBar = F) %>% 
             layout(title = list(text = paste0('New Zealand COVID cases - Time Series',
@@ -286,12 +290,12 @@ server <- function(input, output,session) {
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
         
         age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
-                  config(displayModeBar = F) %>% 
-                  layout(title = list(text = paste0('New Zealand COVID19 cases by Age',
-                                                    '<br>',
-                                                    '<sup>',
-                                                    Sys.time() + 13*60*60,
-                                                    '</sup>')))
+            config(displayModeBar = F) %>% 
+            layout(title = list(text = paste0('New Zealand COVID19 cases by Age',
+                                              '<br>',
+                                              '<sup>',
+                                              Sys.time() + 13*60*60,
+                                              '</sup>')))
     })
     ## Plot - Region -------------------
     output$regionPlot <- renderPlotly({
@@ -303,6 +307,7 @@ server <- function(input, output,session) {
             geom_col(mapping = aes(x = reorder(covid_region.df$Location, -n),y = n,fill = Location,)) +
             labs(title = "New Zealand COVID19 cases by Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
             theme_light() +
+            scale_fill_viridis(discrete = T) +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
         
         region.g %>% 
@@ -328,12 +333,12 @@ server <- function(input, output,session) {
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
         
         gender.g %>% ggplotly(tooltip = c("Gender","n")) %>% 
-                     config(displayModeBar = F) %>%
-                     layout(title = list(text = paste0('New Zealand COVID19 cases by Gender',
-                                                      '<br>',
-                                                      '<sup>',
-                                                      Sys.time() + 13*60*60,
-                                                      '</sup>')))
+            config(displayModeBar = F) %>%
+            layout(title = list(text = paste0('New Zealand COVID19 cases by Gender',
+                                              '<br>',
+                                              '<sup>',
+                                              Sys.time() + 13*60*60,
+                                              '</sup>')))
     })
     ## Info -------------------
     output$info <- renderText({
@@ -393,15 +398,30 @@ server <- function(input, output,session) {
     )
     
     output$about <- renderUI({
-        HTML('Developed by Matthew Skiffington.  <br> 
-              Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">GitHub Repo</a><br> 
+        HTML('Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">GitHub Repo</a><br> 
               Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases</a><br>
               Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">Time Series Data Source</a><br>')
     })
     
-    rv$run <- 1
-    
+    # Trick file date creation update
+    onStop(function() {
+        
+        # File name
+        p <- paste0(getwd(), "/app.R")
+        
+        # Update file 'date creation'
+        Sys.setFileTime(p, now())
+        
+    }) # onStop
 }
+
+# covid.ls <- url %>%
+# 	read_html() %>%
+# 	# html_nodes(xpath='//*[@id="mw-content-text"]/table[1]') %>%
+# 	html_table()
+# 
+# covid.df <- covid.ls[[1]]
+# nrow(covid.df)
 
 # Run the application 
 shinyApp(ui = ui, server = server)
