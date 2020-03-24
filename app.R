@@ -18,6 +18,9 @@ library(lubridate) # now()
 
 # set timezone
 
+# set text size on x axis
+text_size = 9
+
 # https://datascott.com/blog/subtitles-with-ggplotly/
 
 # https://datafinder.stats.govt.nz/search/?q=territorial%2Bclipped
@@ -53,10 +56,11 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                 
                 ## Application title -------------
                 titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
-                h3("Data Source: New Zealand Ministry of Health"),
+                h3("Check the Ministry of Health website for the most up-to-date information"),
+                h5("Data Source: New Zealand Ministry of Health"),
                 h5("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
-                h5("WHO data will have a 1-day lag against Ministry of Health data"),
-								h5("Always check the Ministry of Health website to see the most up-to-date information"),
+                h5("WHO data will have a 1-2 day lag against Ministry of Health data"),
+				h5("Update 24/03/2020: More cases have been confirmed, update to MoH cases page is pending", style = "color:red"),
                 
                 
                 # Sidebar with a slider input for number of bins 
@@ -91,12 +95,14 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                         tabsetPanel(type = "tabs",
                                     tabPanel("Time Series",
                                              #stacked barplots
+                                             tags$br(),
                                              fluidRow(
                                                  column(12,plotlyOutput("tsPlot",height = 600))
                                              )
                                     ),
                                     tabPanel("Bivariate",
                                              #stacked barplots
+                                             tags$br(),
                                              fluidRow(
                                                  column(12,plotlyOutput("mainPlot",height = 600))
                                              ),
@@ -109,6 +115,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                     ),
                                     tabPanel("Univariate",
                                              # simple barplots
+                                             tags$br(),
                                              fluidRow(
                                                  column(6,plotlyOutput("agePlot",height = 600)),
                                                  column(6,plotlyOutput("genderPlot",height = 600))
@@ -118,6 +125,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                              )
                                     ),
                                     tabPanel("Additional Tables",
+                                             tags$br(),
                                              fluidRow(
                                                  column(12,DT::dataTableOutput("regionTable"))
                                              ),
@@ -129,9 +137,11 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                              )
                                     ),
                                     tabPanel("Raw Data",
+                                             tags$br(),
                                              DT::dataTableOutput("rawData")
                                     ),
                                     tabPanel("About",
+                                             tags$br(),
                                              uiOutput("about")
                                     )
                         )
@@ -164,7 +174,7 @@ server <- function(input, output,session) {
                                   #<- url %>%
                                   
                                   
-                                  covid.ls <- read_html("t.html") %>%
+                                  covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
                                       html_table()
                                   
                                   covid.df <- covid.ls[[1]]
@@ -199,8 +209,8 @@ server <- function(input, output,session) {
             geom_point(mapping = aes(x = variable,y = value,group = 1)) +
             labs(title = "New Zealand COVID cases: Time Series (1 day lag)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
             theme_bw() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
-        	  scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "1 day"), minor_breaks = "1 day")
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
+        	  scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day")
         #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
         
         ts.g %>% 
@@ -223,7 +233,7 @@ server <- function(input, output,session) {
             labs(title = "New Zealand COVID cases by Region and Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
         
         main.g %>% 
             ggplotly(tooltip = c("Region","Age","n")) %>% 
@@ -244,7 +254,7 @@ server <- function(input, output,session) {
             labs(title = "New Zealand COVID cases by Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
         
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
@@ -265,7 +275,7 @@ server <- function(input, output,session) {
             labs(title = "New Zealand COVID cases by Region and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
         
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
@@ -283,11 +293,11 @@ server <- function(input, output,session) {
             summarise(n = length(Case))
         
         age.g <- ggplot(data = covid_age.df) +
-            geom_col(mapping = aes(x = reorder(covid_age.df$Age, -n),y = n,fill = Age)) +
+            geom_col(mapping = aes(x = Age,y = n,fill = Age)) + # reorder(covid_age.df$Age, -n)
             labs(title = "New Zealand COVID19 cases by Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
         
         age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
             config(displayModeBar = F) %>% 
@@ -308,7 +318,7 @@ server <- function(input, output,session) {
             labs(title = "New Zealand COVID19 cases by Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
             theme_light() +
             scale_fill_viridis(discrete = T) +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
         
         region.g %>% 
             ggplotly(tooltip = c("Location","n")) %>% 
@@ -330,7 +340,7 @@ server <- function(input, output,session) {
             labs(title = "New Zealand COVID19 cases by Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
         
         gender.g %>% ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>%
@@ -398,9 +408,9 @@ server <- function(input, output,session) {
     )
     
     output$about <- renderUI({
-        HTML('Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">GitHub Repo</a><br> 
-              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases</a><br>
-              Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">Time Series Data Source</a><br>')
+        HTML('Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
+              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases (HTML table)</a><br>
+              Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')
     })
     
     # Trick file date creation update
