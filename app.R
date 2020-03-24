@@ -19,7 +19,7 @@ library(lubridate) # now()
 # set timezone
 
 # set text size on x axis
-text_size = 9
+text_size = 8
 
 # https://datascott.com/blog/subtitles-with-ggplotly/
 
@@ -55,23 +55,22 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                 #useShinyjs(),
                 
                 ## Application title -------------
-                titlePanel(paste("New Zealand COVID19 Cases: ",as.Date(Sys.time() + 13*60*60),"(GMT+13)")), # adjust +13 hours for GMT+13 in NZ
+                titlePanel(paste("New Zealand COVID19 Cases")), # : ",as.Date(Sys.time() + 13*60*60),"(GMT+13)" #adjust +13 hours for GMT+13 in NZ
                 h3("Check the Ministry of Health website for the most up-to-date information"),
-                h5("Data Source: New Zealand Ministry of Health"),
-                h5("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
-                h5("WHO data will have a 1-2 day lag against Ministry of Health data"),
-				h5("Update 24/03/2020: More cases (155 total, 142 confirmed,13 probable) have been confirmed by MoH", style = "color:red"),
+                h5("Data Source: New Zealand Ministry of Health. Data includes both confirmed and probable cases."),
+                #h5("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
+                #h5("WHO data will have a 1-2 day lag against Ministry of Health data"),
                 
                 
-                # Sidebar with a slider input for number of bins 
+                # Header buttons --------------
                 fluidRow(
-                    column(2,
+                    column(3,
                            wellPanel(
                                actionButton(inputId = "updateButton",
                                             label = "Update")
                            )
                     ),
-                    column(5,
+                    column(3,
                            wellPanel(
                                actionButton(inputId = "mohLink",
                                             label = "Ministry of Health Cases Page",
@@ -79,27 +78,45 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                #uiOutput("tab")
                            )
                     ),
-                    column(5,
+                    column(3,
                            wellPanel(
                                downloadButton(outputId = "download",
-                                              label = "Download Raw Data")
+                                              label = "Download Raw Case Data")
+                               #uiOutput("tab")
+                           )
+                    ),
+                    column(3,
+                           wellPanel(
+                               downloadButton(outputId = "download_ts",
+                                              label = "Download Raw Time Series Data")
                                #uiOutput("tab")
                            )
                     )
                 ),
+                # header Table ----------
                 fluidRow(
-                    column(12,h3(textOutput("info")))
+                    #tags$style(type = "text/css", "#info {white-space: pre-wrap;}"),
+                    column(12,dataTableOutput("info"))  #textOutput("info") #DT::dataTableOutput("info")
                 ),
+                ## tabs ------------
                 wellPanel(
                     fluidRow(
                         tabsetPanel(type = "tabs",
                                     tabPanel("Time Series",
-                                             #stacked barplots
+                                             # line plot
                                              tags$br(),
                                              fluidRow(
-                                                 column(12,plotlyOutput("tsPlot",height = 600))
+                                                 column(6,plotlyOutput("tsPlot",height = 600)),
+                                                 column(6,plotlyOutput("newcasesPlot",height = 600))
                                              )
                                     ),
+                                    # tabPanel("Recoveries",
+                                    #          #stacked barplots
+                                    #          tags$br(),
+                                    #          fluidRow(
+                                    #              column(12,plotlyOutput("statusPlot",height = 600))
+                                    #          )
+                                    #),
                                     tabPanel("Bivariate",
                                              #stacked barplots
                                              tags$br(),
@@ -165,13 +182,24 @@ server <- function(input, output,session) {
                                      # covid_ts.df <- coivd_ts.df %>% filter(value != 0)
                                      
                                      #save(covid_ts.df,file = "covid_ts.df")
-                                     load("covid_ts.df")
-                                     covid_ts.df$variable <- as.character(covid_ts.df$variable)
-                                     covid_ts.df$value[25] <- 102
-                                     covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/24/20",155))
+                                     #load("covid_ts.df")
+                                     #covid_ts.df$variable <- as.character(covid_ts.df$variable)
+                                     #covid_ts.df$value[25] <- 102
+                                     #covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/24/20",155))
+                                     covid_ts.df <- read.csv(file = "covid_ts.csv",header = T)
+                                     
                                      covid_ts.df$variable <- as.factor(covid_ts.df$variable)
                                      covid_ts.df$value <- as.numeric(covid_ts.df$value)
                                      covid_ts.df
+                                     
+                                     covid.lag <- lag(covid_ts.df$value,1)
+                                     covid.lag[is.na(covid.lag)] <- 0
+                                     
+                                     covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
+                                     
+                                     covid_ts.df
+                                     
+                                    # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
                                  })
     
     covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
@@ -203,13 +231,18 @@ server <- function(input, output,session) {
                                   
                                   
                                   # sort levels by frequency of location
+                                  covid.df$Location <- fct_recode(covid.df$Location, c("Hawkes Bay" = "Hawke’s Bay")) 
                                   covid.df$Location <- fct_infreq(covid.df$Location, ordered = NA)
-                                  covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
+                                  covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)         
+                                  #write.csv(covid.df,"covid19.csv")
+                                  #write.csv(covid.df,"covid19.csv")
                                   covid.df$Age <- fct_relevel(covid.df$Age, c("Child","Teens","20s","30s","40s","50s","60s","70s")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
-    ## Stacked Bar Charts -------------------
+    ## Time Series -------------------
     output$tsPlot <- renderPlotly({
+        
+        ## Cumulative Time Series ---------------
         ts.df <- covid_ts.df()
         
         # recode dates
@@ -219,23 +252,53 @@ server <- function(input, output,session) {
         ts.g <- ggplot(data = ts.df) +
             geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
             geom_point(mapping = aes(x = variable,y = value,group = 1)) +
-            labs(title = "New Zealand COVID cases: Time Series (1 day lag)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
+            labs(title = "New Zealand COVID19 cases: Time Series (Cumulative)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
             theme_bw() +
             #annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-        	scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day") 
+        	scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day") #+
+            #geom_text(data = tail(ts.df),aes(x = variable - 0.5,y = value + max(new_cases)/20,label = value))
         #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
         
         ts.g %>% 
             ggplotly() %>% #tooltip = c("Number of cases")
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID cases - Time Series',
+            layout(title = list(text = paste0('NZ COVID19 cases - Time Series',
                                               '<br>',
                                               '<sup>',
-                                              "Current to 23/03/2020",
+                                              "Current to 24/03/2020 (showing values for last 5 days)",
                                               '</sup>')))
     })
     
+    ## New Cases Time Series -------------------
+    output$newcasesPlot <- renderPlotly({
+        nc.df <- covid_ts.df()
+        
+        # recode dates
+        nc.df$variable <- as.Date(nc.df[,2],
+                                  format = "%m/%d/%y")
+        
+        nc.g <- ggplot(data = nc.df) +
+            #geom_line(mapping = aes(x = variable,y = new_cases,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
+            geom_col(mapping = aes(x = variable,y = new_cases,group = 1)) +
+            labs(title = "NZ COVID19: New cases",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Number of new cases") +
+            theme_bw() +
+            #annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
+            scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "2 day"), minor_breaks = "1 day") #+
+            #geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
+        #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
+        
+        nc.g %>% 
+            ggplotly() %>% #tooltip = c("Number of cases")
+            config(displayModeBar = F) %>% 
+            layout(title = list(text = paste0('NZ COVID19 cases: New Cases',
+                                              '<br>',
+                                              '<sup>',
+                                              "Current to 24/03/2020 (showing values for last 5 days)",
+                                              '</sup>')))
+    })
+    ## Stacked Bar Charts ----------------
     output$mainPlot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(Age,Location) %>%
@@ -243,7 +306,7 @@ server <- function(input, output,session) {
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Location,y = n,fill = Age)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "New Zealand COVID cases by Region and Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases - Region and Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
@@ -251,7 +314,7 @@ server <- function(input, output,session) {
         main.g %>% 
             ggplotly(tooltip = c("Region","Age","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID cases by Region and Age',
+            layout(title = list(text = paste0('New Zealand COVID19 cases - Region and Age',
                                               '<br>',
                                               '<sup>',
                                               Sys.time() + 13*60*60,
@@ -264,7 +327,7 @@ server <- function(input, output,session) {
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Age,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "New Zealand COVID cases by Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases - Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
@@ -272,7 +335,7 @@ server <- function(input, output,session) {
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID cases by Age and Gender',
+            layout(title = list(text = paste0('NZ COVID19 cases - Age and Gender',
                                               '<br>',
                                               '<sup>',
                                               Sys.time() + 13*60*60,
@@ -285,7 +348,7 @@ server <- function(input, output,session) {
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Location,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "New Zealand COVID cases by Region and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases by Region and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
@@ -293,7 +356,7 @@ server <- function(input, output,session) {
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID cases by Region and Gender',
+            layout(title = list(text = paste0('NZ COVID19 cases - Region and Gender',
                                               '<br>',
                                               '<sup>',
                                               Sys.time() + 13*60*60,
@@ -307,7 +370,7 @@ server <- function(input, output,session) {
         
         age.g <- ggplot(data = covid_age.df) +
             geom_col(mapping = aes(x = Age,y = n,fill = Age)) + # reorder(covid_age.df$Age, -n)
-            labs(title = "New Zealand COVID19 cases by Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
@@ -328,7 +391,7 @@ server <- function(input, output,session) {
         
         region.g <- ggplot(data = covid_region.df) +
             geom_col(mapping = aes(x = reorder(covid_region.df$Location, -n),y = n,fill = Location,)) +
-            labs(title = "New Zealand COVID19 cases by Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases - Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
             theme_light() +
             scale_fill_viridis(discrete = T) +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
@@ -336,7 +399,7 @@ server <- function(input, output,session) {
         region.g %>% 
             ggplotly(tooltip = c("Location","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID19 cases by Region',
+            layout(title = list(text = paste0('NZ COVID19 cases - Region',
                                               '<br>',
                                               '<sup>',
                                               Sys.time() + 13*60*60,
@@ -350,7 +413,7 @@ server <- function(input, output,session) {
         
         gender.g <- ggplot(data = covid_gender.df) +
             geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
-            labs(title = "New Zealand COVID19 cases by Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases - Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
@@ -364,8 +427,26 @@ server <- function(input, output,session) {
                                               '</sup>')))
     })
     ## Info -------------------
-    output$info <- renderText({
-        paste("The total number of confirmed cases in New Zealand is:",nrow(covid.df()))
+    
+    # manually filled for now
+    cases.df <- data.frame(`Total(Confirmed+Probable)` = as.integer(155),
+                           Confirmed = as.integer(142),
+                           Probable = as.integer(13),
+                           Recovered = as.integer(12),
+                           Community = as.integer(4))
+    # colnames(cases.df) <- c("Total Cases" = "Total_Cases",
+    #                         "Confirmed" = "Confirmed",
+    #                         "Probable" = "Probable",
+    #                         "Recovered" = "Recovered",
+    #                         "Community" = "Community")
+    
+    output$info <- DT::renderDataTable({ 
+        #DT::renderDataTable({ 
+        #DT::dataTableOutput(cases.df)
+        DT::datatable(cases.df, options = list(dom = 't'),rownames = FALSE,
+                      colnames = c("Total Cases (Confirmed + Probable)","Confirmed","Probable","Recovered","Community"))
+        #renderText({
+        #paste("Confirmed cases:",nrow(covid.df()),"\n","Recovered cases: ",12,"\n","Community transmission cases:",4)
     })
     ## Tables -------------------
     output$rawData = DT::renderDataTable({
@@ -410,20 +491,29 @@ server <- function(input, output,session) {
     #     tagList("URL link:", url)
     # })
     
-    # Downloadable csv of selected dataset ----
+    # Downloadable csv of cases dataset ----
     output$download <- downloadHandler(
         filename = function() {
-            paste("covid_19_nz_",as.numeric(Sys.time()),".csv", sep = "")
+            paste("covid_19_cases_nz_",as.numeric(Sys.time()),".csv", sep = "")
         },
         content = function(file) {
             write.csv(covid.df(), file, row.names = FALSE)
         }
     )
+    # Downloadable csv of time series dataset ----
+    output$download_ts <- downloadHandler(
+        filename = function() {
+            paste("covid_19_timeseries_nz_",as.numeric(Sys.time()),".csv", sep = "")
+        },
+        content = function(file) {
+            write.csv(covid_ts.df(), file, row.names = FALSE)
+        }
+    )
     
     output$about <- renderUI({
         HTML('Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
-              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases (HTML table)</a><br>
-              Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')
+              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases (web tables)</a><br>')
+       # Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')       
     })
     
     # Trick file date creation update
