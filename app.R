@@ -60,7 +60,7 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                 h5("Data Source: New Zealand Ministry of Health"),
                 h5("Time Series Data Source: University of Hopkins Systems Science and Engineering Unit (pulls from World Health Organisation and other sources)"),
                 h5("WHO data will have a 1-2 day lag against Ministry of Health data"),
-				h5("Update 24/03/2020: More cases have been confirmed, update to MoH cases page is pending", style = "color:red"),
+				h5("Update 24/03/2020: More cases (155 total, 142 confirmed,13 probable) have been confirmed by MoH", style = "color:red"),
                 
                 
                 # Sidebar with a slider input for number of bins 
@@ -157,12 +157,21 @@ server <- function(input, output,session) {
     ## Main Scraping and Dataframe ------------
     covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
                                  valueExpr = {
-                                     url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
-                                     covid_ts.df <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")
-                                     covid_ts.df <- covid_ts.df %>% filter(`Country/Region` == "New Zealand") %>% select(-c(Lat,Long,`Province/State`)) 
-                                     covid_ts.df <- covid_ts.df %>% rename(Country = `Country/Region`)
-                                     coivd_ts.df <- melt(covid_ts.df)
-                                     covid_ts.df <- coivd_ts.df %>% filter(value != 0)
+                                     # url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+                                     # covid_ts.df <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv")
+                                     # covid_ts.df <- covid_ts.df %>% filter(`Country/Region` == "New Zealand") %>% select(-c(Lat,Long,`Province/State`)) 
+                                     # covid_ts.df <- covid_ts.df %>% rename(Country = `Country/Region`)
+                                     # coivd_ts.df <- melt(covid_ts.df)
+                                     # covid_ts.df <- coivd_ts.df %>% filter(value != 0)
+                                     
+                                     #save(covid_ts.df,file = "covid_ts.df")
+                                     load("covid_ts.df")
+                                     covid_ts.df$variable <- as.character(covid_ts.df$variable)
+                                     covid_ts.df$value[25] <- 102
+                                     covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/24/20",155))
+                                     covid_ts.df$variable <- as.factor(covid_ts.df$variable)
+                                     covid_ts.df$value <- as.numeric(covid_ts.df$value)
+                                     covid_ts.df
                                  })
     
     covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
@@ -178,21 +187,24 @@ server <- function(input, output,session) {
                                       html_table()
                                   
                                   covid.df <- covid.ls[[1]]
+                                  covid_p.df <- covid.ls[[2]]
                                   
-                                  covid.df$Location <- as.factor(covid.df$Location)
-                                  covid.df$Gender <- as.factor(covid.df$Gender)
-                                  covid.df$Age <- as.factor(covid.df$Age)
+                                  covid_p.df$Case <- paste(covid_p.df$Case,"probable")
+                                  
+                                  covid.df <- rbind(covid.df,covid_p.df)
+                                
+                                  levels(covid.df$Gender)[levels(covid.df$Gender) == ""] <- "Not Reported"
+                                  levels(covid.df$Location)[levels(covid.df$Location) == ""] <- "Not Reported"
+                                  levels(covid.df$Age)[levels(covid.df$Age) == ""] <- "Not Reported"
                                   
                                   covid.df <- covid.df %>%  mutate(Gender = recode(Gender, 
                                                                                    `Male` = "M",
                                                                                    `Female` = "F"))
                                   
-                                  levels(covid.df$Gender)[levels(covid.df$Gender) == ""] <- "Not Reported"
-                                  levels(covid.df$Location)[levels(covid.df$Location) == ""] <- "Not Reported"
-                                  levels(covid.df$Age)[levels(covid.df$Age) == ""] <- "Not Reported"
                                   
                                   # sort levels by frequency of location
                                   covid.df$Location <- fct_infreq(covid.df$Location, ordered = NA)
+                                  covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
                                   covid.df$Age <- fct_relevel(covid.df$Age, c("Child","Teens","20s","30s","40s","50s","60s","70s")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
@@ -201,7 +213,7 @@ server <- function(input, output,session) {
         ts.df <- covid_ts.df()
         
         # recode dates
-        ts.df$variable <- as.Date(ts.df$variable,
+        ts.df$variable <- as.Date(ts.df[,2],
                                   format = "%m/%d/%y")
         
         ts.g <- ggplot(data = ts.df) +
@@ -209,8 +221,9 @@ server <- function(input, output,session) {
             geom_point(mapping = aes(x = variable,y = value,group = 1)) +
             labs(title = "New Zealand COVID cases: Time Series (1 day lag)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
             theme_bw() +
+            #annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-        	  scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day")
+        	scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day") 
         #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
         
         ts.g %>% 
@@ -219,7 +232,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('New Zealand COVID cases - Time Series',
                                               '<br>',
                                               '<sup>',
-                                              Sys.time() + 13*60*60,
+                                              "Current to 23/03/2020",
                                               '</sup>')))
     })
     
