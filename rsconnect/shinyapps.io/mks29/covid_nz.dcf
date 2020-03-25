@@ -1,0 +1,10 @@
+name: covid_nz
+title:
+username:
+account: mks29
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1974379
+bundleId: 2920975
+url: https://mks29.shinyapps.io/covid_nz/
+when: 1585105650.1816

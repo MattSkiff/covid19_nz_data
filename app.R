@@ -187,6 +187,8 @@ server <- function(input, output,session) {
                                      #covid_ts.df$value[25] <- 102
                                      #covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/24/20",155))
                                      covid_ts.df <- read.csv(file = "covid_ts.csv",header = T)
+                                     covid_ts.df$variable <- as.character(covid_ts.df$variable)
+                                     covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/25/20",205))
                                      
                                      covid_ts.df$variable <- as.factor(covid_ts.df$variable)
                                      covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -224,10 +226,13 @@ server <- function(input, output,session) {
                                   levels(covid.df$Gender)[levels(covid.df$Gender) == ""] <- "Not Reported"
                                   levels(covid.df$Location)[levels(covid.df$Location) == ""] <- "Not Reported"
                                   levels(covid.df$Age)[levels(covid.df$Age) == ""] <- "Not Reported"
+                                  levels(covid.df$Age)[levels(covid.df$Age) == "Not provided"] <- "Not Reported"
+                                  
                                   
                                   covid.df <- covid.df %>%  mutate(Gender = recode(Gender, 
                                                                                    `Male` = "M",
-                                                                                   `Female` = "F"))
+                                                                                   `Female` = "F",
+                                                                                   `Not provided` = ""))
                                   
                                   
                                   # sort levels by frequency of location
@@ -236,7 +241,7 @@ server <- function(input, output,session) {
                                   covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)         
                                   #write.csv(covid.df,"covid19.csv")
                                   #write.csv(covid.df,"covid19.csv")
-                                  covid.df$Age <- fct_relevel(covid.df$Age, c("Child","Teens","20s","30s","40s","50s","60s","70s")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
+                                  covid.df$Age <- fct_relevel(covid.df$Age, c("Not Reported","Child","Teens","20s","30s","40s","50s","60s","70s")) #fct_infreq(covid.df$Age, ordered = NA)                                  #write.csv(covid.df,"covid19.csv")
                                   covid.df
                               })
     ## Time Series -------------------
@@ -266,7 +271,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('NZ COVID19 cases - Time Series',
                                               '<br>',
                                               '<sup>',
-                                              "Current to 24/03/2020 (showing values for last 5 days)",
+                                              "Current to 25/03/2020",
                                               '</sup>')))
     })
     
@@ -295,7 +300,7 @@ server <- function(input, output,session) {
             layout(title = list(text = paste0('NZ COVID19 cases: New Cases',
                                               '<br>',
                                               '<sup>',
-                                              "Current to 24/03/2020 (showing values for last 5 days)",
+                                              "Current to 25/03/2020",
                                               '</sup>')))
     })
     ## Stacked Bar Charts ----------------
@@ -309,7 +314,7 @@ server <- function(input, output,session) {
             labs(title = "NZ COVID19 cases - Region and Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         main.g %>% 
             ggplotly(tooltip = c("Region","Age","n")) %>% 
@@ -330,7 +335,7 @@ server <- function(input, output,session) {
             labs(title = "NZ COVID19 cases - Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
@@ -351,7 +356,7 @@ server <- function(input, output,session) {
             labs(title = "NZ COVID19 cases by Region and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Region",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
@@ -373,7 +378,7 @@ server <- function(input, output,session) {
             labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
             config(displayModeBar = F) %>% 
@@ -390,11 +395,11 @@ server <- function(input, output,session) {
             summarise(n = length(Case)) 
         
         region.g <- ggplot(data = covid_region.df) +
-            geom_col(mapping = aes(x = reorder(covid_region.df$Location, -n),y = n,fill = Location,)) +
+            geom_col(mapping = aes(x = reorder(covid_region.df$Location, -n),y = n,fill = Location)) +
             labs(title = "NZ COVID19 cases - Region",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
             theme_light() +
             scale_fill_viridis(discrete = T) +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         region.g %>% 
             ggplotly(tooltip = c("Location","n")) %>% 
@@ -416,7 +421,7 @@ server <- function(input, output,session) {
             labs(title = "NZ COVID19 cases - Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,,size = text_size))
+            theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         gender.g %>% ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>%
@@ -429,11 +434,11 @@ server <- function(input, output,session) {
     ## Info -------------------
     
     # manually filled for now
-    cases.df <- data.frame(`Total(Confirmed+Probable)` = as.integer(155),
-                           Confirmed = as.integer(142),
-                           Probable = as.integer(13),
-                           Recovered = as.integer(12),
-                           Community = as.integer(4))
+    cases.df <- data.frame(`Total(Confirmed+Probable)` = as.integer(205),
+                           Confirmed = as.integer(189),
+                           Probable = as.integer(16),
+                           Recovered = as.integer(22),
+                           Community = as.character("6 (pending confirmation)"))
     # colnames(cases.df) <- c("Total Cases" = "Total_Cases",
     #                         "Confirmed" = "Confirmed",
     #                         "Probable" = "Probable",
