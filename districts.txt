@@ -1,0 +1,69 @@
+                    ta.sdf$TA2020_V_2
+1                  Far North District
+2                  Whangarei District
+3                    Kaipara District
+4          Thames-Coromandel District
+5                    Hauraki District
+6                    Waikato District
+7             Matamata-Piako District
+8                       Hamilton City
+9                      Waipa District
+10                Otorohanga District
+11             South Waikato District
+12                   Waitomo District
+13                     Taupo District
+14     Western Bay of Plenty District
+15                      Tauranga City
+16                   Rotorua District
+17                 Whakatane District
+18                   Kawerau District
+19                   Opotiki District
+20                  Gisborne District
+21                    Wairoa District
+22                  Hastings District
+23                        Napier City
+24       Central Hawke's Bay District
+25              New Plymouth District
+26                 Stratford District
+27            South Taranaki District
+28                   Ruapehu District
+29                 Whanganui District
+30                Rangitikei District
+31                  Manawatu District
+32              Palmerston North City
+33                   Tararua District
+34                Horowhenua District
+35              Kapiti Coast District
+36                       Porirua City
+37                    Upper Hutt City
+38                    Lower Hutt City
+39                    Wellington City
+40                 Masterton District
+41                 Carterton District
+42           South Wairarapa District
+43                    Tasman District
+44                        Nelson City
+45               Marlborough District
+46                  Kaikoura District
+47                    Buller District
+48                      Grey District
+49                  Westland District
+50                   Hurunui District
+51               Waimakariri District
+52                  Christchurch City
+53                    Selwyn District
+54                 Ashburton District
+55                    Timaru District
+56                 Mackenzie District
+57                   Waimate District
+58          Chatham Islands Territory
+59                   Waitaki District
+60             Central Otago District
+61          Queenstown-Lakes District
+62                       Dunedin City
+63                    Clutha District
+64                 Southland District
+65                      Gore District
+66                  Invercargill City
+67                           Auckland
+68 Area Outside Territorial Authority
