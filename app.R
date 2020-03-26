@@ -16,7 +16,7 @@ library(dashboardthemes) # snazzy themes
 library(readr) # read_csv
 library(rgeos) # centroids
 
-app_status <- "App up to date as of 26/03/2020."
+app_status <- "App up to date as of 26/03/2020"
 
 ## Options --------------------
 # set timezone
@@ -70,11 +70,11 @@ ui <- dashboardPage(
             #menuItem("Time Series", tabName = "time_series", icon = icon("clock")),
             menuItem("Confirmed & Probable", tabName = "new", icon = icon("external-link-square-alt")),
             menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
-            menuItem("DHB", tabName = "DHB", icon = icon("arrows-alt")),
+            menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
             menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
             menuItem("Age & Gender", tabName = "age_gender", icon = icon("bookmark")),
-            menuItem("Region & Gender", tabName = "region_gender", icon = icon("bookmark")),
-            menuItem("Region & Age", tabName = "region_age", icon = icon("bookmark")),
+            menuItem("DHB & Gender", tabName = "dhb_gender", icon = icon("bookmark")),
+            menuItem("DHB & Age", tabName = "dhb_age", icon = icon("bookmark")),
             menuItem("Raw Data Table", tabName = "raw_table", icon = icon("table")),
             menuItem("Additional Tables", tabName = "additional_tables", icon = icon("plus-square")),
             menuItem("Downloads",tabName = "downloads",icon = icon("download")),
@@ -117,11 +117,11 @@ ui <- dashboardPage(
                                         width = 3,color = "black")
                             ),
                             fluidRow(
-                                h5(app_status,align = "center")
+                                h5(paste(app_status,": Check covid19.govt.nz for key information"),align = "center")
                             ),
                             ## maps --------------------------------------
                             # fluidRow(
-                            #     #box(h3("Cases by Regional Council"),width = 6),
+                            #     #box(h3("Cases by dhb Council"),width = 6),
                             #     #box(h3("Cases by DHB"),width = 12)
                             # ),
                             fluidRow(
@@ -143,19 +143,19 @@ ui <- dashboardPage(
             tabItem(tabName = "new",
                     fluidRow(
                         tags$br(),
-                        box(plotlyOutput("new_cases_plot", height = 600),width = 12)
+                        box(plotlyOutput("new_cases_plot", height = 800),width = 12)
                     )),
             # tab-age
             tabItem(tabName = "age",
                     fluidRow(
                         tags$br(),
-                        box(plotlyOutput("age_plot", height = 600),width = 12)
+                        box(plotlyOutput("age_plot", height = 800),width = 12)
                         )),
-            # tab-region
-            tabItem(tabName = "region",
+            # tab-dhb
+            tabItem(tabName = "dhb",
                     fluidRow(
                         tags$br(),
-                        box(plotlyOutput("region_plot", height = 600),width = 12)
+                        box(plotlyOutput("dhb_plot", height = 800),width = 12)
                         )),
             # tab-gender
             tabItem(tabName = "gender",
@@ -169,17 +169,17 @@ ui <- dashboardPage(
                         tags$br(),
                         box(plotlyOutput("age_gender_plot", height = 800),width = 12)
                         )),
-            # tab-region-gender
-            tabItem(tabName = "region_gender",
+            # tab-dhb-gender
+            tabItem(tabName = "dhb_gender",
                     fluidRow(
                         tags$br(),
-                        box(plotlyOutput("region_gender_plot", height = 800),width = 12)
+                        box(plotlyOutput("dhb_gender_plot", height = 800),width = 12)
                         )),
-            # tab-region-age
-            tabItem(tabName = "region_age",
+            # tab-dhb-age
+            tabItem(tabName = "dhb_age",
                     fluidRow(
                         tags$br(),
-                        box(plotlyOutput("region_age_plot", height = 800),width = 12)
+                        box(plotlyOutput("dhb_age_plot", height = 800),width = 12)
                         )),
     
             # tab-tables
@@ -192,7 +192,7 @@ ui <- dashboardPage(
             tabItem(tabName = "additional_tables",
                     fluidRow(
                         tags$br(),
-                        box(DT::dataTableOutput("region_table"),width = 12)
+                        box(DT::dataTableOutput("dhb_table"),width = 12)
                     ),
                     fluidRow(
                         box(DT::dataTableOutput("age_table"),width = 12)
@@ -314,6 +314,7 @@ server <- function(input, output,session) {
     })
     
     
+    # DHB Spatial Reactive
     dhb.sdf <- reactive({
         dhb.sdf <- readOGR(dsn = "dhb", layer = "district-health-board-2015")
         dhb.sdf
@@ -377,6 +378,7 @@ server <- function(input, output,session) {
         #addControl(map_title, position = "topleft")
     })
     
+    ## COVID LOC Reactive -------------------
     covid_loc.df <- reactive({
         url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases"
         #<- url %>%
@@ -389,7 +391,7 @@ server <- function(input, output,session) {
 
     })
     
-    # ## Map DHB Normalised -------------------
+    
     # output$mapDHBnorm <- renderLeaflet({
     #     
     #     covid_dhb.df <- covid_loc.df()
@@ -478,14 +480,14 @@ server <- function(input, output,session) {
         nc.g %>% 
             ggplotly() %>% #tooltip = c("Number of cases")
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases: New Cases',
+            layout(title = list(text = paste0('NZ COVID19 Cases: New Cases',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
                                               '</sup>'))) 
     })
     ## Stacked Bar Charts ----------------
-    output$region_age_plot <- renderPlotly({
+    output$dhb_age_plot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(Age,DHB) %>%
             summarise(n = length(Case))
@@ -498,9 +500,9 @@ server <- function(input, output,session) {
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         main.g %>% 
-            ggplotly(tooltip = c("Region","Age","n")) %>% 
+            ggplotly(tooltip = c("DHB","Age","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID19 cases - DHB and Age',
+            layout(title = list(text = paste0('NZ COVID19 Cases: DHB and Age',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -520,7 +522,7 @@ server <- function(input, output,session) {
         nc.g %>% 
             ggplotly(tooltip = c("Cases","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases - new, total and probable',
+            layout(title = list(text = paste0('NZ COVID19 cases: New, Total and Probable',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -542,7 +544,7 @@ server <- function(input, output,session) {
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases - Age and Gender',
+            layout(title = list(text = paste0('NZ COVID19: Cases by Age and Gender',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -563,7 +565,7 @@ server <- function(input, output,session) {
         main.g %>% 
             ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases - DHB and Gender',
+            layout(title = list(text = paste0('NZ COVID19: Cases by DHB and Gender',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -584,18 +586,18 @@ server <- function(input, output,session) {
         
         age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('New Zealand COVID19 cases by Age',
+            layout(title = list(text = paste0('NZ COVID19: Cases by Age',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
                                               '</sup>'))) 
     })
-    ## Plot - Region -------------------
-    output$region_plot <- renderPlotly({
+    ## Plot - dhb -------------------
+    output$dhb_plot <- renderPlotly({
         covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
             html_table()
         
-        covid.df <- melt(covid.ls[[2]]) %>% filter(variable != "Total cases")
+        covid.df <- covid_loc.df() %>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
         
         dhb.g <- ggplot(data = covid.df) +
             geom_col(mapping = aes(x = reorder(covid.df$DHB, -value),y = value,fill = variable)) +
@@ -605,9 +607,9 @@ server <- function(input, output,session) {
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
         
         dhb.g %>% 
-            ggplotly(tooltip = c("Location","n")) %>% 
+            ggplotly(tooltip = c("DHB","value")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases - DHB',
+            layout(title = list(text = paste0('NZ COVID19: Cases by DHB',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -628,7 +630,7 @@ server <- function(input, output,session) {
         
         gender.g %>% ggplotly(tooltip = c("Gender","n")) %>% 
             config(displayModeBar = F) %>%
-            layout(title = list(text = paste0('New Zealand COVID19 cases by Gender',
+            layout(title = list(text = paste0('NZ COVID19: Cases by Gender',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -700,7 +702,7 @@ server <- function(input, output,session) {
     ## About -------------------
     output$about <- renderUI({
         HTML('<a href = "https://covid19.govt.nz/">covid19.govt.nz</a><br>
-              This tool is not official. Check the Ministry of Health for all Official Statistics.<br> 
+              This tool was developed as a personal project and is not official. Check the Ministry of Health for all Official Statistics.<br> 
               Made by Matthew Skiffington <br> 
               Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
               Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases (web tables)</a><br>')
