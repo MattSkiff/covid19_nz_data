@@ -1,74 +1,16 @@
-library(rvest) # scraping MoH
-library(rgdal) # geo stuff
-library(leaflet) # interactive map
-library(shiny) # app
-library(reshape2) # melting
-library(dplyr) # wrangling
-library(magrittr) # piping
-library(ggplot2) # core plot package
-library(viridis) # nice colour scale
-library(forcats) # factors
-library(plotly) # interactive viz
-library(DT) # for interactive data tables
-library(readr) # to nicely read in data
-library(shinydashboard) # dashboard structure
-library(dashboardthemes) # snazzy themes
-library(readr) # read_csv
-library(rgeos) # centroids
-
-app_status <- "App up to date as of 27/03/2020"
-
-## Options --------------------
-# set timezone
-# set text size on x axis
-text_size = 8
-zoom_level_init = 7
-lat_init = -38.45145547118427
-lng_init = 175.717106114185
-min_zoom = 5
-max_zoom = 8
-moh_open_link <- "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases', '_blank')"
-
-## Case Summary Information ---------------
-# https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases
-total_cases <- 368
-total_cases_new_24 <- 85 
-    
-confirmed_cases <- 338
-confirmed_cases_new_24 <- 76
-    
-probable_cases <- 30
-probable_cases_new_24 <- 9
-    
-recovered_cases <- 37
-recovered_cases_new_24 <- 10
-    
-community_cases <- "Unknown"
-
-alert_level <- 4
-###
-
-# Projection: WGS 84 (EPSG:4326 Geographic)
-
-# Useful Links
-# https://datascott.com/blog/subtitles-with-ggplotly/
-# https://datafinder.stats.govt.nz/search/?q=territorial%2Bclipped
-# https://rstudio.github.io/leaflet/markers.html
-
-date_stamp <- "Current to 27/03/2020"
-
 # Define UI for application 
 ## UI -----------
 ## Body content
+source("global.R")
 ui <- dashboardPage(
-    dashboardHeader(title = "NZ COVID19 Data Explorer"),
+    dashboardHeader(title = app_title),
     
     ## Side bar content ----------------
     dashboardSidebar(
         sidebarMenu(
             menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
             #menuItem("Time Series", tabName = "time_series", icon = icon("clock")),
-            menuItem("Total Confirmed", tabName = "new", icon = icon("external-link-square-alt")),
+            #menuItem("Total Confirmed", tabName = "new", icon = icon("external-link-square-alt")),
             menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
             menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
             menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
@@ -76,9 +18,15 @@ ui <- dashboardPage(
             menuItem("DHB & Gender", tabName = "dhb_gender", icon = icon("bookmark")),
             menuItem("DHB & Age", tabName = "dhb_age", icon = icon("bookmark")),
             menuItem("Raw Data Table", tabName = "raw_table", icon = icon("table")),
+            menuItem("Clusters", tabName = "cluster_table", icon = icon("table")),
             menuItem("Additional Tables", tabName = "additional_tables", icon = icon("plus-square")),
             menuItem("Downloads",tabName = "downloads",icon = icon("download")),
-            menuItem("About", tabName = "about", icon = icon("address-card"))
+            menuItem("About", tabName = "about", icon = icon("address-card")),
+            actionButton(inputId = "covidLink",
+            						 label = "covid19.govt.nz",
+            						 onclick = covid_open_link)
+            #menuItem("COVI", tabName = "about", icon = icon("address-card")) 
+            
         )
     ),
     ## Dasboard body ---------------------
@@ -96,28 +44,30 @@ ui <- dashboardPage(
                                 infoBox("Total Cases", total_cases , icon = icon("arrow-up"),
                                         width = 2,color = "red"),
                                 infoBox("Total 24Hrs", total_cases_new_24,icon = icon("exclamation-triangle"),
-                                        width = 2,color = "orange"),
-                                infoBox("Confirmed", confirmed_cases , icon = icon("clock"),
                                         width = 2,color = "red"),
+                                infoBox("Confirmed", confirmed_cases , icon = icon("clock"),
+                                        width = 2,color = "orange"),
                                 infoBox("Confirmed 24Hrs", confirmed_cases_new_24  , icon = icon("user-clock"),
                                         width = 2,color = "orange"),
                                 infoBox("Probable Cases", probable_cases, icon = icon("question"),
-                                        width = 2,color = "orange"),
+                                        width = 2,color = "aqua"),
                                 infoBox("Probable 24Hrs", probable_cases_new_24, icon = icon("user-clock"),
-                                        width = 2,color = "orange")
+                                        width = 2,color = "aqua")
                             ),
                             fluidRow(
                                 infoBox("Recovered Cases", recovered_cases, icon = icon("walking"),
                                         width = 3,color = "green"),
                                 infoBox("Recovered 24Hrs", recovered_cases_new_24 , icon = icon("accessible-icon"),
-                                        width = 3,color = "olive"),
-                                infoBox("Community Cases", community_cases, icon = icon("home"),
+                                        width = 3,color = "green"),
+                                infoBox("In Hospital", in_hospital, icon = icon("hospital"),
                                         width = 3,color = "maroon"),
                                 infoBox("Alert Level", alert_level, icon = icon("bell"),
                                         width = 3,color = "black")
                             ),
                             fluidRow(
-                                h5(paste(app_status,": Check covid19.govt.nz for key information"),align = "center")
+                            	column(12,h5(app_status,align = "center"))#,
+                            	#column(6,h5(a("Check covid19.govt.nz for key information"),href = "https:\\covid19.govt.nz"),align = "center", style="color:yellow")
+                            	#column(6,h5())
                             ),
                             ## maps --------------------------------------
                             # fluidRow(
@@ -182,13 +132,19 @@ ui <- dashboardPage(
                         box(plotlyOutput("dhb_age_plot", height = 800),width = 12)
                         )),
     
-            # tab-tables
+            # tab-raw-tables
             tabItem(tabName = "raw_table",
                     fluidRow(
                         tags$br(),
                         box(DT::dataTableOutput("raw_table"),width = 12)
                         )),
-            # tab-tables
+            # tab-cluster-table
+            tabItem(tabName = "cluster_table",
+            				fluidRow(
+            					tags$br(),
+            					box(DT::dataTableOutput("cluster_table"),width = 12)
+            				)),
+            # tab-additional-tables
             tabItem(tabName = "additional_tables",
                     fluidRow(
                         tags$br(),
@@ -319,8 +275,8 @@ server <- function(input, output,session) {
     
     # DHB Spatial Reactive
     dhb.sdf <- reactive({
-        dhb.sdf <- readOGR(dsn = "dhb", layer = "district-health-board-2015")
-        dhb.sdf
+    	dhb.sdf <- readOGR(dsn = "dhb", layer = "district-health-board-2015-2")
+      dhb.sdf
     })
     
     ## Map DHB -------------------
@@ -337,9 +293,11 @@ server <- function(input, output,session) {
                                  y = covid_dhb.df,
                                  by = "DHB2015_Na")
         
-        dgb_centres <- gCentroid(dhb.sdf,byid = TRUE)
+        #dgb_centres <- gCentroid(dhb.sdf,byid = TRUE)
+        #save(dgb_centres,file = "dgb_centres.rds")
+        load("dgb_centres.rds")
         
-        #dhb.sdf@data$Freq[is.na(dhb.sdf@data$Freq)] <- 0
+        dhb.sdf@data$value[is.na(dhb.sdf@data$value)] <- 0
         
         leaflet(data = dhb.sdf,
                 options = leafletOptions(minZoom = min_zoom, maxZoom = max_zoom,preferCanvas = T)) %>%
@@ -364,7 +322,7 @@ server <- function(input, output,session) {
             addLegend(pal = virpal, values = ~dhb.sdf$value, opacity = 0.7, title = "COVID19 Cases by DHB",
                       position = "bottomright") %>%
             addMarkers(
-                lng = dgb_centres@coords[,1], lat = dgb_centres@coords[,2],
+            		lng = dgb_centres@coords[1:20,1], lat = dgb_centres@coords[1:20,2],
                 label = paste(dhb.sdf$DHB2015_Na,": ",dhb.sdf$value),
                 labelOptions = labelOptions(noHide = T, direction = "bottom",
                                             style = list(
@@ -600,6 +558,8 @@ server <- function(input, output,session) {
         
         covid.df <- covid_loc.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
         
+        covid.df %<>% filter(DHB != "Total")
+        
         dhb.g <- ggplot(data = covid.df) +
             geom_col(mapping = aes(x = reorder(covid.df$DHB, -value),y = value,fill = variable)) +
             labs(title = "NZ COVID19 cases - DHB",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
@@ -643,6 +603,22 @@ server <- function(input, output,session) {
         
         DT::datatable(df,options = list(
             pageLength = 60))
+    })
+    output$cluster_table = DT::renderDataTable({
+    	
+    	url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases/covid-19-clusters"
+    	#<- url %>%
+    	
+    	
+    	covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
+    		html_table()
+    	
+    	covid.df <- covid.ls[[1]]
+    	
+    	df <- covid.df
+    	
+    	DT::datatable(df,options = list(
+    		pageLength = 60))
     })
     output$dhb_table = DT::renderDataTable({
         

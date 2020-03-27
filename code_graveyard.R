@@ -147,3 +147,14 @@
 #covid_ts.df$variable <- as.character(covid_ts.df$variable)
 #covid_ts.df$value[25] <- 102
 #covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/24/20",155))
+#
+#    	# save(dhb.sdf,file = "dhb_spatial.rds")
+# load("dhb_spatial.rds")
+# 
+# #Optimise geometry for load times
+# 
+# sg <- rgeos::gSimplify(dhb.sdf,tol=0.01, topologyPreserve=TRUE)
+# dhb_simple.sdf <- SpatialPolygonsDataFrame(sg, data=dhb.sdf@data)
+# save(dhb_simple.sdf,file = "dhb_spatial_simple.rds")
+#load("dhb_spatial.rds")
+#dhb.sdf <- dhb_simple.sdf
