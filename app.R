@@ -16,7 +16,7 @@ library(dashboardthemes) # snazzy themes
 library(readr) # read_csv
 library(rgeos) # centroids
 
-app_status <- "App up to date as of 26/03/2020"
+app_status <- "App up to date as of 27/03/2020"
 
 ## Options --------------------
 # set timezone
@@ -31,17 +31,17 @@ moh_open_link <- "window.open('https://www.health.govt.nz/our-work/diseases-and-
 
 ## Case Summary Information ---------------
 # https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases
-total_cases <- 283
-total_cases_new_24 <- 73 
+total_cases <- 368
+total_cases_new_24 <- 85 
     
-confirmed_cases <- 262
-confirmed_cases_new_24 <- 73
+confirmed_cases <- 338
+confirmed_cases_new_24 <- 76
     
-probable_cases <- 21
-probable_cases_new_24 <- 5
+probable_cases <- 30
+probable_cases_new_24 <- 9
     
-recovered_cases <- 27
-recovered_cases_new_24 <- 5
+recovered_cases <- 37
+recovered_cases_new_24 <- 10
     
 community_cases <- "Unknown"
 
@@ -55,7 +55,7 @@ alert_level <- 4
 # https://datafinder.stats.govt.nz/search/?q=territorial%2Bclipped
 # https://rstudio.github.io/leaflet/markers.html
 
-date_stamp <- "Current to 26/03/2020"
+date_stamp <- "Current to 27/03/2020"
 
 # Define UI for application 
 ## UI -----------
@@ -68,7 +68,7 @@ ui <- dashboardPage(
         sidebarMenu(
             menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
             #menuItem("Time Series", tabName = "time_series", icon = icon("clock")),
-            menuItem("Confirmed & Probable", tabName = "new", icon = icon("external-link-square-alt")),
+            menuItem("Total Confirmed", tabName = "new", icon = icon("external-link-square-alt")),
             menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
             menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
             menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
@@ -239,6 +239,7 @@ server <- function(input, output,session) {
                                      covid_ts.df$variable <- as.character(covid_ts.df$variable)
                                      covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/25/20",205))
                                      covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/26/20",283))
+                                     covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/27/20",368))
                                      
                                      covid_ts.df$variable <- as.factor(covid_ts.df$variable)
                                      covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -283,6 +284,8 @@ server <- function(input, output,session) {
                                   
                                   covid.df$Age <- as.character(covid.df$Age)
                                   covid.df$Age[covid.df$Age == ""] <- "Not Reported"
+                                  covid.df$Age[covid.df$Age == "Teen"] <- "Teens"
+                                  
                                   covid.df$Age[covid.df$Age == "Unknown"] <- "Not Reported"
                                   covid.df$Age <- as.factor(covid.df$Age) 
                                   
@@ -323,7 +326,7 @@ server <- function(input, output,session) {
     ## Map DHB -------------------
     output$mapDHB <- renderLeaflet({
         covid_dhb.df <- covid_loc.df()
-        covid_dhb.df <- covid_dhb.df %>% filter(variable == "Total cases")
+        covid_dhb.df <- covid_dhb.df # %>% filter(variable == "Total cases")
        
         colnames(covid_dhb.df)[1] <- "DHB2015_Na"
         dhb.sdf <- dhb.sdf()
@@ -451,7 +454,7 @@ server <- function(input, output,session) {
         ts.g %>% 
             ggplotly() %>% #tooltip = c("Number of cases")
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases - Time Series',
+            layout(title = list(text = paste0('NZ COVID19 Cases: Time Series',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -522,7 +525,7 @@ server <- function(input, output,session) {
         nc.g %>% 
             ggplotly(tooltip = c("Cases","n")) %>% 
             config(displayModeBar = F) %>% 
-            layout(title = list(text = paste0('NZ COVID19 cases: New, Total and Probable',
+            layout(title = list(text = paste0('NZ COVID19 Cases: Total',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
@@ -594,10 +597,8 @@ server <- function(input, output,session) {
     })
     ## Plot - dhb -------------------
     output$dhb_plot <- renderPlotly({
-        covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
-            html_table()
         
-        covid.df <- covid_loc.df() %>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
+        covid.df <- covid_loc.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
         
         dhb.g <- ggplot(data = covid.df) +
             geom_col(mapping = aes(x = reorder(covid.df$DHB, -value),y = value,fill = variable)) +
