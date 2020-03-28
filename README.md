@@ -14,8 +14,6 @@ https://github.com/nik01010/dashboardthemes
 If there is something you would like me to add, please let me know. 
 https://mks29.shinyapps.io/covid_nz/
 
-https://www.linkedin.com/in/matthew-skiffington/
-
 ## To Do
 
 * A map showing the travel patterns of cases prior to getting coronavirus
@@ -27,4 +25,8 @@ https://www.linkedin.com/in/matthew-skiffington/
 * Host on a URL to redirect to Shiny app hosting
 * Statistical analysis 
 * Time series analysis showing the spread of cases would be interesting
+
+## Contact
+
+https://www.linkedin.com/in/matthew-skiffington/
 
