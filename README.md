@@ -1,6 +1,6 @@
 # COVID19 NZ Data Explorer
 
-A shiny app to view covid19 data scraped from the MoH website. This app is not official in any way shape or form and is simply a personal project. All data is now sourced from the Ministry of Health.
+A shiny app to view covid19 data scraped from the MoH website. This app is not official in any way shape or form and is a personal project. All data is now sourced from the Ministry of Health.
 
 Update: The Ministry of Health now has some charts and a map available on their website.
 
