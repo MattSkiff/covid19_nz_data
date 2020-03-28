@@ -11,6 +11,7 @@ ui <- dashboardPage(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
 			#menuItem("Time Series", tabName = "time_series", icon = icon("clock")),
 			#menuItem("Total Confirmed", tabName = "new", icon = icon("external-link-square-alt")),
+			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
 			menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
 			menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
@@ -84,7 +85,7 @@ ui <- dashboardPage(
 									#column(6,h5(a("Check covid19.govt.nz for key information"),href = "https:\\covid19.govt.nz"),align = "center", style="color:yellow")
 									#column(6,h5())
 								),
-								## maps --------------------------------------
+								## main dash board tab - maps & time series --------------------------------------
 								# fluidRow(
 								#     #box(h3("Cases by dhb Council"),width = 6),
 								#     #box(h3("Cases by DHB"),width = 12)
@@ -103,7 +104,11 @@ ui <- dashboardPage(
 							)
 			),
 			## plotly plots ----------------------------------------------------
-			
+			tabItem(tabName = "world_map",
+							fluidRow(
+								tags$br(),
+								box(plotlyOutput("world_map", height = 800),width = 12)
+							)),
 			# tab-time-series
 			# tabItem(tabName = "time_series",
 			#         fluidRow(
@@ -413,7 +418,7 @@ server <- function(input, output,session) {
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
 	})
-	
+
 	# ## New Cases Time Series -------------------
 	output$time_series_new_plot <- renderPlotly({
 		nc.df <- covid_ts.df()
@@ -442,6 +447,94 @@ server <- function(input, output,session) {
 																				date_stamp,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
+	})
+	# ## World Map - Links to NZ -------------------
+	output$world_map <- renderPlotly({
+		cities.df <- read.csv('worldcities.csv')
+
+		covid.df <- covid.df()
+		
+		# remove everything after comma
+		covid.df$`Last City before NZ` <- gsub(",.*","",covid.df$`Last City before NZ`)
+		
+		joined.df <- left_join(covid.df,cities.df,by = c("Last City before NZ" = "city_ascii"))
+		joined.df %<>% na.omit()
+
+		nz_lat.vec <- rep(-39.095963,nrow(joined.df))
+		nz_lng.vec <- rep(175.776594,nrow(joined.df))
+
+		nz_orig.df <- data.frame(lat = nz_lat.vec,
+														 lng = nz_lng.vec,
+														 line = seq_len(nrow(joined.df)),
+														 city = rep("New Zealand",nrow(joined.df)),
+														 id = seq_len(nrow(joined.df)))
+
+		joined.df$id <- seq_len(nrow(joined.df))
+		
+		joined.df %<>% select(lat,lng,id,city) %>% mutate(line = id)
+		
+		lines.df <- rbind(joined.df,nz_orig.df)
+		
+		sum(!covid.df$`Last City before NZ` == "")
+		
+		geo <- list(
+			showland = TRUE,
+			showlakes = TRUE,
+			showcountries = TRUE,
+			showocean = TRUE,
+			countrywidth = 0.5,
+			landcolor = toRGB("black"),
+			lakecolor = toRGB("grey"),
+			oceancolor = toRGB("grey"),
+			projection = list(
+				type = 'orthographic',
+				rotation = list(
+					lon = -100,
+					lat = 40,
+					roll = 0
+				)
+			),
+			lonaxis = list(
+				showgrid = TRUE,
+				gridcolor = toRGB("gray40"),
+				gridwidth = 0.5
+			),
+			lataxis = list(
+				showgrid = TRUE,
+				gridcolor = toRGB("gray40"),
+				gridwidth = 0.5
+			)
+		)
+		
+		m <- list(
+			l = 50,
+			r = 50,
+			b = 100,
+			t = 100,
+			pad = 4
+		)
+		
+		fig <- plot_geo(lines.df,color = I("red"))
+		fig <- fig %>% group_by(line)
+		fig <- fig %>% add_lines(x = ~lng, y = ~lat, 
+														 hoverinfo = "text",
+														 hovertext = paste("City :", lines.df$city,
+																							"<br> Longitude :", lines.df$lng,
+																							"<br> Longitude :", lines.df$lat),
+														 size = I(1))
+		fig <- fig %>% layout(
+			showlegend = FALSE, geo = geo,
+			title = 'COVID19 Cases into NZ : Data from the Ministry of Health'
+		) %>% 
+			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
+																				'<br>',
+																				'<sup>',
+																				date_stamp," | Lines do not indicate flight paths | Cities geocoded to most probable location",
+																				'</sup>')),
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
+		
+		fig
 	})
 	## Stacked Bar Charts ----------------
 	output$dhb_age_plot <- renderPlotly({
