@@ -25,12 +25,27 @@ ui <- dashboardPage(
             actionButton(inputId = "covidLink",
             						 label = "covid19.govt.nz",
             						 onclick = covid_open_link)
-            #menuItem("COVI", tabName = "about", icon = icon("address-card")) 
-            
         )
     ),
     ## Dasboard body ---------------------
     dashboardBody(
+      tags$head(
+        tags$link(rel = "shortcut icon", type="image/x-icon", href="http://icons.iconarchive.com/icons/gosquared/flag/64/New-Zealand-flat-icon.png"),
+        # Facebook OpenGraph tags
+        tags$meta(property = "og:title", content = share$title),
+        tags$meta(property = "og:type", content = "website"),
+        tags$meta(property = "og:url", content = share$url),
+        tags$meta(property = "og:image", content = share$image),
+        tags$meta(property = "og:description", content = share$description),
+        
+        # Twitter summary cards
+        tags$meta(name = "twitter:card", content = "summary"),
+        tags$meta(name = "twitter:site", content = paste0("@", share$twitter_user)),
+        tags$meta(name = "twitter:creator", content = paste0("@", share$twitter_user)),
+        tags$meta(name = "twitter:title", content = share$title),
+        tags$meta(name = "twitter:description", content = share$description),
+        tags$meta(name = "twitter:image", content = share$image)
+      ),
         # Change Theme
         shinyDashboardThemes(
             theme = "purple_gradient" #"grey_dark"
@@ -75,10 +90,15 @@ ui <- dashboardPage(
                             #     #box(h3("Cases by DHB"),width = 12)
                             # ),
                             fluidRow(
-                                box(leafletOutput("mapDHB",height = 600),width = 4),
-                                box(plotlyOutput("time_series_cumulative_plot", height = 600),width = 4),
-                                box(plotlyOutput("time_series_new_plot", height = 600),width = 4)
-                                #box(leafletOutput("mapDHBnorm",height = 600),width = 6)
+                               # tabBox(
+                                   # title = "Choropleth: COVID19 by DHB",
+                               #     id = "mapTabs",
+                               #     height = "600px",
+                               #     tabPanel("Map & Time Series",
+                                            box(leafletOutput("mapDHB",height = 600),width = 4),
+                                            box(plotlyOutput("time_series_cumulative_plot", height = 600),width = 4),
+                                            box(plotlyOutput("time_series_new_plot", height = 600),width = 4)#),
+                                    #tabPanel("MoH Map",imageOutput("moh_map"),width = 12),width = 12)
                             )
                         )
                     ),
@@ -187,7 +207,7 @@ server <- function(input, output,session) {
     
     rv <- reactiveValues()
     rv$run <- 0
-    ## Main Scraping and Dataframe ------------
+    ## Main Scraping, Grooming and Dataframe - Time Series ------------
     covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
                                  valueExpr = {
 
@@ -196,6 +216,7 @@ server <- function(input, output,session) {
                                      covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/25/20",205))
                                      covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/26/20",283))
                                      covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/27/20",368))
+                                     covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/28/20",451))
                                      
                                      covid_ts.df$variable <- as.factor(covid_ts.df$variable)
                                      covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -206,11 +227,21 @@ server <- function(input, output,session) {
                                      
                                      covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
                                      
-                                     covid_ts.df
-                                     
-                                     # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
+                                     covid_ts.df # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
                                  })
     
+    ## MoH DHB Map Image---------
+    # output$moh_map <- renderImage({
+    #     #download.file(url = moh_map_url,
+    #     #              destfile = "www/moh_map.jpg")
+    #     list(src = "www/moh_map.jpg",
+    #          contentType = 'image/jpg',
+    #          width = 1142/2.5,
+    #          height = 1454/2.5,
+    #          alt = "MoH Map")
+    # },deleteFile = F)
+    
+    ## Main Scraping, Grooming and Dataframe - Cases------------
     covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
                               valueExpr = {
                                   # data gen
@@ -230,7 +261,7 @@ server <- function(input, output,session) {
                                   
                                   #covid.df <- rbind(covid.df,covid_p.df)
                                   
-                                  covid.df$Gender <- as.character(covid.df$Gender)
+                                  covid.df$Gender <- covid.df$Sex
                                   covid.df$Gender[covid.df$Gender == ""] <- "Not Reported"
                                   covid.df$Gender <- as.factor(covid.df$Gender) 
                                   
@@ -238,7 +269,7 @@ server <- function(input, output,session) {
                                   levels(covid.df$DHB)[levels(covid.df$DHB) == ""] <- "Not Reported"
                                   covid.df$DHB[covid.df$DHB == "TBC"] <- "Not Reported"
                                   
-                                  covid.df$Age <- as.character(covid.df$Age)
+                                  covid.df$Age <- as.character(covid.df$`Age group`)
                                   covid.df$Age[covid.df$Age == ""] <- "Not Reported"
                                   covid.df$Age[covid.df$Age == "Teen"] <- "Teens"
                                   
@@ -351,43 +382,6 @@ server <- function(input, output,session) {
         covid_dhb.df
 
     })
-    
-    
-    # output$mapDHBnorm <- renderLeaflet({
-    #     
-    #     covid_dhb.df <- covid_loc.df()
-    #     
-    #     dhb.sdf <- dhb.sdf()
-    #     
-    #     leaflet(data = dhb.sdf,
-    #             options = leafletOptions(minZoom = min_zoom, maxZoom = max_zoom,preferCanvas = T)) %>%
-    #         addPolygons(fillColor = ~virpal(dhb.sdf@data$value),
-    #                     weight = 1,
-    #                     opacity = 1,
-    #                     color = "white",
-    #                     dashArray = "3",
-    #                     fillOpacity = 0.7,
-    #                     highlight = highlightOptions(
-    #                         weight = 5,
-    #                         color = "#666",
-    #                         dashArray = "",
-    #                         fillOpacity = 0.7,
-    #                         bringToFront = TRUE),
-    #                     label = paste0(dhb.sdf$REGC2020_2,":\n",dhb.sdf$value),
-    #                     labelOptions = labelOptions(
-    #                         style = list("font-weight" = "normal", padding = "3px 8px"),
-    #                         textsize = "15px",
-    #                         direction = "auto")) %>% 
-    #         addLegend(pal = virpal, values = ~dhb.sdf$value, opacity = 0.7, title = "COVID19 Cases by DHB",
-    #                   position = "bottomright") %>%
-    #         setView(lng = lng_init, 
-    #                 lat = lat_init, 
-    #                 zoom = zoom_level_init) 
-    #     #addControl(map_title, position = "topleft")
-    # })
-    
-
-    
     ## Time Series Plots -------------------
     output$time_series_cumulative_plot <- renderPlotly({
         
@@ -419,14 +413,14 @@ server <- function(input, output,session) {
                                               '</sup>'))) 
     })
     
-    ## New Cases Time Series -------------------
+    # ## New Cases Time Series -------------------
     output$time_series_new_plot <- renderPlotly({
         nc.df <- covid_ts.df()
-        
+
         # recode dates
         nc.df$variable <- as.Date(nc.df[,2],
                                   format = "%m/%d/%y")
-        
+
         nc.g <- ggplot(data = nc.df) +
             #geom_line(mapping = aes(x = variable,y = new_cases,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
             geom_col(mapping = aes(x = variable,y = new_cases,group = 1)) +
@@ -437,21 +431,21 @@ server <- function(input, output,session) {
             scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "2 day"), minor_breaks = "1 day") #+
         #geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
         #scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
-        
-        nc.g %>% 
+
+        nc.g %>%
             ggplotly() %>% #tooltip = c("Number of cases")
-            config(displayModeBar = F) %>% 
+            config(displayModeBar = F) %>%
             layout(title = list(text = paste0('NZ COVID19 Cases: New Cases',
                                               '<br>',
                                               '<sup>',
                                               date_stamp,
-                                              '</sup>'))) 
+                                              '</sup>')))
     })
     ## Stacked Bar Charts ----------------
     output$dhb_age_plot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(Age,DHB) %>%
-            summarise(n = length(Case))
+            tally()
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = DHB,y = n,fill = Age)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
@@ -493,11 +487,11 @@ server <- function(input, output,session) {
     output$age_gender_plot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(Age,Gender) %>%
-            summarise(n = length(Case))
+            tally()
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = Age,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-            labs(title = "NZ COVID19 cases - Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
+            labs(title = "NZ COVID19 cases: Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
             scale_fill_viridis(discrete = T) +
             theme_light() + theme(legend.position = "bottom") +
             theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
@@ -514,7 +508,7 @@ server <- function(input, output,session) {
     output$dhb_gender_plot <- renderPlotly({
         covid_main.df <- covid.df() %>%
             group_by(DHB,Gender) %>%
-            summarise(n = length(Case))
+            tally()
         
         main.g <- ggplot(data = covid_main.df) +
             geom_col(mapping = aes(x = DHB,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
@@ -536,7 +530,7 @@ server <- function(input, output,session) {
     output$age_plot <- renderPlotly({
         covid_age.df <- covid.df() %>%
             group_by(Age) %>%
-            summarise(n = length(Case))
+            tally()
         
         age.g <- ggplot(data = covid_age.df) +
             geom_col(mapping = aes(x = Age,y = n,fill = Age)) + # reorder(covid_age.df$Age, -n)
@@ -580,7 +574,7 @@ server <- function(input, output,session) {
     output$gender_plot <- renderPlotly({
         covid_gender.df <- covid.df() %>%
             group_by(Gender) %>%
-            summarise(n = length(Case)) 
+            tally()
         
         gender.g <- ggplot(data = covid_gender.df) +
             geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
@@ -624,7 +618,7 @@ server <- function(input, output,session) {
         
         covid_dhb.df <- covid.df() %>%
             group_by(DHB) %>%
-            summarise(n = length(Case)) 
+            tally()
         
         DT::datatable(covid_dhb.df,options = list(
             pageLength = 60))
@@ -633,7 +627,7 @@ server <- function(input, output,session) {
         
         covid_gender.df <- covid.df() %>%
             group_by(Gender) %>%
-            summarise(n = length(Case)) 
+            tally()
         
         DT::datatable(covid_gender.df,options = list(
             pageLength = 60))
@@ -642,7 +636,7 @@ server <- function(input, output,session) {
         
         covid_age.df <- covid.df() %>%
             group_by(Age) %>%
-            summarise(n = length(Case))
+            tally()
         
         DT::datatable(covid_age.df,options = list(
             pageLength = 60))
@@ -682,7 +676,7 @@ server <- function(input, output,session) {
               This tool was developed as a personal project and is not official. Check the Ministry of Health for all Official Statistics.<br> 
               Made by Matthew Skiffington <br> 
               Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
-              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Confirmed Cases (web tables)</a><br>')
+              Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Data, Maps and Charts</a><br>')
         # Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')       
     })
 

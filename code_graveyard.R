@@ -1,3 +1,44 @@
+#library(readr) # to nicely read in data
+
+# actionButton(inputId = "mohLink",
+#              label = "MoH Data",
+#              onclick = moh_open_link)
+#menuItem("COVI", tabName = "about", icon = icon("address-card")) 
+
+# output$mapDHBnorm <- renderLeaflet({
+#     
+#     covid_dhb.df <- covid_loc.df()
+#     
+#     dhb.sdf <- dhb.sdf()
+#     
+#     leaflet(data = dhb.sdf,
+#             options = leafletOptions(minZoom = min_zoom, maxZoom = max_zoom,preferCanvas = T)) %>%
+#         addPolygons(fillColor = ~virpal(dhb.sdf@data$value),
+#                     weight = 1,
+#                     opacity = 1,
+#                     color = "white",
+#                     dashArray = "3",
+#                     fillOpacity = 0.7,
+#                     highlight = highlightOptions(
+#                         weight = 5,
+#                         color = "#666",
+#                         dashArray = "",
+#                         fillOpacity = 0.7,
+#                         bringToFront = TRUE),
+#                     label = paste0(dhb.sdf$REGC2020_2,":\n",dhb.sdf$value),
+#                     labelOptions = labelOptions(
+#                         style = list("font-weight" = "normal", padding = "3px 8px"),
+#                         textsize = "15px",
+#                         direction = "auto")) %>% 
+#         addLegend(pal = virpal, values = ~dhb.sdf$value, opacity = 0.7, title = "COVID19 Cases by DHB",
+#                   position = "bottomright") %>%
+#         setView(lng = lng_init, 
+#                 lat = lat_init, 
+#                 zoom = zoom_level_init) 
+#     #addControl(map_title, position = "topleft")
+# })
+
+
 # covid_rc.df$DHB <- fct_recode(covid_rc.df$DHB, 
 #                                    "Auckland Region" = "Auckland",
 #                                    "Auckland Region" = "Waitemata",

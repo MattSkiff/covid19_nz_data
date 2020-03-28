@@ -5,6 +5,6 @@ account: mks29
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1974379
-bundleId: 2931392
+bundleId: 2934739
 url: https://mks29.shinyapps.io/covid_nz/
-when: 1585305367.2066
+when: 1585362673.87262
