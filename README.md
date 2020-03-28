@@ -11,8 +11,7 @@ This application will be archived once the Ministry Health provides a similar le
 The apps depends on quite a few packages, in particular the excellent shiny dashboard themes package available here:
 https://github.com/nik01010/dashboardthemes
 
-If there is something you would like me to add, please let me know. 
-https://mks29.shinyapps.io/covid_nz/
+If there is something you would like me to add, please let me know.
 
 ## To Do
 
