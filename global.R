@@ -24,7 +24,8 @@ date_stamp <- "Current to 28/03/2020"
 # set timezone
 # set text size on x axis
 
-text_size = 8
+text_size = 14
+plotly_text_size = 14
 zoom_level_init = 7
 lat_init = -38.45145547118427
 lng_init = 175.717106114185

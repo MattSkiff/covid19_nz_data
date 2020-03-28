@@ -1,3 +1,6 @@
+,
+uniformtext=list(minsize=plotly_text_size, mode='hide')
+
 #library(readr) # to nicely read in data
 
 # actionButton(inputId = "mohLink",
