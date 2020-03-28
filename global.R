@@ -18,6 +18,8 @@ app_title <- "NZ COVID19 Data Explorer"
 app_status <- "Updated: 28/03/2020 : Status - Up to Date"
 date_stamp <- "Current to 28/03/2020"
 
+`%nin%` = Negate(`%in%`)
+
 #moh_map_url = "https://www.health.govt.nz/sites/default/files/images/our-work/diseases-conditions/covid19/hp7357_-_covid_confirmed_and_probable_cases_by_dhb-merged-270320_updated_0.jpg"
 
 ## Options --------------------

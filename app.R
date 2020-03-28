@@ -452,30 +452,72 @@ server <- function(input, output,session) {
 	output$world_map <- renderPlotly({
 		cities.df <- read.csv('worldcities.csv')
 
-		covid.df <- covid.df()
+		geo.df <- covid.df()
+		
+		# number of known locations
+		sum(!geo.df$`Last City before NZ` == "")
 		
 		# remove everything after comma
-		covid.df$`Last City before NZ` <- gsub(",.*","",covid.df$`Last City before NZ`)
+		geo.df$`Last City before NZ` <- gsub(",.*","",geo.df$`Last City before NZ`)
 		
-		joined.df <- left_join(covid.df,cities.df,by = c("Last City before NZ" = "city_ascii"))
+		geo.df[geo.df$`Last City before NZ` == "California",]$`Last City before NZ`  <- "Los Angeles"
+		
+		
+		joined.df <- left_join(geo.df,cities.df,by = c("Last City before NZ" = "city_ascii"))
 		joined.df %<>% na.omit()
-
-		nz_lat.vec <- rep(-39.095963,nrow(joined.df))
-		nz_lng.vec <- rep(175.776594,nrow(joined.df))
+		
+		keep.df <- rbind(
+			joined.df %>% filter(`Last City before NZ` == "Cairo" & country == "Egypt"),
+			joined.df %>% filter(`Last City before NZ` == "Dublin" & country == "Ireland"),
+			joined.df %>% filter(`Last City before NZ` == "Geneva" & admin_name == "Switzerland"),
+			joined.df %>% filter(`Last City before NZ` == "London" & admin_name == "United Kingdom"),
+			joined.df %>% filter(`Last City before NZ` == "Los Angeles" & admin_name == "California"),
+			joined.df %>% filter(`Last City before NZ` == "Manchester" & country == "United Kingdom"),
+			joined.df %>% filter(`Last City before NZ` == "Melbourne" & country == "Australia"),
+			joined.df %>% filter(`Last City before NZ` == "New York" & country == "United States"),
+			joined.df %>% filter(`Last City before NZ` == "Perth" & country == "Australia"),
+			joined.df %>% filter(`Last City before NZ` == "Paris" & country == "France"),
+			joined.df %>% filter(`Last City before NZ` == "San Francisco" & admin_name == "California"),
+			joined.df %>% filter(`Last City before NZ` == "Southampton" & country == "United Kingdom"),
+			joined.df %>% filter(`Last City before NZ` == "Sydney" & country == "Australia")
+		)
+		
+		joined.df %<>% filter(
+			`Last City before NZ` %nin% c(
+				"Cairo",
+				"Dublin",
+				"Geneva",
+				"London",
+				"Los Angeles",
+				"Manchester",
+				"Melbourne",
+				"New York",
+				"Perth",
+				"Paris",
+				"San Francisco",
+				"Southampton",
+				"Sydney"))
+		
+		joined.df <- rbind(joined.df,keep.df)
+		
+		tally.df <- joined.df %>% group_by(`Last City before NZ`,lat,lng) %>% tally()
+		
+		nz_lat.vec <- rep(-39.095963,nrow(tally.df))
+		nz_lng.vec <- rep(175.776594,nrow(tally.df))
 
 		nz_orig.df <- data.frame(lat = nz_lat.vec,
 														 lng = nz_lng.vec,
-														 line = seq_len(nrow(joined.df)),
-														 city = rep("New Zealand",nrow(joined.df)),
-														 id = seq_len(nrow(joined.df)))
+														 line = seq_len(nrow(tally.df)),
+														 `Last City before NZ` = rep("New Zealand",nrow(tally.df)),
+														 id = seq_len(nrow(tally.df)))
 
-		joined.df$id <- seq_len(nrow(joined.df))
+		tally.df$id <- seq_len(nrow(tally.df))
 		
-		joined.df %<>% select(lat,lng,id,city) %>% mutate(line = id)
+		tally.df %<>% mutate(line = id) %>% select(lat,lng,line,`Last City before NZ`,id,n) %>% rename(Last.City.before.NZ = `Last City before NZ`)
 		
-		lines.df <- rbind(joined.df,nz_orig.df)
+		nz_orig.df$n <- tally.df$n
 		
-		sum(!covid.df$`Last City before NZ` == "")
+		lines.df <- rbind(as.data.frame(tally.df),nz_orig.df)
 		
 		geo <- list(
 			showland = TRUE,
@@ -514,14 +556,24 @@ server <- function(input, output,session) {
 			pad = 4
 		)
 		
-		fig <- plot_geo(lines.df,color = I("red"))
+		fig <- plot_geo(lines.df)
 		fig <- fig %>% group_by(line)
-		fig <- fig %>% add_lines(x = ~lng, y = ~lat, 
+		fig <- fig %>% add_lines(x = ~lng, y = ~lat,
 														 hoverinfo = "text",
-														 hovertext = paste("City :", lines.df$city,
+														 hovertext = paste("City :", lines.df$Last.City.before.NZ,
 																							"<br> Longitude :", lines.df$lng,
-																							"<br> Longitude :", lines.df$lat),
-														 size = I(1))
+																							"<br> Longitude :", lines.df$lat,
+																							"<br> N :", lines.df$n),
+														 size = I(1)) %>%
+			add_markers(data = lines.df[1:nrow(lines.df)/2,],
+									y=~lat, x=~lng, hoverinfo="text",
+									color=~n, text=~n, size=~n, 
+									hoverinfo = "text",
+									hovertext = paste("City :", lines.df[1:nrow(lines.df)/2,]$Last.City.before.NZ,
+																		"<br> Longitude :", lines.df[1:nrow(lines.df)/2,]$lng,
+																		"<br> Longitude :", lines.df[1:nrow(lines.df)/2,]$lat,
+																		"<br> N :", lines.df[1:nrow(lines.df)/2,]$n),
+									marker=list(sizeref=0.1, sizemode="area"))
 		fig <- fig %>% layout(
 			showlegend = FALSE, geo = geo,
 			title = 'COVID19 Cases into NZ : Data from the Ministry of Health'
@@ -529,7 +581,9 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
 																				'<br>',
 																				'<sup>',
-																				date_stamp," | Lines do not indicate flight paths | Cities geocoded to most probable location",
+																				date_stamp," | Lines do not indicate flight paths | Cities geocoded to most probable location", "<br>",
+																				as.character(nrow(joined.df)),"/",as.character(sum(!geo.df$`Last City before NZ` == "")),
+																				" People with Known Prior Location Successfully Geocoded",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
 						 margin = m) 
