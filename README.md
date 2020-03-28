@@ -1,5 +1,6 @@
-# covid19_nz_data
-A shiny app to view covid19 data scraped from the MoH website. This app is not official in any way shape or form and is simply a personal project. All data is now sourced from the Ministry of Health.
+# COVID19 NZ Data Explorer
+
+A shiny app to view covid19 data scraped from the MoH website. This app is not official in any way shape or form and is a personal project. All data is now sourced from the Ministry of Health.
 
 Update: The Ministry of Health now has some charts and a map available on their website.
 
@@ -13,4 +14,19 @@ https://github.com/nik01010/dashboardthemes
 If there is something you would like me to add, please let me know. 
 https://mks29.shinyapps.io/covid_nz/
 
+## To Do
+
+* A map showing the travel patterns of cases prior to getting coronavirus
+* Markers added to the map showing clusters would be a good idea
+* Optimisation to load faster and use less memory 
+* Graph styling could be improved
+* Info boxes are updated manually -> automatically update from the Ministry of Health website
+* Statistical analysis
+* Host on a URL to redirect to Shiny app hosting
+* Statistical analysis 
+* Time series analysis showing the spread of cases would be interesting
+
+## Contact
+
 https://www.linkedin.com/in/matthew-skiffington/
+
