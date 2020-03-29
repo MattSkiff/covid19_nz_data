@@ -1,6 +1,8 @@
 # Define UI for application 
 ## UI -----------
 ## Body content
+## 
+excel_file <- "moh_data.xlsx"
 source("global.R")
 ui <- dashboardPage(
 	dashboardHeader(title = app_title),
@@ -9,8 +11,6 @@ ui <- dashboardPage(
 	dashboardSidebar(
 		sidebarMenu(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
-			#menuItem("Time Series", tabName = "time_series", icon = icon("clock")),
-			#menuItem("Total Confirmed", tabName = "new", icon = icon("external-link-square-alt")),
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
 			menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
@@ -54,54 +54,19 @@ ui <- dashboardPage(
 		# tab-dashboard
 		tabItems(
 			tabItem(tabName = "dashboard",
-							## info boxes ---------------------------
+							## core stats ---------------------------
 							fluidRow(
-								fluidRow(
-									infoBox("Total Cases", total_cases , icon = icon("arrow-up"),
-													width = 2,color = "red"),
-									infoBox("Total 24Hrs", total_cases_new_24,icon = icon("exclamation-triangle"),
-													width = 2,color = "red"),
-									infoBox("Confirmed", confirmed_cases , icon = icon("clock"),
-													width = 2,color = "orange"),
-									infoBox("Confirmed 24Hrs", confirmed_cases_new_24  , icon = icon("user-clock"),
-													width = 2,color = "orange"),
-									infoBox("Probable Cases", probable_cases, icon = icon("question"),
-													width = 2,color = "aqua"),
-									infoBox("Probable 24Hrs", probable_cases_new_24, icon = icon("user-clock"),
-													width = 2,color = "aqua")
-								),
-								fluidRow(
-									infoBox("Recovered Cases", recovered_cases, icon = icon("walking"),
-													width = 3,color = "green"),
-									infoBox("Recovered 24Hrs", recovered_cases_new_24 , icon = icon("accessible-icon"),
-													width = 3,color = "green"),
-									infoBox("In Hospital", in_hospital, icon = icon("hospital"),
-													width = 3,color = "maroon"),
-									infoBox("Alert Level", alert_level, icon = icon("bell"),
-													width = 3,color = "black")
+								tags$br(),
+								box(DT::dataTableOutput("core_stats_table"),width = 12)
 								),
 								fluidRow(
 									column(12,h5(app_status,align = "center"))#,
-									#column(6,h5(a("Check covid19.govt.nz for key information"),href = "https:\\covid19.govt.nz"),align = "center", style="color:yellow")
-									#column(6,h5())
 								),
-								## main dash board tab - maps & time series --------------------------------------
-								# fluidRow(
-								#     #box(h3("Cases by dhb Council"),width = 6),
-								#     #box(h3("Cases by DHB"),width = 12)
-								# ),
 								fluidRow(
-									# tabBox(
-									# title = "Choropleth: COVID19 by DHB",
-									#     id = "mapTabs",
-									#     height = "600px",
-									#     tabPanel("Map & Time Series",
 									box(leafletOutput("mapDHB",height = 600),width = 4),
 									box(plotlyOutput("time_series_cumulative_plot", height = 600),width = 4),
 									box(plotlyOutput("time_series_new_plot", height = 600),width = 4)#),
-									#tabPanel("MoH Map",imageOutput("moh_map"),width = 12),width = 12)
 								)
-							)
 			),
 			## plotly plots ----------------------------------------------------
 			tabItem(tabName = "world_map",
@@ -109,11 +74,6 @@ ui <- dashboardPage(
 								tags$br(),
 								box(plotlyOutput("world_map", height = 800),width = 12)
 							)),
-			# tab-time-series
-			# tabItem(tabName = "time_series",
-			#         fluidRow(
-			#             tags$br(),
-			#             
 			# tab-new_cases
 			tabItem(tabName = "new",
 							fluidRow(
@@ -212,7 +172,7 @@ server <- function(input, output,session) {
 	
 	rv <- reactiveValues()
 	rv$run <- 0
-	## Main Scraping, Grooming and Dataframe - Time Series ------------
+	## Time Series Data Frame Creation ------------
 	covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 															 valueExpr = {
 															 	
@@ -222,6 +182,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/26/20",283))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/27/20",368))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/28/20",451))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/29/20",514))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -233,38 +194,16 @@ server <- function(input, output,session) {
 															 	covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
 															 	
 															 	covid_ts.df # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
-															 })
+	})
 	
-	## MoH DHB Map Image---------
-	# output$moh_map <- renderImage({
-	#     #download.file(url = moh_map_url,
-	#     #              destfile = "www/moh_map.jpg")
-	#     list(src = "www/moh_map.jpg",
-	#          contentType = 'image/jpg',
-	#          width = 1142/2.5,
-	#          height = 1454/2.5,
-	#          alt = "MoH Map")
-	# },deleteFile = F)
-	
-	## Main Scraping, Grooming and Dataframe - Cases------------
+	## Core Data Frame Creation ------------
 	covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 														valueExpr = {
-															# data gen
-															#download.file("https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases",destfile="t.html")
-															
-															url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases/covid-19-current-cases-details"
-															#<- url %>%
-															
-															
-															covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
-																html_table()
-															
-															covid.df <- covid.ls[[1]]
-															#covid_p.df <- covid.ls[[2]]
-															
-															#covid_p.df$Case <- paste(covid_p.df$Case,"probable")
-															
-															#covid.df <- rbind(covid.df,covid_p.df)
+
+															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 0)
+															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 0)
+
+															covid.df <- rbind(covid.df,covid_p.df)
 															
 															covid.df$Gender <- covid.df$Sex
 															covid.df$Gender[covid.df$Gender == ""] <- "Not Reported"
@@ -297,9 +236,19 @@ server <- function(input, output,session) {
 															
 															#write.csv(covid.df,"covid19.csv")
 															#write.csv(covid.df,"covid19.csv")
-															covid.df$Age <- fct_relevel(covid.df$Age, c("Not Reported","Child","Teens","20s","30s","40s","50s","60s","70s","80s")) 
-															#fct_infreq(covid.df$Age, ordered = NA)                                  
-															#write.csv(covid.df,"covid19.csv")
+															covid.df$Age <- fct_relevel(covid.df$Age, c("<1",
+																																					"1 to 4",
+																																					"5 to 9",
+																																					"10 to 14",
+																																					"15 to 19",
+																																					"20 to 29",
+																																					"30 to 39",
+																																					"40 to 49",
+																																					"50 to 59",
+																																					"60 to 69",
+																																					"70+",
+																																					"Not Reported")) 
+														
 															covid.df
 														})
 	## Map Discalimer -------------------
@@ -419,7 +368,7 @@ server <- function(input, output,session) {
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
 	})
 
-	# ## New Cases Time Series -------------------
+	## New Cases Time Series -------------------
 	output$time_series_new_plot <- renderPlotly({
 		nc.df <- covid_ts.df()
 		
@@ -450,57 +399,22 @@ server <- function(input, output,session) {
 	})
 	# ## World Map - Links to NZ -------------------
 	output$world_map <- renderPlotly({
-		cities.df <- read.csv('worldcities.csv')
+		#cities.df <- read.csv('worldcities.csv')
+		countries.df <- read.csv('countries.csv')
 
 		geo.df <- covid.df()
+		geo.df %<>% rename(Country = `Last country before return`)
+
 		
-		# number of known locations
-		sum(!geo.df$`Last City before NZ` == "")
+		countries.df %<>% 
+			select(Latitude,Longitude,name) %>% 
+			rename(lat = Latitude,lng = Longitude,Country = name)
 		
-		# remove everything after comma
-		geo.df$`Last City before NZ` <- gsub(",.*","",geo.df$`Last City before NZ`)
+		joined.df <- left_join(geo.df,countries.df,by = "Country")
 		
-		geo.df[geo.df$`Last City before NZ` == "California",]$`Last City before NZ`  <- "Los Angeles"
-		
-		
-		joined.df <- left_join(geo.df,cities.df,by = c("Last City before NZ" = "city_ascii"))
 		joined.df %<>% na.omit()
 		
-		keep.df <- rbind(
-			joined.df %>% filter(`Last City before NZ` == "Cairo" & country == "Egypt"),
-			joined.df %>% filter(`Last City before NZ` == "Dublin" & country == "Ireland"),
-			joined.df %>% filter(`Last City before NZ` == "Geneva" & admin_name == "Switzerland"),
-			joined.df %>% filter(`Last City before NZ` == "London" & admin_name == "United Kingdom"),
-			joined.df %>% filter(`Last City before NZ` == "Los Angeles" & admin_name == "California"),
-			joined.df %>% filter(`Last City before NZ` == "Manchester" & country == "United Kingdom"),
-			joined.df %>% filter(`Last City before NZ` == "Melbourne" & country == "Australia"),
-			joined.df %>% filter(`Last City before NZ` == "New York" & country == "United States"),
-			joined.df %>% filter(`Last City before NZ` == "Perth" & country == "Australia"),
-			joined.df %>% filter(`Last City before NZ` == "Paris" & country == "France"),
-			joined.df %>% filter(`Last City before NZ` == "San Francisco" & admin_name == "California"),
-			joined.df %>% filter(`Last City before NZ` == "Southampton" & country == "United Kingdom"),
-			joined.df %>% filter(`Last City before NZ` == "Sydney" & country == "Australia")
-		)
-		
-		joined.df %<>% filter(
-			`Last City before NZ` %nin% c(
-				"Cairo",
-				"Dublin",
-				"Geneva",
-				"London",
-				"Los Angeles",
-				"Manchester",
-				"Melbourne",
-				"New York",
-				"Perth",
-				"Paris",
-				"San Francisco",
-				"Southampton",
-				"Sydney"))
-		
-		joined.df <- rbind(joined.df,keep.df)
-		
-		tally.df <- joined.df %>% group_by(`Last City before NZ`,lat,lng) %>% tally()
+		tally.df <- joined.df %>% group_by(Country,lat,lng) %>% tally()
 		
 		nz_lat.vec <- rep(-39.095963,nrow(tally.df))
 		nz_lng.vec <- rep(175.776594,nrow(tally.df))
@@ -508,16 +422,20 @@ server <- function(input, output,session) {
 		nz_orig.df <- data.frame(lat = nz_lat.vec,
 														 lng = nz_lng.vec,
 														 line = seq_len(nrow(tally.df)),
-														 `Last City before NZ` = rep("New Zealand",nrow(tally.df)),
+														 Country = rep("New Zealand",nrow(tally.df)),
 														 id = seq_len(nrow(tally.df)))
 
 		tally.df$id <- seq_len(nrow(tally.df))
 		
-		tally.df %<>% mutate(line = id) %>% select(lat,lng,line,`Last City before NZ`,id,n) %>% rename(Last.City.before.NZ = `Last City before NZ`)
+		tally.df %<>% mutate(line = id) %>% select(lat,lng,line,Country,id,n) 
 		
 		nz_orig.df$n <- tally.df$n
 		
 		lines.df <- rbind(as.data.frame(tally.df),nz_orig.df)
+		
+		lines.df %<>% na.omit()
+		
+		overseas.df <- lines.df %>% filter(Country != "New Zealand")
 		
 		geo <- list(
 			showland = TRUE,
@@ -560,19 +478,19 @@ server <- function(input, output,session) {
 		fig <- fig %>% group_by(line)
 		fig <- fig %>% add_lines(x = ~lng, y = ~lat,
 														 hoverinfo = "text",
-														 hovertext = paste("City :", lines.df$Last.City.before.NZ,
+														 hovertext = paste("Country :", lines.df$Country,
 																							"<br> Longitude :", lines.df$lng,
 																							"<br> Longitude :", lines.df$lat,
 																							"<br> N :", lines.df$n),
 														 size = I(1)) %>%
-			add_markers(data = lines.df[1:nrow(lines.df)/2,],
+			add_markers(data = overseas.df,
 									y=~lat, x=~lng, hoverinfo="text",
 									color=~n, text=~n, size=~n, 
 									hoverinfo = "text",
-									hovertext = paste("City :", lines.df[1:nrow(lines.df)/2,]$Last.City.before.NZ,
-																		"<br> Longitude :", lines.df[1:nrow(lines.df)/2,]$lng,
-																		"<br> Longitude :", lines.df[1:nrow(lines.df)/2,]$lat,
-																		"<br> N :", lines.df[1:nrow(lines.df)/2,]$n),
+									hovertext = paste("Country :", overseas.df$Country,
+																		"<br> Longitude :", overseas.df$lng,
+																		"<br> Longitude :", overseas.df$lat,
+																		"<br> N :", overseas.df$n),
 									marker=list(sizeref=0.1, sizemode="area"))
 		fig <- fig %>% layout(
 			showlegend = FALSE, geo = geo,
@@ -581,9 +499,9 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
 																				'<br>',
 																				'<sup>',
-																				date_stamp," | Lines do not indicate flight paths | Cities geocoded to most probable location", "<br>",
-																				as.character(nrow(joined.df)),"/",as.character(sum(!geo.df$`Last City before NZ` == "")),
-																				" People with Known Prior Location Successfully Geocoded",
+																				date_stamp," | Lines do not indicate flight paths '<br>'",
+																				as.character(sum(is.na(geo.df$Country))),"/",as.character(nrow(geo.df)),
+																				" people do not have location data available",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
 						 margin = m) 
@@ -729,7 +647,8 @@ server <- function(input, output,session) {
 	output$gender_plot <- renderPlotly({
 		covid_gender.df <- covid.df() %>%
 			group_by(Gender) %>%
-			tally()
+			tally()  %>%
+      na.omit()
 		
 		gender.g <- ggplot(data = covid_gender.df) +
 			geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
@@ -748,7 +667,22 @@ server <- function(input, output,session) {
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
 	## Tables -------------------
-	output$raw_table = DT::renderDataTable({
+	## 
+	#### Core Stats Table --------------------------
+	output$core_stats_table <- DT::renderDataTable({
+		url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases"
+		#<- url %>%
+		
+		
+		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
+			html_table()
+		
+		core_stats.df <- covid.ls[[1]]
+		
+		DT::datatable(core_stats.df,options = list(dom = "t"),colnames = c("Metric","Total to Date","New in Last 24 Hours"))
+	})
+	#### Raw Data Table --------------------------
+	output$raw_table <- DT::renderDataTable({
 		df <- covid.df()
 		
 		DT::datatable(df,options = list(
@@ -770,6 +704,7 @@ server <- function(input, output,session) {
 		DT::datatable(df,options = list(
 			pageLength = 60))
 	})
+	#### DHB Table --------------------------
 	output$dhb_table = DT::renderDataTable({
 		
 		covid_dhb.df <- covid.df() %>%
@@ -779,6 +714,7 @@ server <- function(input, output,session) {
 		DT::datatable(covid_dhb.df,options = list(
 			pageLength = 60))
 	})
+	#### Gender Table --------------------------
 	output$gender_table = DT::renderDataTable({
 		
 		covid_gender.df <- covid.df() %>%
@@ -788,6 +724,7 @@ server <- function(input, output,session) {
 		DT::datatable(covid_gender.df,options = list(
 			pageLength = 60))
 	})
+	#### Age Table --------------------------
 	output$age_table = DT::renderDataTable({
 		
 		covid_age.df <- covid.df() %>%

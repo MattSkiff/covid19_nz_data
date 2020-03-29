@@ -9,14 +9,16 @@ library(ggplot2) # core plot package
 library(viridis) # nice colour scale
 library(forcats) # factors
 library(plotly) # interactive viz
-library(DT) # for interactive data tables
+library(DT) # interactive data tables
 library(shinydashboard) # dashboard structure
 library(dashboardthemes) # snazzy themes
+library(purrr) # possibly function
+library(readxl) # read moh excel file
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Updated: 28/03/2020 : Status - Up to Date"
-date_stamp <- "Current to 28/03/2020"
+app_status <- "Updated: 29/03/2020 : Status - Up to Date"
+date_stamp <- "Current to 29/03/2020"
 
 `%nin%` = Negate(`%in%`)
 

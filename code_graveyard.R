@@ -1,5 +1,130 @@
-,
-uniformtext=list(minsize=plotly_text_size, mode='hide')
+#fct_infreq(covid.df$Age, ordered = NA)                                  
+#write.csv(covid.df,"covid19.csv")
+
+#	covid_p.df$Case <- paste(covid_p.df$Case,"probable")
+
+# tab-time-series
+# tabItem(tabName = "time_series",
+#         fluidRow(
+#             tags$br(),
+#             
+
+#tabPanel("MoH Map",imageOutput("moh_map"),width = 12),width = 12)
+
+#column(6,h5(a("Check covid19.govt.nz for key information"),href = "https:\\covid19.govt.nz"),align = "center", style="color:yellow")
+#column(6,h5())
+
+# tabBox(
+# title = "Choropleth: COVID19 by DHB",
+#     id = "mapTabs",
+#     height = "600px",
+#     tabPanel("Map & Time Series",
+
+## main dash board tab - maps & time series --------------------------------------
+# fluidRow(
+#     #box(h3("Cases by dhb Council"),width = 6),
+#     #box(h3("Cases by DHB"),width = 12)
+# ),
+
+# fluidRow(
+# 	infoBox("Total Cases", total_cases , icon = icon("arrow-up"),
+# 					width = 2,color = "red"),
+# 	infoBox("Total 24Hrs", total_cases_new_24,icon = icon("exclamation-triangle"),
+# 					width = 2,color = "red"),
+# 	infoBox("Confirmed", confirmed_cases , icon = icon("clock"),
+# 					width = 2,color = "orange"),
+# 	infoBox("Confirmed 24Hrs", confirmed_cases_new_24  , icon = icon("user-clock"),
+# 					width = 2,color = "orange"),
+# 	infoBox("Probable Cases", probable_cases, icon = icon("question"),
+# 					width = 2,color = "aqua"),
+# 	infoBox("Probable 24Hrs", probable_cases_new_24, icon = icon("user-clock"),
+# 					width = 2,color = "aqua")
+# ),
+# fluidRow(
+# 	infoBox("Recovered Cases", recovered_cases, icon = icon("walking"),
+# 					width = 3,color = "green"),
+# 	infoBox("Recovered 24Hrs", recovered_cases_new_24 , icon = icon("accessible-icon"),
+# 					width = 3,color = "green"),
+# 	infoBox("In Hospital", in_hospital, icon = icon("hospital"),
+# 					width = 3,color = "maroon"),
+# 	infoBox("Alert Level", alert_level, icon = icon("bell"),
+# 					width = 3,color = "black")
+# ),
+
+# joined.df %<>% 
+# 	na.omit()
+
+#menuItem("Time Series", tabName = "time_series", icon = icon("clock")),
+#menuItem("Total Confirmed", tabName = "new", icon = icon("external-link-square-alt")),
+
+# keep.df <- rbind(
+# 	joined.df %>% filter(`Last City before NZ` == "Cairo" & country == "Egypt"),
+# 	joined.df %>% filter(`Last City before NZ` == "Dublin" & country == "Ireland"),
+# 	joined.df %>% filter(`Last City before NZ` == "Geneva" & admin_name == "Switzerland"),
+# 	joined.df %>% filter(`Last City before NZ` == "London" & admin_name == "United Kingdom"),
+# 	joined.df %>% filter(`Last City before NZ` == "Los Angeles" & admin_name == "California"),
+# 	joined.df %>% filter(`Last City before NZ` == "Manchester" & country == "United Kingdom"),
+# 	joined.df %>% filter(`Last City before NZ` == "Melbourne" & country == "Australia"),
+# 	joined.df %>% filter(`Last City before NZ` == "New York" & country == "United States"),
+# 	joined.df %>% filter(`Last City before NZ` == "Perth" & country == "Australia"),
+# 	joined.df %>% filter(`Last City before NZ` == "Paris" & country == "France"),
+# 	joined.df %>% filter(`Last City before NZ` == "San Francisco" & admin_name == "California"),
+# 	joined.df %>% filter(`Last City before NZ` == "Southampton" & country == "United Kingdom"),
+# 	joined.df %>% filter(`Last City before NZ` == "Sydney" & country == "Australia")
+# )
+# 
+# joined.df %<>% filter(
+# 	`Last City before NZ` %nin% c(
+# 		"Cairo",
+# 		"Dublin",
+# 		"Geneva",
+# 		"London",
+# 		"Los Angeles",
+# 		"Manchester",
+# 		"Melbourne",
+# 		"New York",
+# 		"Perth",
+# 		"Paris",
+# 		"San Francisco",
+# 		"Southampton",
+# 		"Sydney"))
+
+
+# remove everything after comma
+#geo.df$`Last City before NZ` <- gsub(",.*","",geo.df$`Last City before NZ`)
+
+#geo.df[geo.df$`Last City before NZ` == "California",]$`Last City before NZ`  <- "Los Angeles"
+
+# uniformtext=list(minsize=plotly_text_size, mode='hide')
+
+## MoH DHB Map Image---------
+# output$moh_map <- renderImage({
+#     #download.file(url = moh_map_url,
+#     #              destfile = "www/moh_map.jpg")
+#     list(src = "www/moh_map.jpg",
+#          contentType = 'image/jpg',
+#          width = 1142/2.5,
+#          height = 1454/2.5,
+#          alt = "MoH Map")
+# },deleteFile = F)
+# 
+# covid_ts.df <- read.csv(file = "covid_ts.csv",header = T)
+# covid_ts.df$variable <- as.character(covid_ts.df$variable)
+# covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/25/20",205))
+# covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/26/20",283))
+# covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/27/20",368))
+# covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/28/20",451))
+# 
+# covid_ts.df$variable <- as.factor(covid_ts.df$variable)
+# covid_ts.df$value <- as.numeric(covid_ts.df$value)
+# covid_ts.df
+# 
+# covid.lag <- lag(covid_ts.df$value,1)
+# covid.lag[is.na(covid.lag)] <- 0
+# 
+# covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
+
+# covid_ts.df # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
 
 #library(readr) # to nicely read in data
 
@@ -85,9 +210,14 @@ uniformtext=list(minsize=plotly_text_size, mode='hide')
 #     Sys.setFileTime(p, now())
 #     
 # }) # onStop
-}
+# }
 
-
+#geom_line(mapping = aes(x = variable,y = new_cases,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
+#
+#		#geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
+#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
+#
+##annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 
 # covid.ls <- url %>%
 # 	read_html() %>%
