@@ -1,3 +1,6 @@
+# Author: Matthew Skiffington
+# Purpose: Libraries and Options Code for COVID19 Data Explorer - runs a shiny app
+
 library(rvest) # scraping MoH
 library(rgdal) # geo stuff
 library(leaflet) # interactive map
@@ -28,8 +31,8 @@ date_stamp <- "Current to 29/03/2020"
 # set timezone
 # set text size on x axis
 
-text_size = 14
-plotly_text_size = 14
+text_size = 13
+plotly_text_size = 13
 zoom_level_init = 7
 lat_init = -38.45145547118427
 lng_init = 175.717106114185

@@ -1,3 +1,26 @@
+# output$new_cases_plot <- renderPlotly({
+# 	
+# 	covid.df <- covid_loc.df()
+# 	covid.df %<>%	na.omit()
+# 	
+# 	nc.g <- ggplot(data = covid.df) +
+# 		geom_col(mapping = aes(x = DHB,y = value,fill = variable,stat = 'identity'),position = 'dodge') + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
+# 		labs(title = "NZ COVID19 cases - Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
+# 		scale_fill_viridis(discrete = T) +
+# 		theme_light(base_size = text_size) + theme(legend.position = "bottom") +
+# 		theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
+# 	
+# 	nc.g %>% 
+# 		ggplotly(tooltip = c("Cases","n")) %>% 
+# 		config(displayModeBar = F) %>% 
+# 		layout(title = list(text = paste0('NZ COVID19 Cases: Total',
+# 																			'<br>',
+# 																			'<sup>',
+# 																			date_stamp,
+# 																			'</sup>')),
+# 					 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+# })
+
 # Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')  
 
 #fct_infreq(covid.df$Age, ordered = NA)                                  

@@ -1,13 +1,16 @@
+# Author: Matthew Skiffington
+# Purpose: Server Code for COVID19 Data Explorer - runs a shiny app
+
 # Define UI for application 
 ## UI -----------
-## Body content
-## 
+
+
 excel_file <- "moh_data.xlsx"
 source("global.R")
 ui <- dashboardPage(
 	dashboardHeader(title = app_title),
 	
-	## Side bar content ----------------
+	## UI: Side bar content ----------------
 	dashboardSidebar(
 		sidebarMenu(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
@@ -28,7 +31,7 @@ ui <- dashboardPage(
 									 onclick = covid_open_link)
 		)
 	),
-	## Dasboard body ---------------------
+	## UI: Dasboard body ---------------------
 	dashboardBody(
 		tags$head(
 			tags$link(rel = "shortcut icon", type="image/x-icon", href="http://icons.iconarchive.com/icons/gosquared/flag/64/New-Zealand-flat-icon.png"),
@@ -54,7 +57,7 @@ ui <- dashboardPage(
 		# tab-dashboard
 		tabItems(
 			tabItem(tabName = "dashboard",
-							## core stats ---------------------------
+							## UI: - Map & Core Stats ---------------------------
 							fluidRow(
 								tags$br(),
 								box(DT::dataTableOutput("core_stats_table"),width = 12)
@@ -68,7 +71,7 @@ ui <- dashboardPage(
 									box(plotlyOutput("time_series_new_plot", height = 600),width = 4)#),
 								)
 			),
-			## plotly plots ----------------------------------------------------
+			## UI: Tabs - Plotly Plots ----------------------------------------------------
 			tabItem(tabName = "world_map",
 							fluidRow(
 								tags$br(),
@@ -249,6 +252,7 @@ server <- function(input, output,session) {
 																																					"70+",
 																																					"Not Reported")) 
 														
+															covid.df$`Date of report` <- lubridate::as_date(covid.df$`Date of report`)
 															covid.df
 														})
 	## Map Discalimer -------------------
@@ -324,7 +328,7 @@ server <- function(input, output,session) {
 		#addControl(map_title, position = "topleft")
 	})
 	
-	## COVID LOC Reactive -------------------
+  ## COVID LOC Reactive -------
 	covid_loc.df <- reactive({
 		url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases"
 		#<- url %>%
@@ -353,7 +357,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day") #+
+			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
 		#geom_text(data = tail(ts.df),aes(x = variable - 0.5,y = value + max(new_cases)/20,label = value))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -383,7 +387,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "2 day"), minor_breaks = "1 day") #+
+			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "2 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
 		#geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -499,7 +503,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
 																				'<br>',
 																				'<sup>',
-																				date_stamp," | Lines do not indicate flight paths '<br>'",
+																				date_stamp," | Lines do not indicate flight paths <br>",
 																				as.character(sum(is.na(geo.df$Country))),"/",as.character(nrow(geo.df)),
 																				" people do not have location data available",
 																				'</sup>')),
@@ -509,6 +513,8 @@ server <- function(input, output,session) {
 		fig
 	})
 	## Stacked Bar Charts ----------------
+	## 
+	#### DHB & Age ---------------
 	output$dhb_age_plot <- renderPlotly({
 		covid_main.df <- covid.df() %>%
 			group_by(Age,DHB) %>%
@@ -531,33 +537,12 @@ server <- function(input, output,session) {
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
-	output$new_cases_plot <- renderPlotly({
-		
-		covid.df <- covid_loc.df()
-		covid.df %<>%	na.omit()
-		
-		nc.g <- ggplot(data = covid.df) +
-			geom_col(mapping = aes(x = DHB,y = value,fill = variable,stat = 'identity'),position = 'dodge') + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-			labs(title = "NZ COVID19 cases - Age and Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
-			scale_fill_viridis(discrete = T) +
-			theme_light(base_size = text_size) + theme(legend.position = "bottom") +
-			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
-		
-		nc.g %>% 
-			ggplotly(tooltip = c("Cases","n")) %>% 
-			config(displayModeBar = F) %>% 
-			layout(title = list(text = paste0('NZ COVID19 Cases: Total',
-																				'<br>',
-																				'<sup>',
-																				date_stamp,
-																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
-	})
-	
+	#### Age & Gender ---------------
 	output$age_gender_plot <- renderPlotly({
 		covid_main.df <- covid.df() %>%
 			group_by(Age,Gender) %>%
-			tally()
+			tally() %>% 
+			na.omit()
 		
 		main.g <- ggplot(data = covid_main.df) +
 			geom_col(mapping = aes(x = Age,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
@@ -576,10 +561,12 @@ server <- function(input, output,session) {
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	}) 
+	#### DHB & Gender ---------------
 	output$dhb_gender_plot <- renderPlotly({
 		covid_main.df <- covid.df() %>%
 			group_by(DHB,Gender) %>%
-			tally()
+			tally() %>% 
+			na.omit()
 		
 		main.g <- ggplot(data = covid_main.df) +
 			geom_col(mapping = aes(x = DHB,y = n,fill = Gender)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
@@ -682,8 +669,29 @@ server <- function(input, output,session) {
 			html_table()
 		
 		core_stats.df <- covid.ls[[1]]
+		core_stats.df$Metric <- core_stats.df[,1]
+		core_stats.df[,1] <- NULL
 		
-		DT::datatable(core_stats.df,options = list(dom = "t"),colnames = c("Metric","Total to Date","New in Last 24 Hours"))
+		core_stats.df %<>% select(Metric,`New in last 24 hours`,`Total to date`)
+		
+		DT::datatable(core_stats.df,
+									options = list(dom = "t")) #%>%
+			# formatStyle('Metric',
+			# 						target = 'row',
+			# 						backgroundColor = styleEqual(c("Number of confirmed cases in New Zealand",
+			# 																					 "Number of probable cases",
+			# 																					 "Number of confirmed and probable cases",
+			# 																					 "Number of cases in hospital",
+			# 																					 "Number of recovered cases",
+			# 																					 "Number of deaths"),
+			# 																				 c('orange', 
+			# 																				 	 'purple',
+			# 																				 	 'red',
+			# 																				 	 'pink',
+			# 																				 	 'green',
+			# 																				 	 'black'
+			# 																				 	))
+			#						)
 	})
 	#### Raw Data Table --------------------------
 	output$raw_table <- DT::renderDataTable({
@@ -767,7 +775,7 @@ server <- function(input, output,session) {
 		}
 	)
 	
-	## About -------------------
+	## About Section -------------------
 	output$about <- renderUI({
 		HTML('<a href = "https://covid19.govt.nz/">covid19.govt.nz</a><br>
 				 Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
