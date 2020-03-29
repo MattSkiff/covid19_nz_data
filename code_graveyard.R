@@ -1,3 +1,5 @@
+# Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')  
+
 #fct_infreq(covid.df$Age, ordered = NA)                                  
 #write.csv(covid.df,"covid19.csv")
 

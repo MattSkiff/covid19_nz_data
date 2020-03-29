@@ -534,6 +534,7 @@ server <- function(input, output,session) {
 	output$new_cases_plot <- renderPlotly({
 		
 		covid.df <- covid_loc.df()
+		covid.df %<>%	na.omit()
 		
 		nc.g <- ggplot(data = covid.df) +
 			geom_col(mapping = aes(x = DHB,y = value,fill = variable,stat = 'identity'),position = 'dodge') + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
@@ -601,7 +602,8 @@ server <- function(input, output,session) {
 	output$age_plot <- renderPlotly({
 		covid_age.df <- covid.df() %>%
 			group_by(Age) %>%
-			tally()
+			tally() %>%
+			na.omit()
 		
 		age.g <- ggplot(data = covid_age.df) +
 			geom_col(mapping = aes(x = Age,y = n,fill = Age)) + # reorder(covid_age.df$Age, -n)
@@ -615,16 +617,18 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Age',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp, " Unreported Age Cases Omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
-	## Plot - dhb -------------------
+	## Plot - DHB -------------------
 	output$dhb_plot <- renderPlotly({
 		
 		covid.df <- covid_loc.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
 		
-		covid.df %<>% filter(DHB != "Total") %>% mutate()
+		covid.df %<>% 
+			filter(DHB != "Total") %>% 
+			mutate()
 		
 		dhb.g <- ggplot(data = covid.df) +
 			geom_col(mapping = aes(x = reorder(covid.df$DHB, -value),y = value,fill = variable)) +
@@ -639,7 +643,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by DHB',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp," Unreported DHB Cases Omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -647,8 +651,8 @@ server <- function(input, output,session) {
 	output$gender_plot <- renderPlotly({
 		covid_gender.df <- covid.df() %>%
 			group_by(Gender) %>%
-			tally()  %>%
-      na.omit()
+			tally() %>% 
+			na.omit()
 		
 		gender.g <- ggplot(data = covid_gender.df) +
 			geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
@@ -662,7 +666,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Gender',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp," Unreported Gender Cases Omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -766,11 +770,19 @@ server <- function(input, output,session) {
 	## About -------------------
 	output$about <- renderUI({
 		HTML('<a href = "https://covid19.govt.nz/">covid19.govt.nz</a><br>
-				 This tool was developed as a personal project and is not official. Check the Ministry of Health for all Official Statistics.<br> 
-				 Made by Matthew Skiffington <br> 
 				 Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
-				 Source MoH data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Data, Maps and Charts</a><br>')
-		# Source Time Series data: <a href = "https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv">John Hopkins University Centre for Systems Science and Engineering - Time Series Data Source</a><br>')       
+				 Source Ministry of Health data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Data, Maps and Charts</a><br>
+				 This tool was developed as a personal project and is not official. Please check the Ministry of Health for all official statistics.<br>
+				 <br>
+
+				 The purpose of this tool is to visualise the descriptive statistics released by the Ministry of Health. <br> 
+				 This tool does not perform any predictive or inferential modelling and has been written by a non-expert.<br> 
+				 Best viewed on a desktop PC - this tool is not optimised for mobile. <br>
+				 Data is sourced from Ministry of Health Excel Spreadsheets, which are updated daily.<br> 
+				 <br> 
+
+			   Made by Matthew Skiffington <br> 
+				 Contact: skiffcoffee@gmail.com. Feedback and suggestions are welcome. Stay safe out there.')
 	})
 	
 }
