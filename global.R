@@ -15,13 +15,13 @@ library(plotly) # interactive viz
 library(DT) # interactive data tables
 library(shinydashboard) # dashboard structure
 library(dashboardthemes) # snazzy themes
-library(purrr) # possibly function
 library(readxl) # read moh excel file
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Updated: 29/03/2020 : Status - Up to Date"
+app_status <- "Updated: 29/03/2020 : Status - Up to Date | Project in Active Development"
 date_stamp <- "Current to 29/03/2020"
+data_note_1 <- " | includes probable and confirmed infections"
 
 `%nin%` = Negate(`%in%`)
 
@@ -44,21 +44,7 @@ covid_open_link <- "window.open('https://covid19.govt.nz', '_blank')"
 
 ## Case Summary Information ---------------
 # https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases
-total_cases <- 451
-total_cases_new_24 <- 78 
 
-confirmed_cases <- 416
-confirmed_cases_new_24 <- 78
-
-probable_cases <- 35
-probable_cases_new_24 <- 5
-
-recovered_cases <- 50
-recovered_cases_new_24 <- 13
-
-in_hospital <- "12"
-
-alert_level <- 4
 ###
 
 # Projection: WGS 84 (EPSG:4326 Geographic)

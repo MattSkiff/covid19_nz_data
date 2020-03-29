@@ -15,6 +15,7 @@ ui <- dashboardPage(
 		sidebarMenu(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
+			menuItem("Time Series by DHB", tabName = "time_dhb", icon = icon("chart-line")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
 			menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
 			menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
@@ -59,7 +60,6 @@ ui <- dashboardPage(
 			tabItem(tabName = "dashboard",
 							## UI: - Map & Core Stats ---------------------------
 							fluidRow(
-								tags$br(),
 								box(DT::dataTableOutput("core_stats_table"),width = 12)
 								),
 								fluidRow(
@@ -74,37 +74,31 @@ ui <- dashboardPage(
 			## UI: Tabs - Plotly Plots ----------------------------------------------------
 			tabItem(tabName = "world_map",
 							fluidRow(
-								tags$br(),
 								box(plotlyOutput("world_map", height = 800),width = 12)
 							)),
 			# tab-new_cases
-			tabItem(tabName = "new",
+			tabItem(tabName = "time_dhb",
 							fluidRow(
-								tags$br(),
-								box(plotlyOutput("new_cases_plot", height = 800),width = 12)
+								box(plotlyOutput("time_dhb", height = 800),width = 12)
 							)),
 			# tab-age
 			tabItem(tabName = "age",
 							fluidRow(
-								tags$br(),
 								box(plotlyOutput("age_plot", height = 800),width = 12)
 							)),
 			# tab-dhb
 			tabItem(tabName = "dhb",
 							fluidRow(
-								tags$br(),
 								box(plotlyOutput("dhb_plot", height = 800),width = 12)
 							)),
 			# tab-gender
 			tabItem(tabName = "gender",
 							fluidRow(
-								tags$br(),
 								box(plotlyOutput("gender_plot", height = 800),width = 12)
 							)),
 			# tab-age-gender
 			tabItem(tabName = "age_gender",
 							fluidRow(
-								tags$br(),
 								box(plotlyOutput("age_gender_plot", height = 800),width = 12)
 							)),
 			# tab-dhb-gender
@@ -116,26 +110,22 @@ ui <- dashboardPage(
 			# tab-dhb-age
 			tabItem(tabName = "dhb_age",
 							fluidRow(
-								tags$br(),
 								box(plotlyOutput("dhb_age_plot", height = 800),width = 12)
 							)),
 			
 			# tab-raw-tables
 			tabItem(tabName = "raw_table",
 							fluidRow(
-								tags$br(),
 								box(DT::dataTableOutput("raw_table"),width = 12)
 							)),
 			# tab-cluster-table
 			tabItem(tabName = "cluster_table",
 							fluidRow(
-								tags$br(),
 								box(DT::dataTableOutput("cluster_table"),width = 12)
 							)),
 			# tab-additional-tables
 			tabItem(tabName = "additional_tables",
 							fluidRow(
-								tags$br(),
 								box(DT::dataTableOutput("dhb_table"),width = 12)
 							),
 							fluidRow(
@@ -255,19 +245,11 @@ server <- function(input, output,session) {
 															covid.df$`Date of report` <- lubridate::as_date(covid.df$`Date of report`)
 															covid.df
 														})
-	## Map Discalimer -------------------
-	output$mapDisclaimer <- renderText({
-		df <- covid.df()
-		paste0("Hoverover: enabled | Number of cases with DHB unknown: ",sum(df$DHB == "Not Reported")," | Data not available to TA level | Coordinates approximate")
-	})
-	
-	
 	# DHB Spatial Reactive
 	dhb.sdf <- reactive({
 		dhb.sdf <- readOGR(dsn = "dhb", layer = "district-health-board-2015-2")
 		dhb.sdf
 	})
-	
 	## Map DHB -------------------
 	output$mapDHB <- renderLeaflet({
 		covid_dhb.df <- covid_loc.df()
@@ -367,7 +349,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19 Cases: Time Series',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp,data_note_1,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
 	})
@@ -397,9 +379,47 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19 Cases: New Cases',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp,data_note_1,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
+	})
+	# ## Time Series by Region -------------
+	output$time_dhb <- renderPlotly({
+		
+		m <- list(
+			l = 50,
+			r = 50,
+			b = 100,
+			t = 100,
+			pad = 4
+		)
+		
+		ts_r.df <- covid.df()
+		
+		ts_rc.df <- ts_r.df %>% 
+			group_by(DHB,`Date of report`) %>% 
+			tally() %>% 
+			mutate(nc = cumsum(n)) %>%
+			ungroup()
+		
+		ts_rc.g <- ggplot(data = ts_rc.df) +
+			geom_line(mapping = aes(x = `Date of report`,y = nc,group = DHB)) + 
+			geom_point(mapping = aes(x = `Date of report`,y = nc,group = DHB)) +
+			labs(title = "NZ COVID19: Cumulative cases by DHB",subtitle = "Using Date of Report",x = "",y = "Cumulative number of cases") +
+			theme_bw() +
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
+			facet_wrap(~DHB) +
+			scale_x_date(breaks = seq(min(ts_rc.df$`Date of report`), max(ts_rc.df$`Date of report`), by = "4 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
+
+		ts_rc.g %>%
+			ggplotly() %>% #tooltip = c("Number of cases")
+			config(displayModeBar = F) %>%
+			layout(title = list(text = paste0('NZ COVID19 Cases: Cumulative Cases by DHB and Report Date',
+																				'<br>',
+																				'<sup>',
+																				date_stamp,data_note_1,
+																				'</sup>')),
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'),margin = m)
 	})
 	# ## World Map - Links to NZ -------------------
 	output$world_map <- renderPlotly({
@@ -503,12 +523,13 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
 																				'<br>',
 																				'<sup>',
-																				date_stamp," | Lines do not indicate flight paths <br>",
+																				date_stamp," | Lines do not indicate flight paths | Includes confirmed & probable cases <br>",
 																				as.character(sum(is.na(geo.df$Country))),"/",as.character(nrow(geo.df)),
-																				" people do not have location data available",
+																				" people do not have prior location data available",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
-						 margin = m) 
+						 margin = m)  %>% 
+			config(displayModeBar = F)
 		
 		fig
 	})
@@ -533,7 +554,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19 Cases: DHB and Age',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp,data_note_1,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -557,7 +578,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Age and Gender',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp,data_note_1,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	}) 
@@ -581,7 +602,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by DHB and Gender',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,
+																				date_stamp,data_note_1,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -604,7 +625,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Age',
 																				'<br>',
 																				'<sup>',
-																				date_stamp, " Unreported Age Cases Omitted",
+																				date_stamp,data_note_1, " | Unreported Age Cases Omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -653,7 +674,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Gender',
 																				'<br>',
 																				'<sup>',
-																				date_stamp," Unreported Gender Cases Omitted",
+																				date_stamp,data_note_1," | Unreported Gender Cases Omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -780,8 +801,10 @@ server <- function(input, output,session) {
 		HTML('<a href = "https://covid19.govt.nz/">covid19.govt.nz</a><br>
 				 Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
 				 Source Ministry of Health data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Data, Maps and Charts</a><br>
-				 This tool was developed as a personal project and is not official. Please check the Ministry of Health for all official statistics.<br>
-				 <br>
+				 This tool was developed as a personal project and is not official. Please check the Ministry of Health for all official statistics.<br><br>
+
+				 On Saturday, the 21st of March, 2020, Alert Level 2 in New Zealand was announced. Data visualisation and tool kits in New Zealand was limited at this stage. 
+         Consequently, I decided to develop a simple tool to view cases day by day, and by gender and region. Since then, I have been and continue to add features as time permits and as new data is available. <br><br>
 
 				 The purpose of this tool is to visualise the descriptive statistics released by the Ministry of Health. <br> 
 				 This tool does not perform any predictive or inferential modelling and has been written by a non-expert.<br> 

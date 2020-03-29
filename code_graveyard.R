@@ -1,3 +1,9 @@
+# ## Map Disclaimer -------------------
+# output$mapDisclaimer <- renderText({
+# 	df <- covid.df()
+# 	paste0("Hoverover: enabled | Number of cases with DHB unknown: ",sum(df$DHB == "Not Reported")," | Data not available to TA level | Coordinates approximate")
+# })
+
 # output$new_cases_plot <- renderPlotly({
 # 	
 # 	covid.df <- covid_loc.df()
