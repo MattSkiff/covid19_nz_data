@@ -11,12 +11,10 @@ This application will be archived once the Ministry Health provides a similar le
 The apps depends on quite a few packages, in particular the excellent shiny dashboard themes package available here:
 https://github.com/nik01010/dashboardthemes
 
-If there is something you would like me to add, please let me know. 
-https://mks29.shinyapps.io/covid_nz/
+If there is something you would like me to add, please let me know.
 
 ## To Do
 
-* A map showing the travel patterns of cases prior to getting coronavirus
 * Markers added to the map showing clusters would be a good idea
 * Optimisation to load faster and use less memory 
 * Graph styling could be improved
@@ -26,7 +24,16 @@ https://mks29.shinyapps.io/covid_nz/
 * Statistical analysis 
 * Time series analysis showing the spread of cases would be interesting
 
+## Features
+
+* A map showing the locations of cases prior to getting coronavirus
+* Univariate breakdowns
+* Bivariate breakdowns
+* Searchable tables of information
+* Map with Markers in NZ of DHB level data
+* Basic time series plots of new and cumulative cases
+
 ## Contact
 
-https://www.linkedin.com/in/matthew-skiffington/
+skiffcoffee@gmail.com
 
