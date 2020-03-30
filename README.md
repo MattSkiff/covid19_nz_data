@@ -27,12 +27,13 @@ If there is something you would like me to add, please let me know.
 
 ## Features
 
-* A map showing the locations of cases prior to getting coronavirus
+* A 3D world map showing the locations of cases prior to getting coronavirus
 * Univariate breakdowns
 * Bivariate breakdowns
 * Searchable tables of information
 * Map with Markers in NZ of DHB level data
 * Basic time series plots of new and cumulative cases
+* Cumulative time series by region
 
 ## Contact
 
