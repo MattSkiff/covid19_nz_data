@@ -17,6 +17,7 @@ If there is something you would like me to add, please let me know.
 
 * Markers added to the map showing clusters would be a good idea
 * Optimisation to load faster and use less memory 
+* Optimisation and layout for mobile devices
 * Graph styling could be improved
 * Info boxes are updated manually -> automatically update from the Ministry of Health website
 * Statistical analysis
