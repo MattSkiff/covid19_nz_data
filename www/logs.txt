@@ -1,0 +1,16 @@
+2020-03-28T03:37:51.143065+00:00 shinyapps[968806]: Server version: 1.8.0.3-19
+2020-03-28T03:37:51.143097+00:00 shinyapps[968806]: LANG: en_GB.UTF-8
+2020-03-28T03:37:51.143099+00:00 shinyapps[968806]: R version: 3.5.2
+2020-03-28T03:37:51.143120+00:00 shinyapps[968806]: shiny version: 1.2.0
+2020-03-28T03:37:51.143149+00:00 shinyapps[968806]: rmarkdown version: (none)
+2020-03-28T03:37:51.143140+00:00 shinyapps[968806]: httpuv version: 1.4.5.1
+2020-03-28T03:37:51.143150+00:00 shinyapps[968806]: knitr version: (none)
+2020-03-28T03:37:51.143174+00:00 shinyapps[968806]: RJSONIO version: (none)
+2020-03-28T03:37:51.143351+00:00 shinyapps[968806]: Using pandoc: /opt/connect/ext/pandoc2
+2020-03-28T03:37:51.277857+00:00 shinyapps[968806]: Using jsonlite for JSON processing
+2020-03-28T03:37:51.282399+00:00 shinyapps[968806]: 
+2020-03-28T03:37:51.282401+00:00 shinyapps[968806]: Starting R with process ID: '24'
+2020-03-28T03:37:51.143163+00:00 shinyapps[968806]: jsonlite version: 1.6
+2020-03-28T03:37:51.143184+00:00 shinyapps[968806]: htmltools version: 0.3.6
+2020-03-28T03:37:51.502903+00:00 shinyapps[968806]: 
+2020-03-28T03:37:51.502905+00:00 shinyapps[968806]: Listening on http://127.0.0.1:45530

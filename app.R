@@ -176,6 +176,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/27/20",368))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/28/20",451))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/29/20",514))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/30/20",589))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -195,7 +196,9 @@ server <- function(input, output,session) {
 
 															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 0)
 															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 0)
-
+                              
+															covid_p.df %<>% rename(`Report Date` = ReportDate)
+															
 															covid.df <- rbind(covid.df,covid_p.df)
 															
 															covid.df$Gender <- covid.df$Sex
@@ -206,7 +209,7 @@ server <- function(input, output,session) {
 															levels(covid.df$DHB)[levels(covid.df$DHB) == ""] <- "Not Reported"
 															covid.df$DHB[covid.df$DHB == "TBC"] <- "Not Reported"
 															
-															covid.df$Age <- as.character(covid.df$`Age group`)
+															covid.df$Age <- as.character(covid.df$`Age Group`)
 															covid.df$Age[covid.df$Age == ""] <- "Not Reported"
 															covid.df$Age[covid.df$Age == "Teen"] <- "Teens"
 															
@@ -242,7 +245,7 @@ server <- function(input, output,session) {
 																																					"70+",
 																																					"Not Reported")) 
 														
-															covid.df$`Date of report` <- lubridate::as_date(covid.df$`Date of report`)
+															covid.df$`Report Date` <- lubridate::as_date(covid.df$`Report Date`)
 															covid.df
 														})
 	# DHB Spatial Reactive
@@ -397,19 +400,19 @@ server <- function(input, output,session) {
 		ts_r.df <- covid.df()
 		
 		ts_rc.df <- ts_r.df %>% 
-			group_by(DHB,`Date of report`) %>% 
+			group_by(DHB,`Report Date`) %>% 
 			tally() %>% 
 			mutate(nc = cumsum(n)) %>%
 			ungroup()
 		
 		ts_rc.g <- ggplot(data = ts_rc.df) +
-			geom_line(mapping = aes(x = `Date of report`,y = nc,group = DHB)) + 
-			geom_point(mapping = aes(x = `Date of report`,y = nc,group = DHB)) +
-			labs(title = "NZ COVID19: Cumulative cases by DHB",subtitle = "Using Date of Report",x = "",y = "Cumulative number of cases") +
+			geom_line(mapping = aes(x = `Report Date`,y = nc,group = DHB)) + 
+			geom_point(mapping = aes(x = `Report Date`,y = nc,group = DHB)) +
+			labs(title = "NZ COVID19: Cumulative cases by DHB",subtitle = "Using Report Date",x = "",y = "Cumulative number of cases") +
 			theme_bw() +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
 			facet_wrap(~DHB) +
-			scale_x_date(breaks = seq(min(ts_rc.df$`Date of report`), max(ts_rc.df$`Date of report`), by = "4 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
 
 		ts_rc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")
@@ -427,7 +430,7 @@ server <- function(input, output,session) {
 		countries.df <- read.csv('countries.csv')
 
 		geo.df <- covid.df()
-		geo.df %<>% rename(Country = `Last country before return`)
+		geo.df %<>% rename(Country = `Last country before NZ`)
 
 		
 		countries.df %<>% 
