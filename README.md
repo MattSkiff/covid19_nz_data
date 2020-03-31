@@ -15,23 +15,24 @@ If there is something you would like me to add, please let me know.
 
 ## To Do
 
-* Markers added to the map showing clusters would be a good idea
 * Optimisation to load faster and use less memory 
 * Optimisation and layout for mobile devices
 * Graph styling could be improved
-* Info boxes are updated manually -> automatically update from the Ministry of Health website
 * Statistical analysis
-* Host on a URL to redirect to Shiny app hosting
+* Host on a (better) URL to redirect to Shiny app hosting
 * Statistical analysis 
 * Time series analysis showing the spread of cases would be interesting
+* Style core stats table into info boxes automatically
+* Add tranmission table and graph
+* Add lab testing metrics
 
 ## Features
 
 * A 3D world map showing the locations of cases prior to getting coronavirus
-* Univariate breakdowns
+* Univariate breakdowns - age, gender, dhb, ethnicity
 * Bivariate breakdowns
-* Searchable tables of information
-* Map with Markers in NZ of DHB level data
+* Searchable tables of information (cluster,age,raw data, dhb, etc)
+* NZ Chloropleth with markers showing cases by DHB
 * Basic time series plots of new and cumulative cases
 * Cumulative time series by region
 
