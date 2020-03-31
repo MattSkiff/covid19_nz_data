@@ -32,6 +32,14 @@ omission_string <- " unreported age cases omitted"
 # set timezone
 # set text size on x axis
 
+m <- list(
+	l = 50,
+	r = 50,
+	b = 50,
+	t = 50,
+	pad = 2
+)
+
 text_size = 13
 plotly_text_size = 13
 zoom_level_init = 7
@@ -39,6 +47,12 @@ lat_init = -38.45145547118427
 lng_init = 175.717106114185
 min_zoom = 5
 max_zoom = 8
+
+## Links
+
+main_moh_url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases"
+cluster_moh_url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases/covid-19-clusters"
+
 moh_open_link <- "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases', '_blank')"
 covid_open_link <- "window.open('https://covid19.govt.nz', '_blank')"
 #moh_open_link <- "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases', '_blank')"

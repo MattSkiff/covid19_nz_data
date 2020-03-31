@@ -17,6 +17,7 @@ ui <- dashboardPage(
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
 			menuItem("Time Series by DHB", tabName = "time_dhb", icon = icon("chart-line")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
+			menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
 			menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
 			menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
 			menuItem("Age & Gender", tabName = "age_gender", icon = icon("bookmark")),
@@ -85,6 +86,12 @@ ui <- dashboardPage(
 			tabItem(tabName = "age",
 							fluidRow(
 								box(plotlyOutput("age_plot", height = 800),width = 12)
+							)),
+			# tab-age
+			tabItem(tabName = "ethnicity",
+							fluidRow(
+								box(plotlyOutput("ethnicity_plot", height = 800),width = 12),
+								helpText("MLAA = Middle Eastern, Latin America.")
 							)),
 			# tab-dhb
 			tabItem(tabName = "dhb",
@@ -357,7 +364,8 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m)
 	})
 
 	## New Cases Time Series -------------------
@@ -387,7 +395,8 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'))
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m)
 	})
 	# ## Time Series by Region -------------
 	output$time_dhb <- renderPlotly({
@@ -496,14 +505,6 @@ server <- function(input, output,session) {
 			)
 		)
 		
-		m <- list(
-			l = 50,
-			r = 50,
-			b = 100,
-			t = 100,
-			pad = 4
-		)
-		
 		fig <- plot_geo(lines.df)
 		fig <- fig %>% group_by(line)
 		fig <- fig %>% add_lines(x = ~lng, y = ~lat,
@@ -562,7 +563,8 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
 	})
 	#### Age & Gender ---------------
 	output$age_gender_plot <- renderPlotly({
@@ -586,7 +588,8 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
 	}) 
 	#### DHB & Gender ---------------
 	output$dhb_gender_plot <- renderPlotly({
@@ -610,7 +613,8 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
 	})
 	## Plot - Age -------------------
 	output$age_plot <- renderPlotly({
@@ -633,7 +637,41 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1, " |",omission_string,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
+	})
+	## Plot - Ethnicity -------------------
+	output$ethnicity_plot <- renderPlotly({
+		url <- main_moh_url
+		
+		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
+			html_table()
+		
+		ethnicity.df <- covid.ls[[3]]
+		
+		ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "Middle Eastern / Latin American / African"] <- "MLAA"
+		ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "European or Other"] <- "European / Other"
+		ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "Pacific People"] <- "Pacific"
+		
+		#covid.df$Ethnicity <- fct_infreq(covid.df$DHB, ordered = NA)
+		
+		age.g <- ggplot(data = ethnicity.df) +
+			geom_col(mapping = aes(x = fct_reorder(Ethnicity, -`No. of cases`),y = `No. of cases`,fill = Ethnicity)) + 
+			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
+			scale_fill_viridis(discrete = T) +
+			theme_light(base_size = text_size) + theme(legend.position = "bottom") +
+			scale_fill_viridis(discrete = T) +
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
+		
+		age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
+			config(displayModeBar = F) %>% 
+			layout(title = list(text = paste0('NZ COVID19: Cases by Ethnicity',
+																				'<br>',
+																				'<sup>',
+																				date_stamp,data_note_1,
+																				'</sup>')),
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
 	})
 	## Plot - DHB -------------------
 	output$dhb_plot <- renderPlotly({
@@ -659,7 +697,8 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp," unreported DHB cases omitted",
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
 	})
 	## Plot - Gender -------------------
 	output$gender_plot <- renderPlotly({
@@ -682,13 +721,14 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1," | unreported gender cases omitted",
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 margin = m) 
 	})
 	## Tables -------------------
 	## 
 	#### Core Stats Table --------------------------
 	output$core_stats_table <- DT::renderDataTable({
-		url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases"
+		url <- main_moh_url
 		#<- url %>%
 		
 		
@@ -729,9 +769,7 @@ server <- function(input, output,session) {
 	})
 	output$cluster_table = DT::renderDataTable({
 		
-		url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases/covid-19-clusters"
-		#<- url %>%
-		
+		url <- cluster_moh_url
 		
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
 			html_table()
