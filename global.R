@@ -19,9 +19,10 @@ library(readxl) # read moh excel file
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Updated: 30/03/2020 : Status - Up to Date | Project in Active Development"
-date_stamp <- "Current to 30/03/2020"
+app_status <- "Last Updated: Tuesday, 31/03/2020"
+date_stamp <- "Current to 31/03/2020"
 data_note_1 <- " | includes probable and confirmed infections"
+omission_string <- " unreported age cases omitted"
 
 `%nin%` = Negate(`%in%`)
 

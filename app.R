@@ -177,6 +177,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/28/20",451))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/29/20",514))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/30/20",589))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/31/20",647))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -197,7 +198,9 @@ server <- function(input, output,session) {
 															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 0)
 															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 0)
                               
-															covid_p.df %<>% rename(`Report Date` = ReportDate)
+															covid_p.df %<>% rename(`Report Date` = `Date of report`)
+															covid.df %<>% rename(`Report Date` = `Date of report`)
+															
 															
 															covid.df <- rbind(covid.df,covid_p.df)
 															
@@ -209,7 +212,7 @@ server <- function(input, output,session) {
 															levels(covid.df$DHB)[levels(covid.df$DHB) == ""] <- "Not Reported"
 															covid.df$DHB[covid.df$DHB == "TBC"] <- "Not Reported"
 															
-															covid.df$Age <- as.character(covid.df$`Age Group`)
+															covid.df$Age <- as.character(covid.df$`Age group`)
 															covid.df$Age[covid.df$Age == ""] <- "Not Reported"
 															covid.df$Age[covid.df$Age == "Teen"] <- "Teens"
 															
@@ -338,7 +341,7 @@ server <- function(input, output,session) {
 		ts.g <- ggplot(data = ts.df) +
 			geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_point(mapping = aes(x = variable,y = value,group = 1)) +
-			labs(title = "New Zealand COVID19 cases: Time Series (Cumulative)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative Number of cases") +
+			labs(title = "New Zealand COVID19 cases: Time Series (Cumulative)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative number of cases") +
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
@@ -430,7 +433,7 @@ server <- function(input, output,session) {
 		countries.df <- read.csv('countries.csv')
 
 		geo.df <- covid.df()
-		geo.df %<>% rename(Country = `Last country before NZ`)
+		geo.df %<>% rename(Country = `Last country before return`)
 
 		
 		countries.df %<>% 
@@ -628,7 +631,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Age',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,data_note_1, " | Unreported Age Cases Omitted",
+																				date_stamp,data_note_1, " |",omission_string,
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -654,7 +657,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by DHB',
 																				'<br>',
 																				'<sup>',
-																				date_stamp," Unreported DHB Cases Omitted",
+																				date_stamp," unreported DHB cases omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -677,7 +680,7 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0('NZ COVID19: Cases by Gender',
 																				'<br>',
 																				'<sup>',
-																				date_stamp,data_note_1," | Unreported Gender Cases Omitted",
+																				date_stamp,data_note_1," | unreported gender cases omitted",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide')) 
 	})
@@ -812,7 +815,7 @@ server <- function(input, output,session) {
 				 The purpose of this tool is to visualise the descriptive statistics released by the Ministry of Health. <br> 
 				 This tool does not perform any predictive or inferential modelling and has been written by a non-expert.<br> 
 				 Best viewed on a desktop PC - this tool is not optimised for mobile. <br>
-				 Data is sourced from Ministry of Health Excel Spreadsheets, which are updated daily.<br> 
+				 Data is sourced from Ministry of Health Excel Spreadsheets and scraped from some web tables, which are updated daily.<br> 
 				 <br> 
 
 			   Made by Matthew Skiffington <br> 
