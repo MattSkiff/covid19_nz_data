@@ -438,6 +438,15 @@ server <- function(input, output,session) {
 	})
 	# ## World Map - Links to NZ -------------------
 	output$world_map <- renderPlotly({
+		
+		m_world <- list(
+			l = 50,
+			r = 50,
+			b = 50,
+			t = 100,
+			pad = 2
+		)
+		
 		#cities.df <- read.csv('worldcities.csv')
 		countries.df <- read.csv('countries.csv')
 
@@ -535,7 +544,7 @@ server <- function(input, output,session) {
 																				" people do not have prior location data available",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
-						 margin = m)  %>% 
+						 margin = m_world)  %>% 
 			config(displayModeBar = F)
 		
 		fig
