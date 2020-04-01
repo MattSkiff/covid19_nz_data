@@ -202,8 +202,8 @@ server <- function(input, output,session) {
 	covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 														valueExpr = {
 
-															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 0)
-															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 0)
+															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3)
+															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3)
                               
 															covid_p.df %<>% rename(`Report Date` = `Date of report`)
 															covid.df %<>% rename(`Report Date` = `Date of report`)
