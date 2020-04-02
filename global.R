@@ -19,8 +19,8 @@ library(readxl) # read moh excel file
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Last Updated: Tuesday, 31/03/2020"
-date_stamp <- "Current to 31/03/2020"
+app_status <- "Last Updated: Wednesday, 02/04/2020: Notice - an official dashboard is now available on the cases page"
+date_stamp <- "Current to 02/04/2020"
 data_note_1 <- " | includes probable and confirmed infections"
 omission_string <- " unreported age cases omitted"
 
@@ -55,6 +55,8 @@ cluster_moh_url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/
 
 moh_open_link <- "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases', '_blank')"
 covid_open_link <- "window.open('https://covid19.govt.nz', '_blank')"
+moh_dash_link <- "window.open('https://experience.arcgis.com/experience/e4e58e39a0ec410eb054f42012a27b4b?fbclid=IwAR0OrRKief5SQXhM_pOYjBO6gccamz9rlEifcoPnB5Pc99pG0o5NU-MOo6k', '_blank')"
+
 #moh_open_link <- "window.open('https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases', '_blank')"
 
 ## Case Summary Information ---------------

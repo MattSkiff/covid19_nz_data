@@ -30,7 +30,10 @@ ui <- dashboardPage(
 			menuItem("About", tabName = "about", icon = icon("address-card")),
 			actionButton(inputId = "covidLink",
 									 label = "covid19.govt.nz",
-									 onclick = covid_open_link)
+									 onclick = covid_open_link),
+			actionButton(inputId = "moh_dash",
+			             label = "MoH Dashboard",
+			             onclick = moh_dash_link)
 		)
 	),
 	## UI: Dasboard body ---------------------
@@ -185,6 +188,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/29/20",514))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/30/20",589))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/31/20",647))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/01/20",708))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/02/20",797))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
