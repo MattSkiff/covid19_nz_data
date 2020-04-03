@@ -19,8 +19,8 @@ library(readxl) # read moh excel file
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Last Updated: Wednesday, 02/04/2020: Notice - an official dashboard is now available on the cases page"
-date_stamp <- "Current to 02/04/2020"
+app_status <- "Last Updated: Friday, 03/04/2020: Notice - an official Ministry of Health dashboard is now available"
+date_stamp <- "Current to 03/04/2020"
 data_note_1 <- " | includes probable and confirmed infections"
 omission_string <- " unreported age cases omitted"
 

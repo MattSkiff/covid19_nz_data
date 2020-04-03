@@ -39,7 +39,7 @@ ui <- dashboardPage(
 	## UI: Dasboard body ---------------------
 	dashboardBody(
 		tags$head(
-			tags$link(rel = "shortcut icon", type="image/x-icon", href="http://icons.iconarchive.com/icons/gosquared/flag/64/New-Zealand-flat-icon.png"),
+			tags$link(rel = "shortcut icon", type ="image/x-icon", href="http://icons.iconarchive.com/icons/gosquared/flag/64/New-Zealand-flat-icon.png"),
 			# Facebook OpenGraph tags
 			tags$meta(property = "og:title", content = share$title),
 			tags$meta(property = "og:type", content = "website"),
@@ -99,7 +99,7 @@ ui <- dashboardPage(
 			# tab-dhb
 			tabItem(tabName = "dhb",
 							fluidRow(
-								box(plotlyOutput("dhb_plot", height = 800),width = 12)
+								box(plotlyOutput("dhb_plot", height = 800),width = 12) #plotlyOutput
 							)),
 			# tab-gender
 			tabItem(tabName = "gender",
@@ -190,6 +190,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/31/20",647))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/01/20",708))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/02/20",797))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",868))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -241,9 +242,9 @@ server <- function(input, output,session) {
 															
 															
 															# sort levels by frequency of DHB
-															covid.df$DHB <- fct_recode(covid.df$DHB, c("Hawkes Bay" = "Hawke’s Bay")) 
+														#	covid.df$DHB <- fct_recode(covid.df$DHB, c("Hawkes Bay" = "Hawke’s Bay")) 
 															covid.df$DHB <- fct_infreq(covid.df$DHB, ordered = NA)
-															covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)     
+														#	covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)     
 															
 															#write.csv(covid.df,"covid19.csv")
 															#write.csv(covid.df,"covid19.csv")
@@ -641,7 +642,8 @@ server <- function(input, output,session) {
 			geom_col(mapping = aes(x = Age,y = n,fill = Age)) + # reorder(covid_age.df$Age, -n)
 			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
 			scale_fill_viridis(discrete = T) +
-			theme_light(base_size = text_size) + theme(legend.position = "bottom") +
+			theme_light(base_size = text_size) + 
+		  theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
 		age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
@@ -651,7 +653,7 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1, " |",omission_string,
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 uniformtext = list(minsize=plotly_text_size, mode='hide'), 
 						 margin = m) 
 	})
 	## Plot - Ethnicity -------------------
@@ -671,9 +673,10 @@ server <- function(input, output,session) {
 		
 		age.g <- ggplot(data = ethnicity.df) +
 			geom_col(mapping = aes(x = fct_reorder(Ethnicity, -`No. of cases`),y = `No. of cases`,fill = Ethnicity)) + 
-			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
+			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Ethnicity",y = "Number of cases") +
 			scale_fill_viridis(discrete = T) +
-			theme_light(base_size = text_size) + theme(legend.position = "bottom") +
+			theme_light(base_size = text_size) + 
+		  theme(legend.position = "bottom") +
 			scale_fill_viridis(discrete = T) +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
@@ -688,31 +691,35 @@ server <- function(input, output,session) {
 						 margin = m) 
 	})
 	## Plot - DHB -------------------
-	output$dhb_plot <- renderPlotly({
+	output$dhb_plot <- renderPlotly({ #renderPlotly({
 		
-		covid.df <- covid_loc.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
+		dhb.df <- covid.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
 		
-		covid.df %<>% 
-			filter(DHB != "Total") %>% 
-			mutate()
+		dhb.df  %<>%
+		  group_by(DHB) %>%
+		  tally() %>% 
+		  filter(DHB != "Total") %>%
+		  na.omit()
 		
-		dhb.g <- ggplot(data = covid.df) +
-			geom_col(mapping = aes(x = reorder(covid.df$DHB, -value),y = value,fill = variable)) +
+		dhb.g <- ggplot(data = dhb.df) +
+			geom_col(mapping = aes(x = reorder(dhb.df$DHB, -n),y = n,fill = DHB)) +
 			labs(title = "NZ COVID19 cases - DHB",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
-			theme_light(base_size = text_size) + theme(legend.position = "bottom") +
-			scale_fill_viridis(discrete = T) + theme(legend.position = "none") +
+			theme_light(base_size = text_size) +
+		  theme(legend.position = "bottom") +
+			scale_fill_viridis(discrete = T) +
+		  theme(legend.position = "none") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
-		
-		dhb.g %>% 
-			ggplotly(tooltip = c("DHB","value")) %>% 
-			config(displayModeBar = F) %>% 
+
+		dhb.g %>%
+			ggplotly(tooltip = c("DHB","n")) %>%
+			config(displayModeBar = F) %>%
 			layout(title = list(text = paste0('NZ COVID19: Cases by DHB',
 																				'<br>',
 																				'<sup>',
 																				date_stamp," unreported DHB cases omitted",
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
-						 margin = m) 
+						 uniformtext = list(minsize = plotly_text_size, mode = 'hide'),
+						 margin = m)
 	})
 	## Plot - Gender -------------------
 	output$gender_plot <- renderPlotly({
@@ -725,7 +732,8 @@ server <- function(input, output,session) {
 			geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
 			labs(title = "NZ COVID19 cases - Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
 			scale_fill_viridis(discrete = T) +
-			theme_light(base_size = text_size) + theme(legend.position = "bottom") +
+			theme_light(base_size = text_size) + t
+		  theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
 		gender.g %>% ggplotly(tooltip = c("Gender","n")) %>% 
@@ -735,7 +743,7 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1," | unreported gender cases omitted",
 																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+						 uniformtext = list(minsize = plotly_text_size, mode='hide'), 
 						 margin = m) 
 	})
 	## Tables -------------------
