@@ -21,7 +21,8 @@ ui <- dashboardPage(
 							 #menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
 							 menuSubItem("Time Series", tabName = "time_dhb", icon = icon("chart-line")),
 							 menuSubItem("Cases", tabName = "dhb", icon = icon("arrows-alt")),
-							 menuSubItem("Travel", tabName = "dhb_travel", icon = icon("arrows-alt-h")),
+							 menuSubItem("Travel over Time", tabName = "dhb_travel_time", icon = icon("chart-line")),
+							 menuSubItem("International Travel", tabName = "dhb_travel", icon = icon("arrows-alt-h")),
 							 menuSubItem("Hospitalisations", tabName = "dhb_hospital", icon = icon("hospital")),
 							 menuSubItem("Gender", tabName = "dhb_gender", icon = icon("bookmark")),
 							 menuSubItem("Age", tabName = "dhb_age", icon = icon("bookmark"))
@@ -33,12 +34,12 @@ ui <- dashboardPage(
 			menuItem("Additional Tables", tabName = "additional_tables", icon = icon("plus-square")),
 			menuItem("Downloads",tabName = "downloads",icon = icon("download")),
 			menuItem("About", tabName = "about", icon = icon("address-card")),
-			actionButton(inputId = "covidLink",
+			menuItem(actionButton(inputId = "covidLink",
 									 label = "covid19.govt.nz",
-									 onclick = covid_open_link),
-			actionButton(inputId = "moh_dash",
+									 onclick = covid_open_link)),
+			menuItem(actionButton(inputId = "moh_dash",
 									 label = "MoH Dashboard",
-									 onclick = moh_dash_link)
+									 onclick = moh_dash_link))
 		)
 	),
 	## UI: Dasboard body ---------------------
@@ -109,6 +110,11 @@ ui <- dashboardPage(
 			tabItem(tabName = "dhb_travel",
 							fluidRow(
 								box(plotlyOutput("dhb_travel", height = 800),width = 12)
+							)),
+			# tab-dhb-travel
+			tabItem(tabName = "dhb_travel_time",
+							fluidRow(
+								box(plotOutput("dhb_travel_time", height = 800),width = 12)
 							)),
 			# tab-ethnicity
 			# tab-ethnicity
@@ -836,14 +842,11 @@ server <- function(input, output,session) {
 			labs(title = "NZ COVID19 cases - DHB / Travel",subtitle = "",x = "Location",y = "Number of cases") +
 			theme_light(base_size = text_size) +
 			theme(legend.position = "bottom") +
-			scale_fill_viridis(discrete = T) +
-			theme(legend.position = "none") +
-			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) #+
-			#facet_wrap(~DHB,scales = "free")  +
-			#theme(axis.text.x = element_blank())
+			scale_fill_viridis(discrete = T,name = "International\nTravel") +
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) 
 
 		dhb.g %>%
-			ggplotly(tooltip = c("DHB","n")) %>%
+			ggplotly(tooltip = c("DHB","n","International travel")) %>%
 			config(displayModeBar = F) %>%
 			layout(title = list(text = paste0('NZ COVID19: Cases by DHB and Travel Type',
 																				'<br>',
@@ -852,6 +855,53 @@ server <- function(input, output,session) {
 																				'</sup>')),
 						 uniformtext = list(minsize = plotly_text_size, mode = 'hide'),
 						 margin = m)
+	})
+	## Plot - DHB / Travel / Time -------------------
+	output$dhb_travel_time <- renderPlot({ #renderPlotly({
+		
+		# m <- list(
+		# 	l = 50,
+		# 	r = 50,
+		# 	b = 100,
+		# 	t = 100,
+		# 	pad = 4
+		# )
+		
+		dhb.df <- covid.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]])
+
+		dhb.df$`International travel` <- fct_explicit_na(
+			fct_explicit_na(dhb.df$`International travel`, na_level = "Not Reported"))
+
+		dhb.df  %<>%
+			group_by(DHB,`International travel`,`Report Date`) %>%
+			tally() %>%
+			filter(DHB != "Total") %>%
+			mutate(nc = cumsum(n)) %>%
+			ungroup() %>%
+			na.omit()
+
+		dhb.g <- ggplot(data = dhb.df) +
+			geom_line(mapping = aes(x = `Report Date`,y = nc,color = `International travel`,group = `International travel`)) +
+				geom_point(mapping = aes(x = `Report Date`,y = nc,color = `International travel`,group = `International travel`),size = 0.5) +
+			labs(title = "NZ COVID19 cases - DHB / Travel",subtitle = "",x = "",y = "Cumulative number of cases") +
+			theme_bw(base_size = text_size) +
+			theme(legend.position = "bottom") +
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) +
+			facet_wrap(~DHB) +
+			scale_fill_viridis(discrete = T) 
+		
+		dhb.g
+
+		# dhb.g %>%
+		# 	ggplotly(tooltip = c("DHB","n")) %>%
+		# 	config(displayModeBar = F) %>%
+		# 	layout(title = list(text = paste0('NZ COVID19: Cumulative Cases by DHB and Travel Type, over time',
+		# 																		'<br>',
+		# 																		'<sup>',
+		# 																		date_stamp," unreported DHB cases omitted",
+		# 																		'</sup>')),
+		# 				 uniformtext = list(minsize = plotly_text_size, mode = 'hide'),
+		# 				 margin = m)
 	})
 	## Plot - Gender -------------------
 	output$gender_plot <- renderPlotly({

@@ -40,8 +40,8 @@ m <- list(
 	pad = 2
 )
 
-text_size = 13
-plotly_text_size = 13
+text_size = 12
+plotly_text_size = 12
 zoom_level_init = 7
 lat_init = -38.45145547118427
 lng_init = 175.717106114185
