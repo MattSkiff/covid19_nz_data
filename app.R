@@ -14,16 +14,20 @@ ui <- dashboardPage(
 		sidebarMenu(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
-			menuItem("Time Series by DHB", tabName = "time_dhb", icon = icon("chart-line")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
 			menuItem("Transmission", tabName = "transmission", icon = icon("user-friends")),
 			#menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
-			menuItem("Cases by DHB", tabName = "dhb", icon = icon("arrows-alt")),
-			menuItem("Hospitalisations by DHB", tabName = "dhb_hospital", icon = icon("hospital")),
+			menuItem("DHB Level Info",tabName = "dhb_splits",
+							 #menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
+							 menuSubItem("Time Series", tabName = "time_dhb", icon = icon("chart-line")),
+							 menuSubItem("Cases", tabName = "dhb", icon = icon("arrows-alt")),
+							 menuSubItem("Travel", tabName = "dhb_travel", icon = icon("arrows-alt-h")),
+							 menuSubItem("Hospitalisations", tabName = "dhb_hospital", icon = icon("hospital")),
+							 menuSubItem("Gender", tabName = "dhb_gender", icon = icon("bookmark")),
+							 menuSubItem("Age", tabName = "dhb_age", icon = icon("bookmark"))
+			),
 			menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
 			menuItem("Age & Gender", tabName = "age_gender", icon = icon("bookmark")),
-			menuItem("DHB & Gender", tabName = "dhb_gender", icon = icon("bookmark")),
-			menuItem("DHB & Age", tabName = "dhb_age", icon = icon("bookmark")),
 			menuItem("Raw Data Table", tabName = "raw_table", icon = icon("table")),
 			menuItem("Clusters", tabName = "cluster_table", icon = icon("table")),
 			menuItem("Additional Tables", tabName = "additional_tables", icon = icon("plus-square")),
@@ -33,8 +37,8 @@ ui <- dashboardPage(
 									 label = "covid19.govt.nz",
 									 onclick = covid_open_link),
 			actionButton(inputId = "moh_dash",
-			             label = "MoH Dashboard",
-			             onclick = moh_dash_link)
+									 label = "MoH Dashboard",
+									 onclick = moh_dash_link)
 		)
 	),
 	## UI: Dasboard body ---------------------
@@ -66,15 +70,15 @@ ui <- dashboardPage(
 							## UI: - Map & Core Stats ---------------------------
 							fluidRow(
 								box(DT::dataTableOutput("core_stats_table"),width = 12)
-								),
-								fluidRow(
-									column(12,h5(app_status,align = "center"))#,
-								),
-								fluidRow(
-									box(leafletOutput("mapDHB",height = 600),width = 4),
-									box(plotlyOutput("time_series_cumulative_plot", height = 600),width = 4),
-									box(plotlyOutput("time_series_new_plot", height = 600),width = 4)#),
-								)
+							),
+							fluidRow(
+								column(12,h5(app_status,align = "center"))#,
+							),
+							fluidRow(
+								box(leafletOutput("mapDHB",height = 600),width = 4),
+								box(plotlyOutput("time_series_cumulative_plot", height = 600),width = 4),
+								box(plotlyOutput("time_series_new_plot", height = 600),width = 4)#),
+							)
 			),
 			## UI: Tabs - Plotly Plots ----------------------------------------------------
 			tabItem(tabName = "world_map",
@@ -101,6 +105,12 @@ ui <- dashboardPage(
 							fluidRow(
 								box(plotlyOutput("transmission_plot", height = 800),width = 12)
 							)),
+			# tab-dhb-travel
+			tabItem(tabName = "dhb_travel",
+							fluidRow(
+								box(plotlyOutput("dhb_travel", height = 800),width = 12)
+							)),
+			# tab-ethnicity
 			# tab-ethnicity
 			# tabItem(tabName = "ethnicity",
 			# 				fluidRow(
@@ -214,15 +224,15 @@ server <- function(input, output,session) {
 															 	covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
 															 	
 															 	covid_ts.df # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
-	})
+															 })
 	
 	## Core Data Frame Creation ------------
 	covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 														valueExpr = {
-
+															
 															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3)
 															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3)
-                              
+															
 															covid_p.df %<>% rename(`Report Date` = `Date of report`)
 															covid.df %<>% rename(`Report Date` = `Date of report`)
 															
@@ -254,9 +264,9 @@ server <- function(input, output,session) {
 															
 															
 															# sort levels by frequency of DHB
-														#	covid.df$DHB <- fct_recode(covid.df$DHB, c("Hawkes Bay" = "Hawke’s Bay")) 
+															#	covid.df$DHB <- fct_recode(covid.df$DHB, c("Hawkes Bay" = "Hawke’s Bay")) 
 															covid.df$DHB <- fct_infreq(covid.df$DHB, ordered = NA)
-														#	covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)     
+															#	covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)     
 															
 															#write.csv(covid.df,"covid19.csv")
 															#write.csv(covid.df,"covid19.csv")
@@ -272,7 +282,7 @@ server <- function(input, output,session) {
 																																					"60 to 69",
 																																					"70+",
 																																					"Not Reported")) 
-														
+															
 															covid.df$`Report Date` <- lubridate::as_date(covid.df$`Report Date`)
 															covid.df
 														})
@@ -348,7 +358,7 @@ server <- function(input, output,session) {
 		#addControl(map_title, position = "topleft")
 	})
 	
-  ## COVID LOC Reactive -------
+	## COVID LOC Reactive -------
 	covid_loc.df <- reactive({
 		url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases"
 		#<- url %>%
@@ -392,7 +402,7 @@ server <- function(input, output,session) {
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
 						 margin = m)
 	})
-
+	
 	## New Cases Time Series -------------------
 	output$time_series_new_plot <- renderPlotly({
 		nc.df <- covid_ts.df()
@@ -450,7 +460,7 @@ server <- function(input, output,session) {
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
 			facet_wrap(~DHB) +
 			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
-
+		
 		ts_rc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")
 			config(displayModeBar = F) %>%
@@ -474,10 +484,10 @@ server <- function(input, output,session) {
 		
 		#cities.df <- read.csv('worldcities.csv')
 		countries.df <- read.csv('countries.csv')
-
+		
 		geo.df <- covid.df()
 		geo.df %<>% rename(Country = `Last country before return`)
-
+		
 		
 		countries.df %<>% 
 			select(Latitude,Longitude,name) %>% 
@@ -491,13 +501,13 @@ server <- function(input, output,session) {
 		
 		nz_lat.vec <- rep(-39.095963,nrow(tally.df))
 		nz_lng.vec <- rep(175.776594,nrow(tally.df))
-
+		
 		nz_orig.df <- data.frame(lat = nz_lat.vec,
 														 lng = nz_lng.vec,
 														 line = seq_len(nrow(tally.df)),
 														 Country = rep("New Zealand",nrow(tally.df)),
 														 id = seq_len(nrow(tally.df)))
-
+		
 		tally.df$id <- seq_len(nrow(tally.df))
 		
 		tally.df %<>% mutate(line = id) %>% select(lat,lng,line,Country,id,n) 
@@ -544,9 +554,9 @@ server <- function(input, output,session) {
 		fig <- fig %>% add_lines(x = ~lng, y = ~lat,
 														 hoverinfo = "text",
 														 hovertext = paste("Country :", lines.df$Country,
-																							"<br> Longitude :", lines.df$lng,
-																							"<br> Longitude :", lines.df$lat,
-																							"<br> N :", lines.df$n),
+														 									"<br> Longitude :", lines.df$lng,
+														 									"<br> Longitude :", lines.df$lat,
+														 									"<br> N :", lines.df$n),
 														 size = I(1)) %>%
 			add_markers(data = overseas.df,
 									y=~lat, x=~lng, hoverinfo="text",
@@ -662,7 +672,7 @@ server <- function(input, output,session) {
 			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
 			scale_fill_viridis(discrete = T) +
 			theme_light(base_size = text_size) + 
-		  theme(legend.position = "bottom") +
+			theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
 		age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
@@ -712,10 +722,10 @@ server <- function(input, output,session) {
 	# Plot - Transmission -------------------
 	output$transmission_plot <- renderPlotly({
 		url <- main_moh_url
-
+		
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
 			html_table()
-
+		
 		transmission.df <- covid.ls[[4]]
 		transmission.df$`% of cases` <- as.numeric(gsub(pattern = "%",
 																										replacement = "",
@@ -753,20 +763,20 @@ server <- function(input, output,session) {
 		dhb.df <- covid.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]]) 
 		
 		dhb.df  %<>%
-		  group_by(DHB) %>%
-		  tally() %>% 
-		  filter(DHB != "Total") %>%
-		  na.omit()
+			group_by(DHB) %>%
+			tally() %>% 
+			filter(DHB != "Total") %>%
+			na.omit()
 		
 		dhb.g <- ggplot(data = dhb.df) +
 			geom_col(mapping = aes(x = reorder(dhb.df$DHB, -n),y = n,fill = DHB)) +
 			labs(title = "NZ COVID19 cases - DHB",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
 			theme_light(base_size = text_size) +
-		  theme(legend.position = "bottom") +
+			theme(legend.position = "bottom") +
 			scale_fill_viridis(discrete = T) +
-		  theme(legend.position = "none") +
+			theme(legend.position = "none") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
-
+		
 		dhb.g %>%
 			ggplotly(tooltip = c("DHB","n")) %>%
 			config(displayModeBar = F) %>%
@@ -781,23 +791,23 @@ server <- function(input, output,session) {
 	# ## Plot - Hospitalisations by DHB -------------------
 	output$hospital_dhb <- renderPlotly({
 		url <- main_moh_url
-
+		
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
 			html_table()
-
+		
 		hospital.df <- covid.ls[[2]]
-
+		
 		hospital.df %<>% filter(DHB != "Total")
-
+		
 		hospital.g <- ggplot(data = hospital.df) +
 			geom_col(mapping = aes(x = fct_reorder(DHB, -`Total cases`),y = `Total cases`,fill = DHB)) +
 			labs(title = "Hospitalisations by DHB",subtitle = "",x = "District Health Board",y = "Number of hospitalisations") +
 			scale_fill_viridis(discrete = T) +
 			theme_light(base_size = text_size) +
-		  theme(legend.position = "bottom") +
+			theme(legend.position = "bottom") +
 			scale_fill_viridis(discrete = T) +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
-
+		
 		hospital.g %>% ggplotly(tooltip = c("DHB","Number of Hospitalisations")) %>%
 			config(displayModeBar = F) %>%
 			layout(title = list(text = paste0('NZ COVID19: Current Hospitalisations by DHB',
@@ -807,7 +817,42 @@ server <- function(input, output,session) {
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'),
 						 margin = m)
-	 })
+	})
+	## Plot - DHB / Travel -------------------
+	output$dhb_travel <- renderPlotly({ #renderPlotly({
+
+		dhb.df <- covid.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]])
+
+		dhb.df$`International travel` <- fct_explicit_na(fct_explicit_na(dhb.df$`International travel`, na_level = "Not Reported"))
+
+		dhb.df  %<>%
+			group_by(DHB,`International travel`) %>%
+			tally() %>%
+			filter(DHB != "Total") %>%
+			na.omit()
+
+		dhb.g <- ggplot(data = dhb.df) +
+			geom_col(mapping = aes(x = DHB,y = n,fill = `International travel`,group = `International travel`)) +
+			labs(title = "NZ COVID19 cases - DHB / Travel",subtitle = "",x = "Location",y = "Number of cases") +
+			theme_light(base_size = text_size) +
+			theme(legend.position = "bottom") +
+			scale_fill_viridis(discrete = T) +
+			theme(legend.position = "none") +
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) #+
+			#facet_wrap(~DHB,scales = "free")  +
+			#theme(axis.text.x = element_blank())
+
+		dhb.g %>%
+			ggplotly(tooltip = c("DHB","n")) %>%
+			config(displayModeBar = F) %>%
+			layout(title = list(text = paste0('NZ COVID19: Cases by DHB and Travel Type',
+																				'<br>',
+																				'<sup>',
+																				date_stamp," unreported DHB cases omitted",
+																				'</sup>')),
+						 uniformtext = list(minsize = plotly_text_size, mode = 'hide'),
+						 margin = m)
+	})
 	## Plot - Gender -------------------
 	output$gender_plot <- renderPlotly({
 		covid_gender.df <- covid.df() %>%
@@ -820,7 +865,7 @@ server <- function(input, output,session) {
 			labs(title = "NZ COVID19 cases - Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
 			scale_fill_viridis(discrete = T) +
 			theme_light(base_size = text_size) + 
-		  theme(legend.position = "bottom") +
+			theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
 		gender.g %>% ggplotly(tooltip = c("Gender","n")) %>% 
@@ -852,22 +897,22 @@ server <- function(input, output,session) {
 		
 		DT::datatable(core_stats.df,
 									options = list(dom = "t")) #%>%
-			# formatStyle('Metric',
-			# 						target = 'row',
-			# 						backgroundColor = styleEqual(c("Number of confirmed cases in New Zealand",
-			# 																					 "Number of probable cases",
-			# 																					 "Number of confirmed and probable cases",
-			# 																					 "Number of cases in hospital",
-			# 																					 "Number of recovered cases",
-			# 																					 "Number of deaths"),
-			# 																				 c('orange', 
-			# 																				 	 'purple',
-			# 																				 	 'red',
-			# 																				 	 'pink',
-			# 																				 	 'green',
-			# 																				 	 'black'
-			# 																				 	))
-			#						)
+		# formatStyle('Metric',
+		# 						target = 'row',
+		# 						backgroundColor = styleEqual(c("Number of confirmed cases in New Zealand",
+		# 																					 "Number of probable cases",
+		# 																					 "Number of confirmed and probable cases",
+		# 																					 "Number of cases in hospital",
+		# 																					 "Number of recovered cases",
+		# 																					 "Number of deaths"),
+		# 																				 c('orange', 
+		# 																				 	 'purple',
+		# 																				 	 'red',
+		# 																				 	 'pink',
+		# 																				 	 'green',
+		# 																				 	 'black'
+		# 																				 	))
+		#						)
 	})
 	#### Raw Data Table --------------------------
 	output$raw_table <- DT::renderDataTable({
@@ -955,21 +1000,18 @@ server <- function(input, output,session) {
 				 Source Code: <a href = "https://github.com/MattSkiff/covid19_nz_data">Shiny App GitHub Repo</a><br> 
 				 Source Ministry of Health data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Data, Maps and Charts</a><br>
 				 This tool was developed as a personal project and is not official. Please check the Ministry of Health for all official statistics.<br><br>
-
 				 On Saturday, the 21st of March, 2020, Alert Level 2 in New Zealand was announced. Data visualisation and tool kits in New Zealand was limited at this stage. 
-         Consequently, I decided to develop a simple tool to view cases day by day, and by gender and region. Since then, I have been and continue to add features as time permits and as new data is available. <br><br>
-
+				 Consequently, I decided to develop a simple tool to view cases day by day, and by gender and region. Since then, I have been and continue to add features as time permits and as new data is available. <br><br>
 				 The purpose of this tool is to visualise the descriptive statistics released by the Ministry of Health. <br> 
 				 This tool does not perform any predictive or inferential modelling and has been written by a non-expert.<br> 
 				 Best viewed on a desktop PC - this tool is not optimised for mobile. <br>
 				 Data is sourced from Ministry of Health Excel Spreadsheets and scraped from some web tables, which are updated daily.<br> 
 				 <br> 
-
-			   Made by Matthew Skiffington <br> 
+				 Made by Matthew Skiffington <br> 
 				 Contact: skiffcoffee@gmail.com. Feedback and suggestions are welcome. Stay safe out there.')
 	})
 	
-}
+	}
 
 
 shinyApp(ui = ui, server = server)
