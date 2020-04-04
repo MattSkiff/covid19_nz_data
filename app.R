@@ -4,7 +4,6 @@
 # Define UI for application 
 ## UI -----------
 
-
 excel_file <- "moh_data.xlsx"
 source("global.R")
 ui <- dashboardPage(
@@ -17,8 +16,10 @@ ui <- dashboardPage(
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
 			menuItem("Time Series by DHB", tabName = "time_dhb", icon = icon("chart-line")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
+			menuItem("Transmission", tabName = "transmission", icon = icon("user-friends")),
 			#menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
-			menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
+			menuItem("Cases by DHB", tabName = "dhb", icon = icon("arrows-alt")),
+			menuItem("Hospitalisations by DHB", tabName = "dhb_hospital", icon = icon("hospital")),
 			menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
 			menuItem("Age & Gender", tabName = "age_gender", icon = icon("bookmark")),
 			menuItem("DHB & Gender", tabName = "dhb_gender", icon = icon("bookmark")),
@@ -80,17 +81,27 @@ ui <- dashboardPage(
 							fluidRow(
 								box(plotlyOutput("world_map", height = 800),width = 12)
 							)),
-			# tab-new_cases
+			# tab-time_dhb
 			tabItem(tabName = "time_dhb",
 							fluidRow(
 								box(plotlyOutput("time_dhb", height = 800),width = 12)
+							)),
+			# tab-dhb_hospital
+			tabItem(tabName = "dhb_hospital",
+							fluidRow(
+								box(plotlyOutput("hospital_dhb", height = 800),width = 12)
 							)),
 			# tab-age
 			tabItem(tabName = "age",
 							fluidRow(
 								box(plotlyOutput("age_plot", height = 800),width = 12)
 							)),
-			# tab-age
+			# tab-transmission
+			tabItem(tabName = "transmission",
+							fluidRow(
+								box(plotlyOutput("transmission_plot", height = 800),width = 12)
+							)),
+			# tab-ethnicity
 			# tabItem(tabName = "ethnicity",
 			# 				fluidRow(
 			# 					box(plotlyOutput("ethnicity_plot", height = 800),width = 12),
@@ -191,7 +202,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/01/20",708))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/02/20",797))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",868))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",950))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/04/20",950))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -265,15 +276,22 @@ server <- function(input, output,session) {
 															covid.df$`Report Date` <- lubridate::as_date(covid.df$`Report Date`)
 															covid.df
 														})
-	# DHB Spatial Reactive
+	## DHB Spatial Reactive -------------------
 	dhb.sdf <- reactive({
 		dhb.sdf <- readOGR(dsn = "dhb", layer = "district-health-board-2015-2")
 		dhb.sdf
 	})
 	## Map DHB -------------------
 	output$mapDHB <- renderLeaflet({
-		covid_dhb.df <- covid_loc.df()
-		covid_dhb.df <- covid_dhb.df # %>% filter(variable == "Total cases")
+		covid_dhb.df <- covid.df()
+		
+		covid_dhb.df %<>% 
+			group_by(DHB) %>%
+			tally()
+		
+		covid_dhb.df %<>% 
+			mutate(value = as.numeric(n)) %>% 
+			select(-n)
 		
 		colnames(covid_dhb.df)[1] <- "DHB2015_Na"
 		dhb.sdf <- dhb.sdf()
@@ -691,6 +709,44 @@ server <- function(input, output,session) {
 	# 					 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
 	# 					 margin = m) 
 	# })
+	# Plot - Transmission -------------------
+	output$transmission_plot <- renderPlotly({
+		url <- main_moh_url
+
+		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
+			html_table()
+
+		transmission.df <- covid.ls[[4]]
+		transmission.df$`% of cases` <- as.numeric(gsub(pattern = "%",
+																										replacement = "",
+																										x = transmission.df$`% of cases`))
+		
+		transmission.df <- transmission.df %>% 
+			mutate(Proportion = "COVID19 NZ Transmission Type")
+		
+		# small rounding in MOH figures - scaled to 100
+		transmission.df$`% of cases` <- 100/sum(transmission.df$`% of cases`)*transmission.df$`% of cases`
+		
+		transmission.g <- ggplot(transmission.df, aes(x = Proportion, y = `% of cases`, fill = `Transmission type`)) +
+			geom_col() +
+			scale_fill_viridis(discrete = T) +
+			theme_light(base_size = text_size) +
+			labs(title = "NZ COVID19 cases - Transmission Type",subtitle = date_stamp,x = "",y = "(%) of cases") +
+			#coord_flip() +
+			theme(axis.text.y = element_text(angle = 90, hjust = 0.5, vjust  = 2,size = text_size)) +
+			scale_y_continuous(minor_breaks = seq(0 , 100, 10), breaks = seq(0, 100, 20)) +
+			theme(legend.position = "bottom")
+		
+		transmission.g %>% ggplotly(tooltip = c("Transmission","(%)")) %>%
+			config(displayModeBar = F) %>%
+			layout(title = list(text = paste0('NZ COVID19 cases - Transmission Type',
+																				'<br>',
+																				'<sup>',
+																				date_stamp,
+																				'</sup>')),
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'),
+						 margin = m)
+	})
 	## Plot - DHB -------------------
 	output$dhb_plot <- renderPlotly({ #renderPlotly({
 		
@@ -722,6 +778,36 @@ server <- function(input, output,session) {
 						 uniformtext = list(minsize = plotly_text_size, mode = 'hide'),
 						 margin = m)
 	})
+	# ## Plot - Hospitalisations by DHB -------------------
+	output$hospital_dhb <- renderPlotly({
+		url <- main_moh_url
+
+		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
+			html_table()
+
+		hospital.df <- covid.ls[[2]]
+
+		hospital.df %<>% filter(DHB != "Total")
+
+		hospital.g <- ggplot(data = hospital.df) +
+			geom_col(mapping = aes(x = fct_reorder(DHB, -`Total cases`),y = `Total cases`,fill = DHB)) +
+			labs(title = "Hospitalisations by DHB",subtitle = "",x = "District Health Board",y = "Number of hospitalisations") +
+			scale_fill_viridis(discrete = T) +
+			theme_light(base_size = text_size) +
+		  theme(legend.position = "bottom") +
+			scale_fill_viridis(discrete = T) +
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
+
+		hospital.g %>% ggplotly(tooltip = c("DHB","Number of Hospitalisations")) %>%
+			config(displayModeBar = F) %>%
+			layout(title = list(text = paste0('NZ COVID19: Current Hospitalisations by DHB',
+																				'<br>',
+																				'<sup>',
+																				date_stamp,
+																				'</sup>')),
+						 uniformtext=list(minsize=plotly_text_size, mode='hide'),
+						 margin = m)
+	 })
 	## Plot - Gender -------------------
 	output$gender_plot <- renderPlotly({
 		covid_gender.df <- covid.df() %>%
