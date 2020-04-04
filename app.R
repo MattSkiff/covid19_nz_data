@@ -17,7 +17,7 @@ ui <- dashboardPage(
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
 			menuItem("Time Series by DHB", tabName = "time_dhb", icon = icon("chart-line")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
-			menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
+			#menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
 			menuItem("DHB", tabName = "dhb", icon = icon("arrows-alt")),
 			menuItem("Gender", tabName = "gender", icon = icon("venus-mars")),
 			menuItem("Age & Gender", tabName = "age_gender", icon = icon("bookmark")),
@@ -91,11 +91,11 @@ ui <- dashboardPage(
 								box(plotlyOutput("age_plot", height = 800),width = 12)
 							)),
 			# tab-age
-			tabItem(tabName = "ethnicity",
-							fluidRow(
-								box(plotlyOutput("ethnicity_plot", height = 800),width = 12),
-								helpText("MLAA = Middle Eastern, Latin America.")
-							)),
+			# tabItem(tabName = "ethnicity",
+			# 				fluidRow(
+			# 					box(plotlyOutput("ethnicity_plot", height = 800),width = 12),
+			# 					helpText("MLAA = Middle Eastern, Latin America.")
+			# 				)),
 			# tab-dhb
 			tabItem(tabName = "dhb",
 							fluidRow(
@@ -191,6 +191,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/01/20",708))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/02/20",797))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",868))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",950))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -657,39 +658,39 @@ server <- function(input, output,session) {
 						 margin = m) 
 	})
 	## Plot - Ethnicity -------------------
-	output$ethnicity_plot <- renderPlotly({
-		url <- main_moh_url
-		
-		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
-			html_table()
-		
-		ethnicity.df <- covid.ls[[3]]
-		
-		ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "Middle Eastern / Latin American / African"] <- "MLAA"
-		ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "European or Other"] <- "European / Other"
-		ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "Pacific People"] <- "Pacific"
-		
-		#covid.df$Ethnicity <- fct_infreq(covid.df$DHB, ordered = NA)
-		
-		age.g <- ggplot(data = ethnicity.df) +
-			geom_col(mapping = aes(x = fct_reorder(Ethnicity, -`No. of cases`),y = `No. of cases`,fill = Ethnicity)) + 
-			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Ethnicity",y = "Number of cases") +
-			scale_fill_viridis(discrete = T) +
-			theme_light(base_size = text_size) + 
-		  theme(legend.position = "bottom") +
-			scale_fill_viridis(discrete = T) +
-			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
-		
-		age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
-			config(displayModeBar = F) %>% 
-			layout(title = list(text = paste0('NZ COVID19: Cases by Ethnicity',
-																				'<br>',
-																				'<sup>',
-																				date_stamp,data_note_1,
-																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
-						 margin = m) 
-	})
+	# output$ethnicity_plot <- renderPlotly({
+	# 	url <- main_moh_url
+	# 	
+	# 	covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
+	# 		html_table()
+	# 	
+	# 	ethnicity.df <- covid.ls[[1]]
+	# 	
+	# 	ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "Middle Eastern / Latin American / African"] <- "MLAA"
+	# 	ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "European or Other"] <- "European / Other"
+	# 	ethnicity.df$Ethnicity[ethnicity.df$Ethnicity == "Pacific People"] <- "Pacific"
+	# 	
+	# 	#covid.df$Ethnicity <- fct_infreq(covid.df$DHB, ordered = NA)
+	# 	
+	# 	age.g <- ggplot(data = ethnicity.df) +
+	# 		geom_col(mapping = aes(x = fct_reorder(Ethnicity, -`No. of cases`),y = `No. of cases`,fill = Ethnicity)) + 
+	# 		labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Ethnicity",y = "Number of cases") +
+	# 		scale_fill_viridis(discrete = T) +
+	# 		theme_light(base_size = text_size) + 
+	# 	  theme(legend.position = "bottom") +
+	# 		scale_fill_viridis(discrete = T) +
+	# 		theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
+	# 	
+	# 	age.g %>% ggplotly(tooltip = c("Age","n")) %>% 
+	# 		config(displayModeBar = F) %>% 
+	# 		layout(title = list(text = paste0('NZ COVID19: Cases by Ethnicity',
+	# 																			'<br>',
+	# 																			'<sup>',
+	# 																			date_stamp,data_note_1,
+	# 																			'</sup>')),
+	# 					 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+	# 					 margin = m) 
+	# })
 	## Plot - DHB -------------------
 	output$dhb_plot <- renderPlotly({ #renderPlotly({
 		
@@ -732,7 +733,7 @@ server <- function(input, output,session) {
 			geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
 			labs(title = "NZ COVID19 cases - Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
 			scale_fill_viridis(discrete = T) +
-			theme_light(base_size = text_size) + t
+			theme_light(base_size = text_size) + 
 		  theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
