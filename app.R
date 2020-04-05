@@ -219,6 +219,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/02/20",797))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",868))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/04/20",950))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/05/20",1039))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -801,7 +802,7 @@ server <- function(input, output,session) {
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
 			html_table()
 		
-		hospital.df <- covid.ls[[2]]
+		hospital.df <- covid.ls[[3]]
 		
 		hospital.df %<>% filter(DHB != "Total")
 		
