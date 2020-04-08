@@ -1,5 +1,8 @@
 # COVID19 NZ Data Explorer
 
+UPDATE: The Ministry of Health of now provides a dashboard for COVID19 data:
+https://experience.arcgis.com/experience/e4e58e39a0ec410eb054f42012a27b4b
+
 A shiny app to view covid19 data scraped from the MoH website. This app is not official in any way shape or form and is a personal project. All data is now sourced from the Ministry of Health.
 
 Update: The Ministry of Health now has some charts and a map available on their website.
