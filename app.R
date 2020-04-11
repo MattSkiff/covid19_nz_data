@@ -604,8 +604,8 @@ server <- function(input, output,session) {
 																				'<br>',
 																				'<sup>',
 																				date_stamp," | Lines do not indicate flight paths | Includes confirmed & probable cases <br> 'Middle East' coded to Qatar | England coded to UK | 'Polynesia' coded to Tonga <br>",
-																				as.character(sum(is.na(geo.df$Country))),"/",cases_no,
-																				" people do not have prior location data available",
+																				cases_no - nrow(geo.df),"/",cases_no,
+																				" people do not have prior overseas travel information",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
 						 margin = m_world)  %>% 
