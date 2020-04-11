@@ -224,6 +224,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/07/20",1160))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/08/20",1210))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/09/20",1239))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/10/20",1283))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/11/20",1312))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -489,24 +491,40 @@ server <- function(input, output,session) {
 			l = 50,
 			r = 50,
 			b = 50,
-			t = 100,
+			t = 150,
 			pad = 2
 		)
+		
+		geo.df <- covid.df()
+		cases_no <- nrow(geo.df)
+		
+		geo.df %<>% 
+			rename(Country = `Last country before return`) %>%
+				filter(!is.na(Country))
 		
 		#cities.df <- read.csv('worldcities.csv')
 		countries.df <- read.csv('countries.csv')
 		
-		geo.df <- covid.df()
-		geo.df %<>% rename(Country = `Last country before return`)
+		geo.df$Country <- as.character(geo.df$Country)
+		geo.df$Country[geo.df$Country == "Polynesia (excludes Hawaii)"] <- "Vanuatu"
+		geo.df$Country[geo.df$Country == "Hong Kong (Special Administrative Region)"] <- "Hong Kong"
+		geo.df$Country[geo.df$Country == "Viet Nam"] <- "Vietnam"
+		geo.df$Country[geo.df$Country == "Northern America"] <- "United States of America"
+		geo.df$Country[geo.df$Country == "Middle East"] <- "Qatar"
+		geo.df$Country[geo.df$Country == "England"] <- "United Kingdom"
 		
+		countries.df$name <- as.character(countries.df$name)
+		countries.df$name[countries.df$name == "United States"] <- "United States of America"
 		
-		countries.df %<>% 
-			select(Latitude,Longitude,name) %>% 
-			rename(lat = Latitude,lng = Longitude,Country = name)
+		countries.df %<>%  
+			rename(lat = Latitude,lng = Longitude,Country = name) %>%
+			select(lat,lng,Country) 
 		
 		joined.df <- left_join(geo.df,countries.df,by = "Country")
 		
-		joined.df %<>% na.omit()
+		joined.df %<>% 
+			select(Country,lat,lng) %>%
+			na.omit()
 		
 		tally.df <- joined.df %>% group_by(Country,lat,lng) %>% tally()
 		
@@ -585,8 +603,8 @@ server <- function(input, output,session) {
 			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
 																				'<br>',
 																				'<sup>',
-																				date_stamp," | Lines do not indicate flight paths | Includes confirmed & probable cases <br>",
-																				as.character(sum(is.na(geo.df$Country))),"/",as.character(nrow(geo.df)),
+																				date_stamp," | Lines do not indicate flight paths | Includes confirmed & probable cases <br> 'Middle East' coded to Qatar | England coded to UK | 'Polynesia' coded to Tonga <br>",
+																				as.character(sum(is.na(geo.df$Country))),"/",cases_no,
 																				" people do not have prior location data available",
 																				'</sup>')),
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
@@ -758,7 +776,7 @@ server <- function(input, output,session) {
 			scale_y_continuous(minor_breaks = seq(0 , 100, 10), breaks = seq(0, 100, 20)) +
 			theme(legend.position = "bottom")
 		
-		transmission.g %>% ggplotly(tooltip = c("Transmission","(%)")) %>%
+		transmission.g %>% ggplotly(tooltip = c("Proportion","% of cases")) %>%
 			config(displayModeBar = F) %>%
 			layout(title = list(text = paste0('NZ COVID19 cases - Transmission Type',
 																				'<br>',
