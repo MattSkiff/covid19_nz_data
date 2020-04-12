@@ -225,7 +225,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/08/20",1210))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/09/20",1239))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/10/20",1283))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/11/20",1312))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/11/20",1312)) 
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/12/20",1330))
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
