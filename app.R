@@ -227,6 +227,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/10/20",1283))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/11/20",1312)) 
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/12/20",1330))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/13/20",1349))
+															 	
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -397,7 +399,10 @@ server <- function(input, output,session) {
 		ts.g <- ggplot(data = ts.df) +
 			geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_point(mapping = aes(x = variable,y = value,group = 1)) +
-			labs(title = "New Zealand COVID19 cases: Time Series (Cumulative)",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Cumulative number of cases") +
+			labs(title = "NZ COVID19 Cases: Time Series (Cumulative)",
+			     subtitle = paste0(date_stamp,data_note_1),
+			     x = "Date",
+			     y = "Cumulative number of cases") +
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
@@ -408,7 +413,7 @@ server <- function(input, output,session) {
 		ts.g %>% 
 			ggplotly() %>% #tooltip = c("Number of cases")
 			config(displayModeBar = F) %>% 
-			layout(title = list(text = paste0('NZ COVID19 Cases: Time Series',
+			layout(title = list(text = paste0('NZ COVID19 Cases: Time Series (Cumulative)',
 																				'<br>',
 																				'<sup>',
 																				date_stamp,data_note_1,
@@ -428,7 +433,10 @@ server <- function(input, output,session) {
 		nc.g <- ggplot(data = nc.df) +
 			#geom_line(mapping = aes(x = variable,y = new_cases,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_col(mapping = aes(x = variable,y = new_cases,group = 1)) +
-			labs(title = "NZ COVID19: New cases",subtitle = paste(Sys.time(),Sys.timezone()),x = "Date",y = "Number of new cases") +
+			labs(title = 'NZ COVID19 Cases: New Cases',
+			     subtitle = paste0(date_stamp,data_note_1),
+			     x = "Date",
+			     y = "Number of new cases") +
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
@@ -1089,3 +1097,10 @@ server <- function(input, output,session) {
 
 
 shinyApp(ui = ui, server = server)
+
+# png("today.png",
+# width = 1200,
+# height = 600,
+# type = "cairo")
+# grid.arrange(ts.g,nc.g,ncol = 2)
+# dev.off()
