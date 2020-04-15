@@ -228,6 +228,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/11/20",1312)) 
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/12/20",1330))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/13/20",1349))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/14/20",1366))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/15/20",1386))
 															 	
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
@@ -965,36 +967,14 @@ server <- function(input, output,session) {
 	#### Core Stats Table --------------------------
 	output$core_stats_table <- DT::renderDataTable({
 		url <- main_moh_url
-		#<- url %>%
-		
 		
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
 			html_table()
 		
 		core_stats.df <- covid.ls[[1]]
-		core_stats.df$Metric <- core_stats.df[,1]
-		core_stats.df[,1] <- NULL
-		
-		core_stats.df %<>% select(Metric,`New in last 24 hours`,`Total to date`)
 		
 		DT::datatable(core_stats.df,
-									options = list(dom = "t")) #%>%
-		# formatStyle('Metric',
-		# 						target = 'row',
-		# 						backgroundColor = styleEqual(c("Number of confirmed cases in New Zealand",
-		# 																					 "Number of probable cases",
-		# 																					 "Number of confirmed and probable cases",
-		# 																					 "Number of cases in hospital",
-		# 																					 "Number of recovered cases",
-		# 																					 "Number of deaths"),
-		# 																				 c('orange', 
-		# 																				 	 'purple',
-		# 																				 	 'red',
-		# 																				 	 'pink',
-		# 																				 	 'green',
-		# 																				 	 'black'
-		# 																				 	))
-		#						)
+									options = list(dom = "t")) 
 	})
 	#### Raw Data Table --------------------------
 	output$raw_table <- DT::renderDataTable({
