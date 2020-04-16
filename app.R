@@ -230,6 +230,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/13/20",1349))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/14/20",1366))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/15/20",1386))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/16/20",1401))
 															 	
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
@@ -974,7 +975,7 @@ server <- function(input, output,session) {
 		core_stats.df <- covid.ls[[1]]
 		
 		DT::datatable(core_stats.df,
-									options = list(dom = "t")) 
+									options = list(dom = "t"),colnames = c("Statistic","Total","Change in 24 hours")) 
 	})
 	#### Raw Data Table --------------------------
 	output$raw_table <- DT::renderDataTable({
