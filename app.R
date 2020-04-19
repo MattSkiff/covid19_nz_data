@@ -231,6 +231,9 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/14/20",1366))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/15/20",1386))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/16/20",1401))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/17/20",1409))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/18/20",1422))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/19/20",1431))
 															 	
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
@@ -1079,6 +1082,7 @@ server <- function(input, output,session) {
 
 shinyApp(ui = ui, server = server)
 
+# library(gridExtra)
 # png("today.png",
 # width = 1200,
 # height = 600,
