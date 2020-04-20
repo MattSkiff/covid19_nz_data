@@ -307,7 +307,7 @@ server <- function(input, output,session) {
 																																					"70+",
 																																					"Not Reported")) 
 															
-															covid.df$`Report Date` <- lubridate::as_date(covid.df$`Report Date`)
+															covid.df$`Report Date` <- as_date(parse_date_time(covid.df$`Report Date`, orders = c("d m y", "d B Y", "dmy")))
 															covid.df
 														})
 	## DHB Spatial Reactive -------------------
@@ -463,7 +463,7 @@ server <- function(input, output,session) {
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
 						 margin = m)
 	})
-	# ## Time Series by Region -------------
+	# ## Time Series by DHB -------------
 	output$time_dhb <- renderPlotly({
 		
 		m <- list(
@@ -484,7 +484,7 @@ server <- function(input, output,session) {
 		
 		ts_rc.g <- ggplot(data = ts_rc.df) +
 			geom_line(mapping = aes(x = `Report Date`,y = nc,group = DHB)) + 
-			geom_point(mapping = aes(x = `Report Date`,y = nc,group = DHB)) +
+			geom_point(mapping = aes(x = `Report Date`,y = nc,group = DHB),size = 0.75) +
 			labs(title = "NZ COVID19: Cumulative cases by DHB",subtitle = "Using Report Date",x = "",y = "Cumulative number of cases") +
 			theme_bw() +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
@@ -869,16 +869,16 @@ server <- function(input, output,session) {
 
 		dhb.df <- covid.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]])
 
-		dhb.df$`International travel` <- fct_explicit_na(fct_explicit_na(dhb.df$`International travel`, na_level = "Not Reported"))
+		dhb.df$`Overseas travel` <- fct_explicit_na(fct_explicit_na(dhb.df$`Overseas travel`, na_level = "Not Reported"))
 
 		dhb.df  %<>%
-			group_by(DHB,`International travel`) %>%
+			group_by(DHB,`Overseas travel`) %>%
 			tally() %>%
 			filter(DHB != "Total") %>%
 			na.omit()
 
 		dhb.g <- ggplot(data = dhb.df) +
-			geom_col(mapping = aes(x = DHB,y = n,fill = `International travel`,group = `International travel`)) +
+			geom_col(mapping = aes(x = DHB,y = n,fill = `Overseas travel`,group = `Overseas travel`)) +
 			labs(title = "NZ COVID19 cases - DHB / Travel",subtitle = "",x = "Location",y = "Number of cases") +
 			theme_light(base_size = text_size) +
 			theme(legend.position = "bottom") +
@@ -886,7 +886,7 @@ server <- function(input, output,session) {
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) 
 
 		dhb.g %>%
-			ggplotly(tooltip = c("DHB","n","International travel")) %>%
+			ggplotly(tooltip = c("DHB","n","Overseas travel")) %>%
 			config(displayModeBar = F) %>%
 			layout(title = list(text = paste0('NZ COVID19: Cases by DHB and Travel Type',
 																				'<br>',
@@ -909,11 +909,11 @@ server <- function(input, output,session) {
 		
 		dhb.df <- covid.df() #%>% filter(variable != "Total cases") #melt(covid.ls[[2]])
 
-		dhb.df$`International travel` <- fct_explicit_na(
-			fct_explicit_na(dhb.df$`International travel`, na_level = "Not Reported"))
+		dhb.df$`Overseas travel` <- fct_explicit_na(
+			fct_explicit_na(dhb.df$`Overseas travel`, na_level = "Not Reported"))
 
 		dhb.df  %<>%
-			group_by(DHB,`International travel`,`Report Date`) %>%
+			group_by(DHB,`Overseas travel`,`Report Date`) %>%
 			tally() %>%
 			filter(DHB != "Total") %>%
 			mutate(nc = cumsum(n)) %>%
@@ -921,10 +921,10 @@ server <- function(input, output,session) {
 			na.omit()
 
 		dhb.g <- ggplot(data = dhb.df) +
-			geom_line(mapping = aes(x = `Report Date`,y = nc,color = `International travel`,group = `International travel`)) +
-				geom_point(mapping = aes(x = `Report Date`,y = nc,color = `International travel`,group = `International travel`),size = 0.5) +
+			geom_line(mapping = aes(x = `Report Date`,y = nc,color = `Overseas travel`,group = `Overseas travel`)) +
+				geom_point(mapping = aes(x = `Report Date`,y = nc,color = `Overseas travel`,group = `Overseas travel`),size = 0.75) +
 			labs(title = "NZ COVID19 cases - DHB / Travel",subtitle = "",x = "",y = "Cumulative number of cases") +
-			theme_bw(base_size = text_size) +
+			theme_bw(base_size = text_size + 2) +
 			theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) +
 			facet_wrap(~DHB) +
