@@ -114,7 +114,7 @@ ui <- dashboardPage(
 			# tab-dhb-travel
 			tabItem(tabName = "dhb_travel_time",
 							fluidRow(
-								box(plotOutput("dhb_travel_time", height = 800),width = 12)
+								box(plotOutput("dhb_travel_time", height = 1000),width = 12)
 							)),
 			# tab-ethnicity
 			# tab-ethnicity
@@ -234,6 +234,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/17/20",1409))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/18/20",1422))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/19/20",1431))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/20/20",1440))
+															 	
 															 	
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
@@ -412,7 +414,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "2 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") #+
 		#geom_text(data = tail(ts.df),aes(x = variable - 0.5,y = value + max(new_cases)/20,label = value))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -446,7 +448,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "2 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") #+
 		#geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -487,7 +489,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
 			facet_wrap(~DHB) +
-			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "1 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") #+
 		
 		ts_rc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")

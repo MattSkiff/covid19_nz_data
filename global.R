@@ -19,8 +19,8 @@ library(readxl) # read moh excel file
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Last Updated: Sunday, 19/04/2020: Notice - an official Ministry of Health dashboard is now available"
-date_stamp <- "Current to Sunday, 19/04/2020"
+app_status <- "Last Updated: Monday, 20/04/2020: Notice - an official Ministry of Health dashboard is now available"
+date_stamp <- "Current to Monday, 20/04/2020"
 data_note_1 <- " | includes probable and confirmed infections"
 omission_string <- " unreported age cases omitted"
 
@@ -40,8 +40,8 @@ m <- list(
 	pad = 2
 )
 
-text_size = 12
-plotly_text_size = 12
+text_size = 10
+plotly_text_size = 10
 zoom_level_init = 7
 lat_init = -38.45145547118427
 lng_init = 175.717106114185
