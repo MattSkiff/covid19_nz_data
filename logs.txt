@@ -1,0 +1,1501 @@
+2020-04-12T04:28:03.701391+00:00 shinyapps[1974379]: 
+2020-04-12T04:28:03.506529+00:00 shinyapps[1974379]: 
+2020-04-12T04:28:03.507602+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-12T04:28:03.507603+00:00 shinyapps[1974379]: 
+2020-04-12T04:28:03.522340+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-12T04:28:03.522853+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-12T04:28:03.532431+00:00 shinyapps[1974379]: 
+2020-04-12T04:28:03.701393+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:38072
+2020-04-12T04:28:07.063178+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-12T04:28:07.230600+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-12T04:28:07.230622+00:00 shinyapps[1974379]: with 22 features
+2020-04-12T04:28:07.230602+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-12T04:28:07.230622+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-12T04:28:07.672743+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-12T04:28:07.856691+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-12T04:28:07.857121+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-12T04:28:07.857123+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-12T06:16:19.267358+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-12T06:16:19.267360+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-12T06:16:19.406899+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-12T06:16:19.406917+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-12T06:16:19.406918+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-12T06:16:19.406918+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-12T06:16:19.406919+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-12T06:16:19.406919+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-12T06:16:19.406919+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-12T06:16:19.406934+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-12T06:16:19.406949+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-12T06:16:19.407123+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-12T06:16:19.406927+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-12T06:16:19.555490+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-12T06:16:19.559725+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:19.559726+00:00 shinyapps[1974379]: Starting R with process ID: '25'
+2020-04-12T06:16:19.592967+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-12T06:16:19.618898+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-12T06:16:19.888536+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-12T06:16:19.888538+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-12T06:16:19.888539+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-12T06:16:19.888540+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-12T06:16:19.888539+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-12T06:16:19.888541+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-12T06:16:19.888540+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-12T06:16:19.888540+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-12T06:16:20.119020+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-12T06:16:20.119018+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.119021+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.119738+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-12T06:16:20.119738+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.119739+00:00 shinyapps[1974379]:     filter, lag
+2020-04-12T06:16:20.119739+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.121082+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.121081+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-12T06:16:20.121082+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-12T06:16:20.121082+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.191753+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-12T06:16:20.320751+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.320753+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-12T06:16:20.320754+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.321073+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-12T06:16:20.321074+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.321074+00:00 shinyapps[1974379]:     last_plot
+2020-04-12T06:16:20.321075+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.321905+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-12T06:16:20.321906+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.321906+00:00 shinyapps[1974379]:     filter
+2020-04-12T06:16:20.321907+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.322451+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-12T06:16:20.322452+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.322452+00:00 shinyapps[1974379]:     layout
+2020-04-12T06:16:20.322453+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.335384+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.335385+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-12T06:16:20.335385+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.335693+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-12T06:16:20.335693+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.335694+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-12T06:16:20.335694+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.343497+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.343500+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.343499+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-12T06:16:20.343793+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-12T06:16:20.343794+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.343795+00:00 shinyapps[1974379]:     box
+2020-04-12T06:16:20.343795+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.508635+00:00 shinyapps[1974379]: 
+2020-04-12T06:16:20.508637+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:44707
+2020-04-12T06:16:23.674214+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-12T06:16:23.819837+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-12T06:16:23.819864+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-12T06:16:23.819865+00:00 shinyapps[1974379]: with 22 features
+2020-04-12T06:16:23.819877+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-12T06:16:24.266598+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-12T06:16:24.453168+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-12T06:16:24.453589+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-12T06:16:24.453590+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-12T06:17:11.918826+00:00 shinyapps[1974379]: Warning: `line.width` does not currently support multiple values.
+2020-04-12T09:58:27.126964+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-12T09:58:27.268866+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-12T09:58:27.126966+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-12T09:58:27.268867+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-12T09:58:27.268846+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-12T09:58:27.268866+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-12T09:58:27.268865+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-12T09:58:27.268873+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-12T09:58:27.268865+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-12T09:58:27.268900+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-12T09:58:27.268910+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-12T09:58:27.269090+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-12T09:58:27.268881+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-12T09:58:27.467559+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-12T09:58:27.472099+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:27.472100+00:00 shinyapps[1974379]: Starting R with process ID: '26'
+2020-04-12T09:58:27.505589+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-12T09:58:27.541407+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-12T09:58:27.917832+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-12T09:58:27.917834+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-12T09:58:27.917835+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-12T09:58:27.917836+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-12T09:58:27.917835+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-12T09:58:27.917836+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-12T09:58:27.917836+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-12T09:58:27.917837+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-12T09:58:28.215187+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.215189+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-12T09:58:28.215189+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.215884+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-12T09:58:28.215886+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.215887+00:00 shinyapps[1974379]:     filter, lag
+2020-04-12T09:58:28.215887+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.217194+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-12T09:58:28.217195+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.217196+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-12T09:58:28.217196+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.322745+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-12T09:58:28.489685+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.489686+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-12T09:58:28.489687+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.489979+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.489978+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-12T09:58:28.489979+00:00 shinyapps[1974379]:     last_plot
+2020-04-12T09:58:28.489980+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.490787+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-12T09:58:28.490789+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.491278+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-12T09:58:28.491279+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.491280+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.491279+00:00 shinyapps[1974379]:     layout
+2020-04-12T09:58:28.490788+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.490788+00:00 shinyapps[1974379]:     filter
+2020-04-12T09:58:28.507146+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.507147+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-12T09:58:28.507147+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.506858+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.506859+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-12T09:58:28.506859+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.507146+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-12T09:58:28.518295+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.518296+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-12T09:58:28.518296+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.518576+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-12T09:58:28.518576+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.518577+00:00 shinyapps[1974379]:     box
+2020-04-12T09:58:28.518577+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.689977+00:00 shinyapps[1974379]: 
+2020-04-12T09:58:28.689980+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:35217
+2020-04-13T02:40:26.178031+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-13T02:40:26.178034+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-13T02:40:26.318853+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-13T02:40:26.318916+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-13T02:40:26.318916+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-13T02:40:26.318917+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-13T02:40:26.318917+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-13T02:40:26.318927+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-13T02:40:26.318928+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-13T02:40:26.318928+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-13T02:40:26.318937+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-13T02:40:26.318943+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-13T02:40:26.319140+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-13T02:40:26.507495+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-13T02:40:26.512323+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:26.512324+00:00 shinyapps[1974379]: Starting R with process ID: '25'
+2020-04-13T02:40:26.547845+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-13T02:40:26.587053+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-13T02:40:26.947048+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-13T02:40:26.947050+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-13T02:40:26.947051+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-13T02:40:26.947052+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-13T02:40:26.947052+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-13T02:40:26.947052+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-13T02:40:26.947053+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-13T02:40:26.947053+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-13T02:40:27.243668+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.243670+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-13T02:40:27.243671+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.244344+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-13T02:40:27.244345+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.244346+00:00 shinyapps[1974379]:     filter, lag
+2020-04-13T02:40:27.244346+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.245667+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-13T02:40:27.245668+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.338670+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-13T02:40:27.245668+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-13T02:40:27.245667+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.498421+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.498423+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.498746+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-13T02:40:27.498747+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.498747+00:00 shinyapps[1974379]:     last_plot
+2020-04-13T02:40:27.498748+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.499529+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.498422+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-13T02:40:27.500018+00:00 shinyapps[1974379]:     layout
+2020-04-13T02:40:27.500018+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.514665+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.499528+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-13T02:40:27.514666+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-13T02:40:27.500017+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T02:40:27.500018+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.499529+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.514666+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.499529+00:00 shinyapps[1974379]:     filter
+2020-04-13T02:40:27.514947+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-13T02:40:27.514948+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.514948+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-13T02:40:27.514949+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.524732+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.524733+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.524733+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-13T02:40:27.524989+00:00 shinyapps[1974379]:     box
+2020-04-13T02:40:27.524989+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.524990+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.524988+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T02:40:27.674944+00:00 shinyapps[1974379]: 
+2020-04-13T02:40:27.674946+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:44272
+2020-04-13T02:40:45.257671+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-13T02:40:45.407095+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-13T02:40:45.407097+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-13T02:40:45.407113+00:00 shinyapps[1974379]: with 22 features
+2020-04-13T02:40:45.407114+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-13T02:40:45.833542+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-13T02:40:46.007849+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-13T02:40:46.008234+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-13T02:40:46.008235+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-13T02:43:08.274955+00:00 shinyapps[1974379]: Warning: Use of `dhb.df$DHB` is discouraged. Use `DHB` instead.
+2020-04-13T02:44:04.995081+00:00 shinyapps[1974379]: Scale for 'fill' is already present. Adding another scale for 'fill', which
+2020-04-13T02:44:04.995083+00:00 shinyapps[1974379]: will replace the existing scale.
+2020-04-13T03:31:54.846349+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-13T03:31:54.846351+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-13T03:31:54.982922+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-13T03:31:54.982943+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-13T03:31:54.982944+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-13T03:31:54.982944+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-13T03:31:54.982945+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-13T03:31:54.982945+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-13T03:31:54.982945+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-13T03:31:54.982945+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-13T03:31:54.982946+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-13T03:31:54.982992+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-13T03:31:54.983155+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-13T03:31:55.122646+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-13T03:31:55.127308+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.127309+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-13T03:31:55.159759+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-13T03:31:55.184313+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-13T03:31:55.440186+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-13T03:31:55.440188+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-13T03:31:55.440189+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-13T03:31:55.440189+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-13T03:31:55.440190+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-13T03:31:55.440190+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-13T03:31:55.661069+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.661779+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-13T03:31:55.440190+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-13T03:31:55.440191+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-13T03:31:55.661066+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.661068+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-13T03:31:55.661779+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.661780+00:00 shinyapps[1974379]:     filter, lag
+2020-04-13T03:31:55.661780+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.663156+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-13T03:31:55.663158+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.663158+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-13T03:31:55.663159+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.729976+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-13T03:31:55.858752+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.858754+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-13T03:31:55.858755+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.859033+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-13T03:31:55.859034+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.859034+00:00 shinyapps[1974379]:     last_plot
+2020-04-13T03:31:55.859035+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.859835+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-13T03:31:55.859836+00:00 shinyapps[1974379]:     filter
+2020-04-13T03:31:55.859837+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.860308+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T03:31:55.860309+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.859836+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.860309+00:00 shinyapps[1974379]:     layout
+2020-04-13T03:31:55.872398+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.872399+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-13T03:31:55.872399+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.872704+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-13T03:31:55.872705+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.872705+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-13T03:31:55.860309+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.880853+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.881122+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T03:31:55.881123+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.880852+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-13T03:31:55.881123+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.872706+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:55.881123+00:00 shinyapps[1974379]:     box
+2020-04-13T03:31:55.880850+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:56.040552+00:00 shinyapps[1974379]: 
+2020-04-13T03:31:56.040554+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:41011
+2020-04-13T03:31:58.382790+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-13T03:31:58.518869+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-13T03:31:58.518870+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-13T03:31:58.518909+00:00 shinyapps[1974379]: with 22 features
+2020-04-13T03:31:58.518911+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-13T03:31:58.952712+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-13T03:31:59.128760+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-13T03:31:59.129150+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-13T03:31:59.129151+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-13T03:44:43.870008+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-13T03:44:43.870012+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-13T03:44:44.009327+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-13T03:44:44.009329+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-13T03:44:44.009344+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-13T03:44:44.009344+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-13T03:44:44.009345+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-13T03:44:44.009345+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-13T03:44:44.009345+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-13T03:44:44.009345+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-13T03:44:44.009352+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-13T03:44:44.009386+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-13T03:44:44.009543+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-13T03:44:44.147434+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-13T03:44:44.152562+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.152563+00:00 shinyapps[1974379]: Starting R with process ID: '265'
+2020-04-13T03:44:44.184787+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-13T03:44:44.209808+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-13T03:44:44.469407+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-13T03:44:44.469409+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-13T03:44:44.469411+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-13T03:44:44.469410+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-13T03:44:44.469411+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-13T03:44:44.469411+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-13T03:44:44.469412+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-13T03:44:44.469412+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-13T03:44:44.688057+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.688059+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-13T03:44:44.690098+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.690097+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-13T03:44:44.690098+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-13T03:44:44.690099+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.688765+00:00 shinyapps[1974379]:     filter, lag
+2020-04-13T03:44:44.688766+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.688060+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.688763+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-13T03:44:44.688765+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.756147+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-13T03:44:44.883913+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.883915+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-13T03:44:44.883916+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.884205+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-13T03:44:44.884206+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.884207+00:00 shinyapps[1974379]:     last_plot
+2020-04-13T03:44:44.884207+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.885015+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-13T03:44:44.885016+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.885016+00:00 shinyapps[1974379]:     filter
+2020-04-13T03:44:44.885016+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.885507+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T03:44:44.885508+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.885508+00:00 shinyapps[1974379]:     layout
+2020-04-13T03:44:44.885508+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.897141+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.897143+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-13T03:44:44.897143+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.897429+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-13T03:44:44.897430+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.897430+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-13T03:44:44.897431+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.905365+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.905367+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-13T03:44:44.905367+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.905617+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T03:44:44.905618+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:44.905619+00:00 shinyapps[1974379]:     box
+2020-04-13T03:44:44.905619+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:45.063789+00:00 shinyapps[1974379]: 
+2020-04-13T03:44:45.063791+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:37975
+2020-04-13T07:55:03.015162+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-13T07:55:03.015169+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-13T07:55:03.158960+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-13T07:55:03.158962+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-13T07:55:03.159027+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-13T07:55:03.159028+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-13T07:55:03.159029+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-13T07:55:03.159029+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-13T07:55:03.159030+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-13T07:55:03.159044+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-13T07:55:03.159044+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-13T07:55:03.159044+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-13T07:55:03.159207+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-13T07:55:03.344525+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-13T07:55:03.349247+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:03.349249+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-13T07:55:03.381309+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-13T07:55:03.416419+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-13T07:55:03.755565+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-13T07:55:03.755566+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-13T07:55:03.755567+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-13T07:55:03.755568+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-13T07:55:03.755568+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-13T07:55:03.755568+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-13T07:55:03.755569+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-13T07:55:03.755569+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-13T07:55:04.062678+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.062681+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-13T07:55:04.062681+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.063734+00:00 shinyapps[1974379]:     filter, lag
+2020-04-13T07:55:04.063732+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-13T07:55:04.063733+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.063734+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.065568+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-13T07:55:04.065569+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.065570+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-13T07:55:04.065570+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.176650+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-13T07:55:04.339841+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.339842+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-13T07:55:04.340128+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-13T07:55:04.340130+00:00 shinyapps[1974379]:     last_plot
+2020-04-13T07:55:04.339843+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.340130+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.340130+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.340912+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.341382+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T07:55:04.340911+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-13T07:55:04.340912+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.340912+00:00 shinyapps[1974379]:     filter
+2020-04-13T07:55:04.341383+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.341383+00:00 shinyapps[1974379]:     layout
+2020-04-13T07:55:04.341384+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.355528+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.355530+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-13T07:55:04.355530+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.355811+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-13T07:55:04.355812+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.355812+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-13T07:55:04.355812+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.366899+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.366900+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-13T07:55:04.366900+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.367154+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.367154+00:00 shinyapps[1974379]:     box
+2020-04-13T07:55:04.367153+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T07:55:04.367155+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.536737+00:00 shinyapps[1974379]: 
+2020-04-13T07:55:04.536739+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:44969
+2020-04-13T21:27:43.906225+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-13T21:27:43.906227+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-13T21:27:44.076164+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-13T21:27:44.076182+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-13T21:27:44.076183+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-13T21:27:44.076184+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-13T21:27:44.076191+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-13T21:27:44.076221+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-13T21:27:44.076225+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-13T21:27:44.076246+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-13T21:27:44.076264+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-13T21:27:44.076297+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-13T21:27:44.076539+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-13T21:27:44.340864+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-13T21:27:44.346251+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:44.346252+00:00 shinyapps[1974379]: Starting R with process ID: '23'
+2020-04-13T21:27:44.387516+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-13T21:27:44.434701+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-13T21:27:44.884883+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-13T21:27:44.884877+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-13T21:27:44.884880+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-13T21:27:44.884881+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-13T21:27:44.884882+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-13T21:27:44.884882+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-13T21:27:44.884882+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-13T21:27:44.884883+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-13T21:27:45.250640+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.250642+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-13T21:27:45.250643+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.251382+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-13T21:27:45.251383+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.251383+00:00 shinyapps[1974379]:     filter, lag
+2020-04-13T21:27:45.251384+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.252824+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-13T21:27:45.252825+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.252826+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-13T21:27:45.252827+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.380592+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-13T21:27:45.591072+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.591075+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-13T21:27:45.591076+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.591394+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-13T21:27:45.591395+00:00 shinyapps[1974379]:     last_plot
+2020-04-13T21:27:45.591395+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.591395+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.592235+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-13T21:27:45.592237+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.592237+00:00 shinyapps[1974379]:     filter
+2020-04-13T21:27:45.592238+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.592771+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T21:27:45.592772+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.592772+00:00 shinyapps[1974379]:     layout
+2020-04-13T21:27:45.592773+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.611156+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.611158+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-13T21:27:45.611158+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.611477+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-13T21:27:45.611477+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.611478+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-13T21:27:45.611479+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.627217+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.627218+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-13T21:27:45.627219+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.627515+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-13T21:27:45.627515+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.627516+00:00 shinyapps[1974379]:     box
+2020-04-13T21:27:45.627516+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.848443+00:00 shinyapps[1974379]: 
+2020-04-13T21:27:45.848444+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:46685
+2020-04-13T21:28:02.823361+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-13T21:28:02.991894+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-13T21:28:02.991896+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-13T21:28:02.991916+00:00 shinyapps[1974379]: with 22 features
+2020-04-13T21:28:02.991917+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-13T21:28:03.480675+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-13T21:28:03.672256+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-13T21:28:03.672676+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-13T21:28:03.672678+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-14T10:35:54.168733+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-14T10:35:54.168735+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-14T10:35:54.314048+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-14T10:35:54.314102+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-14T10:35:54.314103+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-14T10:35:54.314103+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-14T10:35:54.314103+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-14T10:35:54.314115+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-14T10:35:54.314115+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-14T10:35:54.314116+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-14T10:35:54.314116+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-14T10:35:54.314125+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-14T10:35:54.314307+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-14T10:35:54.452626+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-14T10:35:54.456902+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:54.456903+00:00 shinyapps[1974379]: Starting R with process ID: '24'
+2020-04-14T10:35:54.521663+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-14T10:35:54.494862+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-14T10:35:54.800330+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-14T10:35:55.027953+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:54.800326+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-14T10:35:54.800328+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-14T10:35:54.800329+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-14T10:35:54.800329+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-14T10:35:54.800329+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-14T10:35:55.027955+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.028688+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-14T10:35:54.800330+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-14T10:35:54.800331+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-14T10:35:55.027955+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-14T10:35:55.028690+00:00 shinyapps[1974379]:     filter, lag
+2020-04-14T10:35:55.028689+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.030122+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-14T10:35:55.030123+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.028690+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.030124+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-14T10:35:55.030124+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.246186+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-14T10:35:55.246187+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.247413+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.100410+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-14T10:35:55.245873+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.245875+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-14T10:35:55.245876+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.246187+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.246187+00:00 shinyapps[1974379]:     last_plot
+2020-04-14T10:35:55.247413+00:00 shinyapps[1974379]:     filter
+2020-04-14T10:35:55.247414+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.247937+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-14T10:35:55.247937+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.247938+00:00 shinyapps[1974379]:     layout
+2020-04-14T10:35:55.247938+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.247413+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-14T10:35:55.261211+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.261213+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-14T10:35:55.261214+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.261667+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-14T10:35:55.261675+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-14T10:35:55.261668+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.261675+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.270674+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.270676+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-14T10:35:55.270676+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.270991+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-14T10:35:55.270992+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.270992+00:00 shinyapps[1974379]:     box
+2020-04-14T10:35:55.270993+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.442717+00:00 shinyapps[1974379]: 
+2020-04-14T10:35:55.442719+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:43808
+2020-04-14T11:28:27.715993+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-14T11:28:27.715995+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-14T11:28:27.863779+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-14T11:28:27.863828+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-14T11:28:27.863830+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-14T11:28:27.863830+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-14T11:28:27.863831+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-14T11:28:27.863838+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-14T11:28:27.863839+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-14T11:28:27.863839+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-14T11:28:27.863855+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-14T11:28:27.863866+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-14T11:28:27.864046+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-14T11:28:28.060499+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-14T11:28:28.065649+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.065650+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-14T11:28:28.104988+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-14T11:28:28.157077+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-14T11:28:28.531582+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-14T11:28:28.531584+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-14T11:28:28.531585+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-14T11:28:28.531586+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-14T11:28:28.531586+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-14T11:28:28.531586+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-14T11:28:28.531587+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-14T11:28:28.531587+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-14T11:28:28.833338+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.833340+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-14T11:28:28.833341+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.834071+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-14T11:28:28.834073+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.834073+00:00 shinyapps[1974379]:     filter, lag
+2020-04-14T11:28:28.834073+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.835458+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-14T11:28:28.835459+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.835459+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-14T11:28:28.835460+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:28.925589+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-14T11:28:29.092627+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.092628+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-14T11:28:29.092628+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.092946+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-14T11:28:29.092946+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.092947+00:00 shinyapps[1974379]:     last_plot
+2020-04-14T11:28:29.092947+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.093763+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-14T11:28:29.093764+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.093764+00:00 shinyapps[1974379]:     filter
+2020-04-14T11:28:29.093764+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.094278+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-14T11:28:29.094279+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.094279+00:00 shinyapps[1974379]:     layout
+2020-04-14T11:28:29.094279+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.109639+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.109640+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-14T11:28:29.109641+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.109931+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-14T11:28:29.109932+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.109932+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-14T11:28:29.109933+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.120376+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.120376+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-14T11:28:29.120377+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.120652+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-14T11:28:29.120653+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.120653+00:00 shinyapps[1974379]:     box
+2020-04-14T11:28:29.120653+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.300750+00:00 shinyapps[1974379]: 
+2020-04-14T11:28:29.300753+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:36785
+2020-04-14T11:28:32.843901+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-14T11:28:32.999859+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-14T11:28:32.999861+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-14T11:28:32.999877+00:00 shinyapps[1974379]: with 22 features
+2020-04-14T11:28:32.999878+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-14T11:28:33.464395+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-14T11:28:33.648881+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-14T11:28:33.649289+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-14T11:28:33.649290+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-15T01:00:28.811421+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-15T01:00:28.811422+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-15T01:00:28.968406+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-15T01:00:28.968466+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-15T01:00:28.968469+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-15T01:00:28.968468+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-15T01:00:28.968469+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-15T01:00:28.968488+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-15T01:00:28.969138+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-15T01:00:28.968488+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-15T01:00:28.968489+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-15T01:00:28.968515+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-15T01:00:28.969137+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-15T01:00:29.234173+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-15T01:00:29.239751+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:29.239752+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-15T01:00:29.279069+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-15T01:00:29.323792+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-15T01:00:29.794213+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-15T01:00:29.794215+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-15T01:00:29.794216+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-15T01:00:29.794217+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-15T01:00:29.794217+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-15T01:00:29.794218+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-15T01:00:29.794219+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-15T01:00:29.794216+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-15T01:00:30.154832+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.154835+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.155560+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-15T01:00:30.154834+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-15T01:00:30.155561+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.155561+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.155561+00:00 shinyapps[1974379]:     filter, lag
+2020-04-15T01:00:30.156943+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.156944+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-15T01:00:30.156943+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-15T01:00:30.156944+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.287941+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-15T01:00:30.478070+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.478073+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.478386+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-15T01:00:30.478072+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-15T01:00:30.478387+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.478388+00:00 shinyapps[1974379]:     last_plot
+2020-04-15T01:00:30.479244+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.478388+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.479243+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-15T01:00:30.479243+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.479244+00:00 shinyapps[1974379]:     filter
+2020-04-15T01:00:30.479759+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.479759+00:00 shinyapps[1974379]:     layout
+2020-04-15T01:00:30.479758+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T01:00:30.479759+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.497243+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.497245+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-15T01:00:30.497245+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.497541+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-15T01:00:30.497541+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.509194+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.497542+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.497542+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-15T01:00:30.509196+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-15T01:00:30.509196+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.509467+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T01:00:30.509468+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.509468+00:00 shinyapps[1974379]:     box
+2020-04-15T01:00:30.509469+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.713171+00:00 shinyapps[1974379]: 
+2020-04-15T01:00:30.713173+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:37199
+2020-04-15T01:00:39.017920+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-15T01:00:39.189982+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-15T01:00:39.189984+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-15T01:00:39.189999+00:00 shinyapps[1974379]: with 22 features
+2020-04-15T01:00:39.189999+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-15T01:00:39.651794+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-15T01:00:39.845437+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-15T01:00:39.845854+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-15T01:00:39.845853+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-15T01:14:38.037356+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-15T01:14:38.050420+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-15T01:14:38.050422+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-15T01:14:38.050436+00:00 shinyapps[1974379]: with 22 features
+2020-04-15T01:14:38.050437+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-15T01:14:38.615450+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-15T01:14:41.537397+00:00 shinyapps[1974379]: Warning: Error in .f: object 'New in last 24 hours' not found
+2020-04-15T01:14:41.542951+00:00 shinyapps[1974379]:   129: .f
+2020-04-15T01:14:41.542953+00:00 shinyapps[1974379]:   128: map
+2020-04-15T01:14:41.542954+00:00 shinyapps[1974379]:   127: map_if
+2020-04-15T01:14:41.542955+00:00 shinyapps[1974379]:   126: vars_select_eval
+2020-04-15T01:14:41.542955+00:00 shinyapps[1974379]:   125: tidyselect::vars_select
+2020-04-15T01:14:41.542955+00:00 shinyapps[1974379]:   124: select.data.frame
+2020-04-15T01:14:41.542956+00:00 shinyapps[1974379]:   122: function_list[[k]]
+2020-04-15T01:14:41.542956+00:00 shinyapps[1974379]:   120: freduce
+2020-04-15T01:14:41.542956+00:00 shinyapps[1974379]:   119: _fseq
+2020-04-15T01:14:41.542957+00:00 shinyapps[1974379]:   118: eval
+2020-04-15T01:14:41.542957+00:00 shinyapps[1974379]:   117: eval
+2020-04-15T01:14:41.542957+00:00 shinyapps[1974379]:   115: %<>%
+2020-04-15T01:14:41.542958+00:00 shinyapps[1974379]:   114: exprFunc [/srv/connect/apps/covid_nz/app.R#972]
+2020-04-15T01:14:41.542958+00:00 shinyapps[1974379]:   113: widgetFunc
+2020-04-15T01:14:41.542959+00:00 shinyapps[1974379]:   112: func
+2020-04-15T01:14:41.542959+00:00 shinyapps[1974379]:    99: origRenderFunc
+2020-04-15T01:14:41.542959+00:00 shinyapps[1974379]:    98: renderFunc
+2020-04-15T01:14:41.542960+00:00 shinyapps[1974379]:    94: origRenderFunc
+2020-04-15T01:14:41.542960+00:00 shinyapps[1974379]:    13: runApp
+2020-04-15T01:14:41.542994+00:00 shinyapps[1974379]:    12: fn
+2020-04-15T01:14:41.542995+00:00 shinyapps[1974379]:     7: connect$retry
+2020-04-15T01:14:41.542960+00:00 shinyapps[1974379]:    93: output$core_stats_table
+2020-04-15T01:14:41.542996+00:00 shinyapps[1974379]:     6: eval
+2020-04-15T01:14:41.542996+00:00 shinyapps[1974379]:     5: eval
+2020-04-15T01:15:05.852218+00:00 shinyapps[1974379]: Warning: Factor `Gender` contains implicit NA, consider using `forcats::fct_explicit_na`
+2020-04-15T01:47:13.791286+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-15T01:47:13.949327+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-15T01:47:13.791288+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-15T01:47:13.949300+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-15T01:47:13.949317+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-15T01:47:13.949319+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-15T01:47:13.949319+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-15T01:47:13.949319+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-15T01:47:13.949320+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-15T01:47:13.949335+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-15T01:47:13.949354+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-15T01:47:13.949389+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-15T01:47:13.949574+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-15T01:47:14.179780+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-15T01:47:14.184873+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:14.184874+00:00 shinyapps[1974379]: Starting R with process ID: '23'
+2020-04-15T01:47:14.226007+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-15T01:47:14.270183+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-15T01:47:14.680895+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-15T01:47:14.680897+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-15T01:47:14.680898+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-15T01:47:14.680899+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-15T01:47:14.680899+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-15T01:47:14.680899+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-15T01:47:14.680900+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-15T01:47:14.680900+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-15T01:47:15.028750+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.028752+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-15T01:47:15.028753+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.029474+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-15T01:47:15.029475+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.029475+00:00 shinyapps[1974379]:     filter, lag
+2020-04-15T01:47:15.029475+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.030867+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-15T01:47:15.030868+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.030868+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-15T01:47:15.030868+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.142496+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-15T01:47:15.341376+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.341378+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-15T01:47:15.341379+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.341687+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-15T01:47:15.341687+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.341688+00:00 shinyapps[1974379]:     last_plot
+2020-04-15T01:47:15.341688+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.342682+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-15T01:47:15.342683+00:00 shinyapps[1974379]:     filter
+2020-04-15T01:47:15.342683+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.343197+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T01:47:15.342682+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.343198+00:00 shinyapps[1974379]:     layout
+2020-04-15T01:47:15.343198+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.343198+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.360930+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.360931+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-15T01:47:15.360932+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.361234+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-15T01:47:15.361235+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.361236+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-15T01:47:15.361236+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.374756+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.374758+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-15T01:47:15.374758+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.375041+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T01:47:15.375041+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.375042+00:00 shinyapps[1974379]:     box
+2020-04-15T01:47:15.576825+00:00 shinyapps[1974379]: 
+2020-04-15T01:47:15.576827+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:33005
+2020-04-15T01:47:15.375042+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:03.149283+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-15T05:15:03.314461+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-15T05:15:03.314470+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-15T05:15:03.314689+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-15T05:15:03.314431+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-15T05:15:03.314449+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-15T05:15:03.314448+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-15T05:15:03.314450+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-15T05:15:03.149285+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-15T05:15:03.314450+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-15T05:15:03.314450+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-15T05:15:03.314461+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-15T05:15:03.314450+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-15T05:15:03.544290+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-15T05:15:03.549635+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:03.549636+00:00 shinyapps[1974379]: Starting R with process ID: '25'
+2020-04-15T05:15:03.593866+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-15T05:15:03.644555+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-15T05:15:04.049528+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-15T05:15:04.049531+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-15T05:15:04.049532+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-15T05:15:04.049532+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-15T05:15:04.049532+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-15T05:15:04.049533+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-15T05:15:04.049533+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-15T05:15:04.049533+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-15T05:15:04.389870+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.391843+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.503424+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-15T05:15:04.389067+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.389068+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-15T05:15:04.389069+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.389871+00:00 shinyapps[1974379]:     filter, lag
+2020-04-15T05:15:04.389869+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-15T05:15:04.391842+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.389871+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.391841+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-15T05:15:04.391843+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-15T05:15:04.702031+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.702032+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-15T05:15:04.702033+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.702345+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-15T05:15:04.702346+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.702346+00:00 shinyapps[1974379]:     last_plot
+2020-04-15T05:15:04.702346+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.703624+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-15T05:15:04.703624+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.703625+00:00 shinyapps[1974379]:     filter
+2020-04-15T05:15:04.703625+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.704158+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T05:15:04.704159+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.704159+00:00 shinyapps[1974379]:     layout
+2020-04-15T05:15:04.704160+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.722714+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.722716+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-15T05:15:04.722717+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.723027+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-15T05:15:04.723028+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.723028+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-15T05:15:04.943619+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:34242
+2020-04-15T05:15:04.723029+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.736238+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.736239+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-15T05:15:04.736240+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.736542+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T05:15:04.736543+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.736543+00:00 shinyapps[1974379]:     box
+2020-04-15T05:15:04.736544+00:00 shinyapps[1974379]: 
+2020-04-15T05:15:04.943617+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:46.910256+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-15T05:17:46.910258+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-15T05:17:47.047483+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-15T05:17:47.047499+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-15T05:17:47.047501+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-15T05:17:47.047538+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-15T05:17:47.047547+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-15T05:17:47.047738+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-15T05:17:47.047501+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-15T05:17:47.047502+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-15T05:17:47.047508+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-15T05:17:47.047509+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-15T05:17:47.047525+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-15T05:17:47.184399+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-15T05:17:47.188737+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.188737+00:00 shinyapps[1974379]: Starting R with process ID: '76'
+2020-04-15T05:17:47.222055+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-15T05:17:47.246770+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-15T05:17:47.496433+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-15T05:17:47.496435+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-15T05:17:47.496436+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-15T05:17:47.496436+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-15T05:17:47.496436+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-15T05:17:47.496437+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-15T05:17:47.712705+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.713407+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-15T05:17:47.713408+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.713408+00:00 shinyapps[1974379]:     filter, lag
+2020-04-15T05:17:47.713409+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.714838+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-15T05:17:47.714839+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.714840+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-15T05:17:47.714840+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.496437+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-15T05:17:47.496438+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-15T05:17:47.712701+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.712704+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-15T05:17:47.779526+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-15T05:17:47.906145+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-15T05:17:47.906144+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.906146+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.906450+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-15T05:17:47.929074+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.906451+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.929073+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-15T05:17:47.906451+00:00 shinyapps[1974379]:     last_plot
+2020-04-15T05:17:47.929382+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T05:17:47.906451+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.929383+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.907312+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-15T05:17:47.929383+00:00 shinyapps[1974379]:     box
+2020-04-15T05:17:47.907313+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.929383+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.907313+00:00 shinyapps[1974379]:     filter
+2020-04-15T05:17:47.907313+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.907829+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T05:17:47.907830+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.907830+00:00 shinyapps[1974379]:     layout
+2020-04-15T05:17:47.907831+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.920850+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.920851+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-15T05:17:47.920852+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.921171+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-15T05:17:47.921172+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.921173+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-15T05:17:47.929072+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:47.921173+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:48.093552+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:36606
+2020-04-15T05:17:48.093550+00:00 shinyapps[1974379]: 
+2020-04-15T05:17:51.433447+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-15T05:17:51.589811+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-15T05:17:51.589813+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-15T05:17:51.589828+00:00 shinyapps[1974379]: with 22 features
+2020-04-15T05:17:51.589829+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-15T05:17:52.036899+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-15T05:17:52.224618+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-15T05:17:52.224236+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-15T05:17:52.224619+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-15T05:17:54.005384+00:00 shinyapps[1974379]: Warning: Error in .f: object 'New in last 24 hours' not found
+2020-04-15T05:17:54.011389+00:00 shinyapps[1974379]:   129: .f
+2020-04-15T05:17:54.011391+00:00 shinyapps[1974379]:   128: map
+2020-04-15T05:17:54.011392+00:00 shinyapps[1974379]:   127: map_if
+2020-04-15T05:17:54.011393+00:00 shinyapps[1974379]:   125: tidyselect::vars_select
+2020-04-15T05:17:54.011393+00:00 shinyapps[1974379]:   126: vars_select_eval
+2020-04-15T05:17:54.011393+00:00 shinyapps[1974379]:   124: select.data.frame
+2020-04-15T05:17:54.011394+00:00 shinyapps[1974379]:   122: function_list[[k]]
+2020-04-15T05:17:54.011394+00:00 shinyapps[1974379]:   120: freduce
+2020-04-15T05:17:54.011396+00:00 shinyapps[1974379]:   115: %<>%
+2020-04-15T05:17:54.011396+00:00 shinyapps[1974379]:   114: exprFunc [/srv/connect/apps/covid_nz/app.R#972]
+2020-04-15T05:17:54.011394+00:00 shinyapps[1974379]:   119: _fseq
+2020-04-15T05:17:54.011395+00:00 shinyapps[1974379]:   118: eval
+2020-04-15T05:17:54.011395+00:00 shinyapps[1974379]:   117: eval
+2020-04-15T05:17:54.011397+00:00 shinyapps[1974379]:   113: widgetFunc
+2020-04-15T05:17:54.011397+00:00 shinyapps[1974379]:   112: func
+2020-04-15T05:17:54.011427+00:00 shinyapps[1974379]:    99: origRenderFunc
+2020-04-15T05:17:54.011428+00:00 shinyapps[1974379]:    98: renderFunc
+2020-04-15T05:17:54.011429+00:00 shinyapps[1974379]:    94: origRenderFunc
+2020-04-15T05:17:54.011429+00:00 shinyapps[1974379]:    93: output$core_stats_table
+2020-04-15T05:17:54.011430+00:00 shinyapps[1974379]:    13: runApp
+2020-04-15T05:17:54.011430+00:00 shinyapps[1974379]:    12: fn
+2020-04-15T05:17:54.011431+00:00 shinyapps[1974379]:     6: eval
+2020-04-15T05:17:54.011430+00:00 shinyapps[1974379]:     7: connect$retry
+2020-04-15T05:17:54.011431+00:00 shinyapps[1974379]:     5: eval
+2020-04-15T19:28:19.745699+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-15T19:28:19.745716+00:00 shinyapps[1974379]: LANG: en_GB.UTF-8
+2020-04-15T19:28:19.745717+00:00 shinyapps[1974379]: R version: 3.5.2
+2020-04-15T19:28:19.745717+00:00 shinyapps[1974379]: shiny version: 1.2.0
+2020-04-15T19:28:19.745718+00:00 shinyapps[1974379]: httpuv version: 1.4.5.1
+2020-04-15T19:28:19.745725+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-15T19:28:19.745786+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-15T19:28:19.582739+00:00 shinyapps[1974379]: Warning: namespace ‘lme4’ is not available and has been replaced
+2020-04-15T19:28:19.582741+00:00 shinyapps[1974379]: by .GlobalEnv when processing object ‘mixed_eye_model’
+2020-04-15T19:28:19.745788+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-15T19:28:19.745960+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-15T19:28:19.745718+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-15T19:28:19.745787+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-15T19:28:19.981977+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-15T19:28:19.987520+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:19.987522+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-15T19:28:20.030787+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-15T19:28:20.078517+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-15T19:28:20.518503+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-15T19:28:20.518501+00:00 shinyapps[1974379]: rgdal: version: 1.4-3, (SVN revision 828)
+2020-04-15T19:28:20.518505+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-15T19:28:20.518504+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-15T19:28:20.518504+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-15T19:28:20.518505+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-15T19:28:20.518506+00:00 shinyapps[1974379]:  Linking to sp version: 1.3-1 
+2020-04-15T19:28:20.518504+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-15T19:28:20.869910+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:20.869913+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-15T19:28:20.869914+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:20.870650+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-15T19:28:20.870652+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:20.870653+00:00 shinyapps[1974379]:     filter, lag
+2020-04-15T19:28:20.870653+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:20.872072+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:20.872072+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:20.872072+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-15T19:28:20.872071+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-15T19:28:20.987426+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-15T19:28:21.178880+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.178883+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-15T19:28:21.178883+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.179216+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-15T19:28:21.179216+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.179217+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.179217+00:00 shinyapps[1974379]:     last_plot
+2020-04-15T19:28:21.180101+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-15T19:28:21.180102+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.180102+00:00 shinyapps[1974379]:     filter
+2020-04-15T19:28:21.180102+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.180866+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T19:28:21.180867+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.180868+00:00 shinyapps[1974379]:     layout
+2020-04-15T19:28:21.180868+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.198591+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.198593+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-15T19:28:21.198594+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.198930+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-15T19:28:21.198930+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.198931+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-15T19:28:21.198931+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.211836+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.211838+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-15T19:28:21.211839+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.212149+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T19:28:21.212150+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.212150+00:00 shinyapps[1974379]:     box
+2020-04-15T19:28:21.212151+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.417113+00:00 shinyapps[1974379]: 
+2020-04-15T19:28:21.417116+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:35431
+2020-04-15T19:28:25.934624+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-15T19:28:26.102710+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-15T19:28:26.102713+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-15T19:28:26.102751+00:00 shinyapps[1974379]: with 22 features
+2020-04-15T19:28:26.102753+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-15T19:28:26.793421+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-15T19:28:26.576869+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-15T19:28:26.793914+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-15T19:28:26.793916+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-15T19:28:28.895151+00:00 shinyapps[1974379]: Warning: Error in .f: object 'New in last 24 hours' not found
+2020-04-15T19:28:28.901008+00:00 shinyapps[1974379]:   129: .f
+2020-04-15T19:28:28.901010+00:00 shinyapps[1974379]:   127: map_if
+2020-04-15T19:28:28.901009+00:00 shinyapps[1974379]:   128: map
+2020-04-15T19:28:28.901011+00:00 shinyapps[1974379]:   126: vars_select_eval
+2020-04-15T19:28:28.901011+00:00 shinyapps[1974379]:   125: tidyselect::vars_select
+2020-04-15T19:28:28.901011+00:00 shinyapps[1974379]:   124: select.data.frame
+2020-04-15T19:28:28.901012+00:00 shinyapps[1974379]:   122: function_list[[k]]
+2020-04-15T19:28:28.901045+00:00 shinyapps[1974379]:   115: %<>%
+2020-04-15T19:28:28.901042+00:00 shinyapps[1974379]:   120: freduce
+2020-04-15T19:28:28.901043+00:00 shinyapps[1974379]:   119: _fseq
+2020-04-15T19:28:28.901044+00:00 shinyapps[1974379]:   118: eval
+2020-04-15T19:28:28.901044+00:00 shinyapps[1974379]:   117: eval
+2020-04-15T19:28:28.901046+00:00 shinyapps[1974379]:   113: widgetFunc
+2020-04-15T19:28:28.901045+00:00 shinyapps[1974379]:   114: exprFunc [/srv/connect/apps/covid_nz/app.R#972]
+2020-04-15T19:28:28.901046+00:00 shinyapps[1974379]:   112: func
+2020-04-15T19:28:28.901046+00:00 shinyapps[1974379]:    99: origRenderFunc
+2020-04-15T19:28:28.901047+00:00 shinyapps[1974379]:    98: renderFunc
+2020-04-15T19:28:28.901048+00:00 shinyapps[1974379]:    13: runApp
+2020-04-15T19:28:28.901049+00:00 shinyapps[1974379]:     6: eval
+2020-04-15T19:28:28.901047+00:00 shinyapps[1974379]:    94: origRenderFunc
+2020-04-15T19:28:28.901048+00:00 shinyapps[1974379]:    12: fn
+2020-04-15T19:28:28.901048+00:00 shinyapps[1974379]:    93: output$core_stats_table
+2020-04-15T19:28:28.901049+00:00 shinyapps[1974379]:     7: connect$retry
+2020-04-15T19:28:28.901049+00:00 shinyapps[1974379]:     5: eval
+2020-04-15T19:28:41.159304+00:00 shinyapps[1974379]: Warning: `line.width` does not currently support multiple values.
+2020-04-15T19:41:09.553613+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-15T19:41:09.553665+00:00 shinyapps[1974379]: LANG: en_US.UTF-8
+2020-04-15T19:41:09.553666+00:00 shinyapps[1974379]: R version: 3.6.1
+2020-04-15T19:41:09.553667+00:00 shinyapps[1974379]: shiny version: 1.3.2
+2020-04-15T19:41:09.553668+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-15T19:41:09.766607+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-15T19:41:09.553667+00:00 shinyapps[1974379]: httpuv version: 1.5.2
+2020-04-15T19:41:09.731080+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-15T19:41:09.553668+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-15T19:41:09.553776+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-15T19:41:09.553833+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-15T19:41:09.553897+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-15T19:41:09.695149+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-15T19:41:09.553834+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-15T19:41:09.700380+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:09.700382+00:00 shinyapps[1974379]: Starting R with process ID: '25'
+2020-04-15T19:41:10.056176+00:00 shinyapps[1974379]: rgdal: version: 1.4-8, (SVN revision 845)
+2020-04-15T19:41:10.056178+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-15T19:41:10.056180+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-15T19:41:10.056180+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-15T19:41:10.056181+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-15T19:41:10.056182+00:00 shinyapps[1974379]:  Linking to sp version: 1.4-1 
+2020-04-15T19:41:10.056181+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-15T19:41:10.056182+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-15T19:41:10.320023+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.320025+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-15T19:41:10.320025+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.320986+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-15T19:41:10.320987+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.320987+00:00 shinyapps[1974379]:     filter, lag
+2020-04-15T19:41:10.320988+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.321296+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-15T19:41:10.321298+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-15T19:41:10.321297+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.405216+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-15T19:41:10.321298+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.580970+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.580972+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-15T19:41:10.581335+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-15T19:41:10.581336+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581629+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-15T19:41:10.581630+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581631+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581631+00:00 shinyapps[1974379]:     filter
+2020-04-15T19:41:10.581940+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T19:41:10.581941+00:00 shinyapps[1974379]:     layout
+2020-04-15T19:41:10.594406+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-15T19:41:10.594406+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581335+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581941+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581336+00:00 shinyapps[1974379]:     last_plot
+2020-04-15T19:41:10.594404+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.594761+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-15T19:41:10.580972+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.581941+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.603280+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.594761+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.594762+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-15T19:41:10.594762+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.603283+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-15T19:41:10.603284+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.603629+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.603630+00:00 shinyapps[1974379]:     box
+2020-04-15T19:41:10.603629+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-15T19:41:10.603630+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.784515+00:00 shinyapps[1974379]: 
+2020-04-15T19:41:10.784517+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:44400
+2020-04-16T06:41:33.985733+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-16T06:41:33.985735+00:00 shinyapps[1974379]: LANG: en_US.UTF-8
+2020-04-16T06:41:33.985801+00:00 shinyapps[1974379]: R version: 3.6.1
+2020-04-16T06:41:33.985802+00:00 shinyapps[1974379]: shiny version: 1.3.2
+2020-04-16T06:41:33.985803+00:00 shinyapps[1974379]: httpuv version: 1.5.2
+2020-04-16T06:41:33.985804+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-16T06:41:33.985804+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-16T06:41:33.985815+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-16T06:41:33.985816+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-16T06:41:33.985816+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-16T06:41:33.985950+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-16T06:41:34.191991+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-16T06:41:34.197289+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:34.197290+00:00 shinyapps[1974379]: Starting R with process ID: '26'
+2020-04-16T06:41:34.228165+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-16T06:41:34.287312+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-16T06:41:34.687132+00:00 shinyapps[1974379]: rgdal: version: 1.4-8, (SVN revision 845)
+2020-04-16T06:41:34.687134+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-16T06:41:34.687135+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-16T06:41:34.687135+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-16T06:41:34.687136+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-16T06:41:34.687137+00:00 shinyapps[1974379]:  Linking to sp version: 1.4-1 
+2020-04-16T06:41:34.687136+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-16T06:41:34.687136+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-16T06:41:35.030654+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.030656+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-16T06:41:35.030657+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.031547+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-16T06:41:35.031548+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.031549+00:00 shinyapps[1974379]:     filter, lag
+2020-04-16T06:41:35.031549+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.031836+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-16T06:41:35.031837+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.031838+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-16T06:41:35.031838+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.157689+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-16T06:41:35.380734+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.380736+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-16T06:41:35.380737+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.381072+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-16T06:41:35.381074+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.381075+00:00 shinyapps[1974379]:     last_plot
+2020-04-16T06:41:35.381075+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.381328+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-16T06:41:35.381329+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.381329+00:00 shinyapps[1974379]:     filter
+2020-04-16T06:41:35.381330+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.381586+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-16T06:41:35.381587+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.396705+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.381587+00:00 shinyapps[1974379]:     layout
+2020-04-16T06:41:35.381588+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.396707+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-16T06:41:35.396707+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.397019+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-16T06:41:35.397020+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.397020+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-16T06:41:35.397021+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.409000+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.409001+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-16T06:41:35.409001+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.409319+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-16T06:41:35.409320+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.409320+00:00 shinyapps[1974379]:     box
+2020-04-16T06:41:35.409321+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.607992+00:00 shinyapps[1974379]: 
+2020-04-16T06:41:35.607995+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:36412
+2020-04-16T22:15:01.839858+00:00 shinyapps[1974379]: httpuv version: 1.5.2
+2020-04-16T22:15:01.839859+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-16T22:15:01.839859+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-16T22:15:01.839835+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-16T22:15:01.839857+00:00 shinyapps[1974379]: LANG: en_US.UTF-8
+2020-04-16T22:15:01.839857+00:00 shinyapps[1974379]: R version: 3.6.1
+2020-04-16T22:15:01.839859+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-16T22:15:01.839858+00:00 shinyapps[1974379]: shiny version: 1.3.2
+2020-04-16T22:15:01.839879+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-16T22:15:01.839880+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-16T22:15:01.840032+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-16T22:15:01.959729+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-16T22:15:01.963979+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:01.963981+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-16T22:15:01.990580+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-16T22:15:02.019297+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-16T22:15:02.264611+00:00 shinyapps[1974379]: rgdal: version: 1.4-8, (SVN revision 845)
+2020-04-16T22:15:02.264623+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-16T22:15:02.264624+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-16T22:15:02.264625+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-16T22:15:02.264625+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-16T22:15:02.264625+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-16T22:15:02.264626+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-16T22:15:02.264626+00:00 shinyapps[1974379]:  Linking to sp version: 1.4-1 
+2020-04-16T22:15:02.494271+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.494274+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-16T22:15:02.494275+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.495208+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-16T22:15:02.495209+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.495209+00:00 shinyapps[1974379]:     filter, lag
+2020-04-16T22:15:02.495210+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.495523+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-16T22:15:02.495523+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.495524+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-16T22:15:02.495524+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.564744+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-16T22:15:02.715169+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.715171+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-16T22:15:02.715172+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.715516+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-16T22:15:02.715517+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.715518+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.715518+00:00 shinyapps[1974379]:     last_plot
+2020-04-16T22:15:02.715814+00:00 shinyapps[1974379]:     filter
+2020-04-16T22:15:02.715813+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-16T22:15:02.715814+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.715815+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.727072+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-16T22:15:02.716104+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-16T22:15:02.727072+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.716104+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.733815+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.716104+00:00 shinyapps[1974379]:     layout
+2020-04-16T22:15:02.733816+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-16T22:15:02.716105+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.733816+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.726740+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.734191+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-16T22:15:02.726742+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-16T22:15:02.734192+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.727070+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-16T22:15:02.734193+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.727071+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.726742+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.734192+00:00 shinyapps[1974379]:     box
+2020-04-16T22:15:02.864726+00:00 shinyapps[1974379]: 
+2020-04-16T22:15:02.864728+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:43524
+2020-04-16T22:19:54.326792+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-16T22:19:54.326794+00:00 shinyapps[1974379]: LANG: en_US.UTF-8
+2020-04-16T22:19:54.326818+00:00 shinyapps[1974379]: R version: 3.6.1
+2020-04-16T22:19:54.326818+00:00 shinyapps[1974379]: shiny version: 1.3.2
+2020-04-16T22:19:54.326820+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-16T22:19:54.326872+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-16T22:19:54.326819+00:00 shinyapps[1974379]: httpuv version: 1.5.2
+2020-04-16T22:19:54.326819+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-16T22:19:54.326819+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-16T22:19:54.326820+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-16T22:19:54.444236+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-16T22:19:54.326970+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-16T22:19:54.448427+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:54.448428+00:00 shinyapps[1974379]: Starting R with process ID: '118'
+2020-04-16T22:19:54.473982+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-16T22:19:54.501043+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-16T22:19:54.740032+00:00 shinyapps[1974379]: rgdal: version: 1.4-8, (SVN revision 845)
+2020-04-16T22:19:54.740034+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-16T22:19:54.740035+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-16T22:19:54.740036+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-16T22:19:54.740036+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-16T22:19:54.740036+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-16T22:19:54.740037+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-16T22:19:54.740037+00:00 shinyapps[1974379]:  Linking to sp version: 1.4-1 
+2020-04-16T22:19:54.965793+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:54.965795+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-16T22:19:54.965796+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:54.966738+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-16T22:19:54.966739+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:54.966739+00:00 shinyapps[1974379]:     filter, lag
+2020-04-16T22:19:54.966740+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:54.967068+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-16T22:19:54.967068+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:54.967069+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-16T22:19:54.967069+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.034427+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-16T22:19:55.182039+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-16T22:19:55.182037+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182040+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182386+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-16T22:19:55.182387+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182387+00:00 shinyapps[1974379]:     last_plot
+2020-04-16T22:19:55.182387+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182676+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-16T22:19:55.182676+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182677+00:00 shinyapps[1974379]:     filter
+2020-04-16T22:19:55.182677+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182966+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-16T22:19:55.182966+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.182967+00:00 shinyapps[1974379]:     layout
+2020-04-16T22:19:55.182967+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.193365+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.193366+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-16T22:19:55.193366+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.193699+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-16T22:19:55.193700+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.193700+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-16T22:19:55.193701+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.200320+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.200321+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-16T22:19:55.200322+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.200661+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-16T22:19:55.200661+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.200662+00:00 shinyapps[1974379]:     box
+2020-04-16T22:19:55.200662+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.328531+00:00 shinyapps[1974379]: 
+2020-04-16T22:19:55.328532+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:42048
+2020-04-16T22:19:59.208398+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-16T22:19:59.329584+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-16T22:19:59.329586+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-16T22:19:59.329603+00:00 shinyapps[1974379]: with 22 features
+2020-04-16T22:19:59.329604+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-16T22:19:59.751489+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-16T22:22:38.560467+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-16T22:22:38.565726+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-16T22:22:38.565771+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-16T22:22:38.565773+00:00 shinyapps[1974379]: with 22 features
+2020-04-16T22:22:38.565774+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-16T22:22:39.078174+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector
+2020-04-16T22:22:54.610173+00:00 shinyapps[1974379]: Warning: `line.width` does not currently support multiple values.
+2020-04-16T22:23:00.628678+00:00 shinyapps[1974379]: Failed to create bus connection: No such file or directory
+2020-04-16T22:23:00.629071+00:00 shinyapps[1974379]: Warning in system("timedatectl", intern = TRUE) :
+2020-04-16T22:23:00.629073+00:00 shinyapps[1974379]:   running command 'timedatectl' had status 1
+2020-04-16T22:23:14.828885+00:00 shinyapps[1974379]: Warning: Factor `Gender` contains implicit NA, consider using `forcats::fct_explicit_na`
+2020-04-16T22:23:16.003616+00:00 shinyapps[1974379]: Warning: Factor `Gender` contains implicit NA, consider using `forcats::fct_explicit_na`
+2020-04-17T04:42:04.696718+00:00 shinyapps[1974379]: Server version: 1.8.2-10
+2020-04-17T04:42:04.696741+00:00 shinyapps[1974379]: shiny version: 1.3.2
+2020-04-17T04:42:04.696741+00:00 shinyapps[1974379]: httpuv version: 1.5.2
+2020-04-17T04:42:04.696758+00:00 shinyapps[1974379]: knitr version: (none)
+2020-04-17T04:42:04.696758+00:00 shinyapps[1974379]: jsonlite version: 1.6
+2020-04-17T04:42:04.696793+00:00 shinyapps[1974379]: htmltools version: 0.3.6
+2020-04-17T04:42:04.696933+00:00 shinyapps[1974379]: Using pandoc: /opt/connect/ext/pandoc2
+2020-04-17T04:42:04.881214+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:04.881214+00:00 shinyapps[1974379]: Starting R with process ID: '27'
+2020-04-17T04:42:04.696740+00:00 shinyapps[1974379]: LANG: en_US.UTF-8
+2020-04-17T04:42:04.696740+00:00 shinyapps[1974379]: R version: 3.6.1
+2020-04-17T04:42:04.696741+00:00 shinyapps[1974379]: rmarkdown version: (none)
+2020-04-17T04:42:04.696765+00:00 shinyapps[1974379]: RJSONIO version: (none)
+2020-04-17T04:42:04.876007+00:00 shinyapps[1974379]: Using jsonlite for JSON processing
+2020-04-17T04:42:04.914223+00:00 shinyapps[1974379]: Loading required package: xml2
+2020-04-17T04:42:04.969926+00:00 shinyapps[1974379]: Loading required package: sp
+2020-04-17T04:42:05.363088+00:00 shinyapps[1974379]: rgdal: version: 1.4-8, (SVN revision 845)
+2020-04-17T04:42:05.363091+00:00 shinyapps[1974379]:  Geospatial Data Abstraction Library extensions to R successfully loaded
+2020-04-17T04:42:05.363092+00:00 shinyapps[1974379]:  Loaded GDAL runtime: GDAL 2.2.2, released 2017/09/15
+2020-04-17T04:42:05.363092+00:00 shinyapps[1974379]:  Path to GDAL shared files: /usr/share/gdal/2.2
+2020-04-17T04:42:05.363097+00:00 shinyapps[1974379]:  GDAL binary built with GEOS: TRUE 
+2020-04-17T04:42:05.363098+00:00 shinyapps[1974379]:  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
+2020-04-17T04:42:05.363098+00:00 shinyapps[1974379]:  Path to PROJ.4 shared files: (autodetected)
+2020-04-17T04:42:05.363098+00:00 shinyapps[1974379]:  Linking to sp version: 1.4-1 
+2020-04-17T04:42:05.706186+00:00 shinyapps[1974379]: Attaching package: ‘dplyr’
+2020-04-17T04:42:05.707090+00:00 shinyapps[1974379]: The following objects are masked from ‘package:stats’:
+2020-04-17T04:42:05.707091+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:05.825884+00:00 shinyapps[1974379]: Loading required package: viridisLite
+2020-04-17T04:42:05.707395+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:05.707395+00:00 shinyapps[1974379]: The following objects are masked from ‘package:base’:
+2020-04-17T04:42:05.707396+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:05.706184+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:05.706187+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:05.707091+00:00 shinyapps[1974379]:     filter, lag
+2020-04-17T04:42:05.707091+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:05.707396+00:00 shinyapps[1974379]:     intersect, setdiff, setequal, union
+2020-04-17T04:42:06.035396+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.035398+00:00 shinyapps[1974379]: Attaching package: ‘plotly’
+2020-04-17T04:42:06.035399+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.035740+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.036039+00:00 shinyapps[1974379]: The following object is masked from ‘package:stats’:
+2020-04-17T04:42:06.036040+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.036041+00:00 shinyapps[1974379]:     filter
+2020-04-17T04:42:06.035740+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.036041+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.036326+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-17T04:42:06.036326+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.036327+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.053433+00:00 shinyapps[1974379]: Attaching package: ‘DT’
+2020-04-17T04:42:06.053433+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.053766+00:00 shinyapps[1974379]: The following objects are masked from ‘package:shiny’:
+2020-04-17T04:42:06.053767+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.053767+00:00 shinyapps[1974379]:     dataTableOutput, renderDataTable
+2020-04-17T04:42:06.035739+00:00 shinyapps[1974379]: The following object is masked from ‘package:ggplot2’:
+2020-04-17T04:42:06.035740+00:00 shinyapps[1974379]:     last_plot
+2020-04-17T04:42:06.053768+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.036327+00:00 shinyapps[1974379]:     layout
+2020-04-17T04:42:06.063948+00:00 shinyapps[1974379]: Attaching package: ‘shinydashboard’
+2020-04-17T04:42:06.053432+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.063947+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.063948+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.064310+00:00 shinyapps[1974379]: The following object is masked from ‘package:graphics’:
+2020-04-17T04:42:06.064311+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.064312+00:00 shinyapps[1974379]:     box
+2020-04-17T04:42:06.064313+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.218682+00:00 shinyapps[1974379]: 
+2020-04-17T04:42:06.218685+00:00 shinyapps[1974379]: Listening on http://127.0.0.1:32874
+2020-04-17T04:42:23.338266+00:00 shinyapps[1974379]: Warning: Unknown levels in `f`: Not Reported
+2020-04-17T04:42:23.475642+00:00 shinyapps[1974379]: OGR data source with driver: ESRI Shapefile 
+2020-04-17T04:42:23.475643+00:00 shinyapps[1974379]: Source: "/srv/connect/apps/covid_nz/dhb", layer: "district-health-board-2015-2"
+2020-04-17T04:42:23.475681+00:00 shinyapps[1974379]: with 22 features
+2020-04-17T04:42:23.475682+00:00 shinyapps[1974379]: It has 3 fields
+2020-04-17T04:42:23.861811+00:00 shinyapps[1974379]: Warning: Column `DHB2015_Na` joining factors with different levels, coercing to character vector

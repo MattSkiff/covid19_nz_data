@@ -15,12 +15,13 @@ library(plotly) # interactive viz
 library(DT) # interactive data tables
 library(shinydashboard) # dashboard structure
 library(dashboardthemes) # snazzy themes
-library(readxl) # read moh excel file
+library(readxl) # read moh excel fileas_data function
+library(lubridate) # date handling - in particular, 
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Last Updated: Monday, 20/04/2020: Notice - an official Ministry of Health dashboard is now available"
-date_stamp <- "Current to Monday, 20/04/2020"
+app_status <- "Last Updated: Wednesday, 22/04/2020: Notice - an official Ministry of Health dashboard is now available"
+date_stamp <- "Current to Wednesday, 22/04/2020"
 data_note_1 <- " | includes probable and confirmed infections"
 omission_string <- " unreported age cases omitted"
 

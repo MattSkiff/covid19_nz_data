@@ -235,6 +235,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/18/20",1422))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/19/20",1431))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/20/20",1440))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/21/20",1445))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/22/20",1451))
 															 	
 															 	
 															 	
