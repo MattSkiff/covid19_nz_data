@@ -34,7 +34,7 @@ If there is something you would like me to add, please let me know.
 * Univariate breakdowns - age, gender, dhb, ethnicity
 * Bivariate breakdowns
 * Searchable tables of information (cluster,age,raw data, dhb, etc)
-* NZ Chloropleth with markers showing cases by DHB
+* NZ Choropleth with markers showing cases by DHB
 * Basic time series plots of new and cumulative cases
 * Cumulative time series by region
 
