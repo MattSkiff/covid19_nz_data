@@ -1,7 +1,7 @@
 # COVID19 NZ Data Explorer
 
-UPDATE: The Ministry of Health of now provides a dashboard for COVID19 data:
-https://experience.arcgis.com/experience/e4e58e39a0ec410eb054f42012a27b4b
+UPDATE: The Ministry of Health / ESR now provides a dashboard for COVID19 data:
+https://nzcoviddashboard.esr.cri.nz/
 
 A shiny app to view covid19 data scraped from the MoH website. This app is not official in any way shape or form and is a personal project. All data is now sourced from the Ministry of Health.
 
@@ -21,7 +21,6 @@ If there is something you would like me to add, please let me know.
 * Optimisation to load faster and use less memory 
 * Optimisation and layout for mobile devices
 * Graph styling could be improved
-* Statistical analysis
 * Host on a (better) URL to redirect to Shiny app hosting
 * Statistical analysis 
 * Time series analysis showing the spread of cases would be interesting
@@ -35,7 +34,7 @@ If there is something you would like me to add, please let me know.
 * Univariate breakdowns - age, gender, dhb, ethnicity
 * Bivariate breakdowns
 * Searchable tables of information (cluster,age,raw data, dhb, etc)
-* NZ Chloropleth with markers showing cases by DHB
+* NZ Choropleth with markers showing cases by DHB
 * Basic time series plots of new and cumulative cases
 * Cumulative time series by region
 
