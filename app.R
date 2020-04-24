@@ -237,6 +237,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/20/20",1440))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/21/20",1445))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/22/20",1451))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/23/20",1451))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/24/20",1456))
 															 	
 															 	
 															 	
@@ -774,7 +776,9 @@ server <- function(input, output,session) {
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
 			html_table()
 		
-		transmission.df <- covid.ls[[4]]
+		transmission.df <- covid.ls[[5]]
+		transmission.df %<>% rename(`Transmission type` = X1)
+		transmission.df %<>% rename(`% of cases` = X2)
 		transmission.df$`% of cases` <- as.numeric(gsub(pattern = "%",
 																										replacement = "",
 																										x = transmission.df$`% of cases`))
@@ -783,7 +787,7 @@ server <- function(input, output,session) {
 			mutate(Proportion = "COVID19 NZ Transmission Type")
 		
 		# small rounding in MOH figures - scaled to 100
-		transmission.df$`% of cases` <- 100/sum(transmission.df$`% of cases`)*transmission.df$`% of cases`
+		#transmission.df$`% of cases` <- 100/sum(transmission.df$`% of cases`)*transmission.df$`% of cases`
 		
 		transmission.g <- ggplot(transmission.df, aes(x = Proportion, y = `% of cases`, fill = `Transmission type`)) +
 			geom_col() +
@@ -793,7 +797,8 @@ server <- function(input, output,session) {
 			#coord_flip() +
 			theme(axis.text.y = element_text(angle = 90, hjust = 0.5, vjust  = 2,size = text_size)) +
 			scale_y_continuous(minor_breaks = seq(0 , 100, 10), breaks = seq(0, 100, 20)) +
-			theme(legend.position = "bottom")
+			theme(legend.position = "bottom") + 
+		  coord_flip()
 		
 		transmission.g %>% ggplotly(tooltip = c("Proportion","% of cases")) %>%
 			config(displayModeBar = F) %>%
