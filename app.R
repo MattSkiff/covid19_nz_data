@@ -239,6 +239,7 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/22/20",1451))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/23/20",1451))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/24/20",1456))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/25/20",1461))
 															 	
 															 	
 															 	
@@ -777,8 +778,8 @@ server <- function(input, output,session) {
 			html_table()
 		
 		transmission.df <- covid.ls[[5]]
-		transmission.df %<>% rename(`Transmission type` = X1)
-		transmission.df %<>% rename(`% of cases` = X2)
+		#transmission.df %<>% rename(`Transmission type` = X1)
+		#transmission.df %<>% rename(`% of cases` = X2)
 		transmission.df$`% of cases` <- as.numeric(gsub(pattern = "%",
 																										replacement = "",
 																										x = transmission.df$`% of cases`))
