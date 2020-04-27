@@ -240,6 +240,8 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/23/20",1451))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/24/20",1456))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/25/20",1461))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/26/20",1470))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/27/20",1469))
 															 	
 															 	
 															 	
@@ -1091,11 +1093,11 @@ server <- function(input, output,session) {
 
 
 shinyApp(ui = ui, server = server)
-
+# 
 # library(gridExtra)
 # png("today.png",
-# width = 1200,
-# height = 600,
+# width = 1400,
+# height = 800,
 # type = "cairo")
 # grid.arrange(ts.g,nc.g,ncol = 2)
 # dev.off()
