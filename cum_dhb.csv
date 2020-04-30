@@ -1,0 +1,390 @@
+DHB,Date,n,c_n
+Waitemata,2020-03-02,1,1
+Waitemata,2020-03-04,1,2
+Waitemata,2020-03-05,1,3
+Waitemata,2020-03-15,1,4
+Waitemata,2020-03-17,2,6
+Waitemata,2020-03-19,1,7
+Waitemata,2020-03-20,2,9
+Waitemata,2020-03-21,1,10
+Waitemata,2020-03-22,5,15
+Waitemata,2020-03-23,2,17
+Waitemata,2020-03-24,10,27
+Waitemata,2020-03-25,10,37
+Waitemata,2020-03-26,11,48
+Waitemata,2020-03-27,4,52
+Waitemata,2020-03-28,13,65
+Waitemata,2020-03-29,16,81
+Waitemata,2020-03-30,9,90
+Waitemata,2020-03-31,12,102
+Waitemata,2020-04-01,14,116
+Waitemata,2020-04-02,12,128
+Waitemata,2020-04-03,8,136
+Waitemata,2020-04-04,14,150
+Waitemata,2020-04-05,8,158
+Waitemata,2020-04-06,1,159
+Waitemata,2020-04-07,9,168
+Waitemata,2020-04-08,5,173
+Waitemata,2020-04-09,4,177
+Waitemata,2020-04-10,7,184
+Waitemata,2020-04-11,8,192
+Waitemata,2020-04-12,4,196
+Waitemata,2020-04-13,6,202
+Waitemata,2020-04-15,1,203
+Waitemata,2020-04-16,6,209
+Waitemata,2020-04-17,1,210
+Waitemata,2020-04-18,4,214
+Waitemata,2020-04-19,2,216
+Waitemata,2020-04-23,2,218
+Waitemata,2020-04-24,1,219
+Waitemata,2020-04-25,2,221
+Waitemata,2020-04-26,1,222
+Southern,2020-03-13,1,1
+Southern,2020-03-17,3,4
+Southern,2020-03-18,2,6
+Southern,2020-03-19,1,7
+Southern,2020-03-20,2,9
+Southern,2020-03-22,2,11
+Southern,2020-03-23,4,15
+Southern,2020-03-24,7,22
+Southern,2020-03-25,9,31
+Southern,2020-03-26,7,38
+Southern,2020-03-27,19,57
+Southern,2020-03-28,13,70
+Southern,2020-03-29,12,82
+Southern,2020-03-30,9,91
+Southern,2020-03-31,9,100
+Southern,2020-04-01,16,116
+Southern,2020-04-02,18,134
+Southern,2020-04-03,15,149
+Southern,2020-04-04,10,159
+Southern,2020-04-05,17,176
+Southern,2020-04-06,8,184
+Southern,2020-04-07,9,193
+Southern,2020-04-08,3,196
+Southern,2020-04-09,4,200
+Southern,2020-04-10,5,205
+Southern,2020-04-12,4,209
+Southern,2020-04-13,1,210
+Southern,2020-04-14,2,212
+Southern,2020-04-15,1,213
+Southern,2020-04-16,1,214
+Southern,2020-04-17,2,216
+Waikato,2020-03-16,2,2
+Waikato,2020-03-19,2,4
+Waikato,2020-03-20,1,5
+Waikato,2020-03-21,3,8
+Waikato,2020-03-22,3,11
+Waikato,2020-03-23,4,15
+Waikato,2020-03-24,2,17
+Waikato,2020-03-25,21,38
+Waikato,2020-03-26,10,48
+Waikato,2020-03-27,11,59
+Waikato,2020-03-28,3,62
+Waikato,2020-03-29,16,78
+Waikato,2020-03-30,5,83
+Waikato,2020-03-31,24,107
+Waikato,2020-04-01,10,117
+Waikato,2020-04-02,8,125
+Waikato,2020-04-03,13,138
+Waikato,2020-04-04,6,144
+Waikato,2020-04-05,4,148
+Waikato,2020-04-06,7,155
+Waikato,2020-04-07,5,160
+Waikato,2020-04-08,3,163
+Waikato,2020-04-09,3,166
+Waikato,2020-04-10,2,168
+Waikato,2020-04-11,9,177
+Waikato,2020-04-14,1,178
+Waikato,2020-04-15,2,180
+Waikato,2020-04-16,1,181
+Waikato,2020-04-18,1,182
+Waikato,2020-04-19,1,183
+Waikato,2020-04-21,1,184
+Waikato,2020-04-22,1,185
+Waikato,2020-04-23,1,186
+Auckland,2020-02-26,1,1
+Auckland,2020-03-16,1,2
+Auckland,2020-03-17,2,4
+Auckland,2020-03-18,1,5
+Auckland,2020-03-19,4,9
+Auckland,2020-03-20,1,10
+Auckland,2020-03-21,4,14
+Auckland,2020-03-22,8,22
+Auckland,2020-03-23,7,29
+Auckland,2020-03-24,6,35
+Auckland,2020-03-25,11,46
+Auckland,2020-03-26,12,58
+Auckland,2020-03-27,7,65
+Auckland,2020-03-28,16,81
+Auckland,2020-03-29,10,91
+Auckland,2020-03-30,3,94
+Auckland,2020-03-31,8,102
+Auckland,2020-04-01,4,106
+Auckland,2020-04-02,3,109
+Auckland,2020-04-03,4,113
+Auckland,2020-04-04,10,123
+Auckland,2020-04-05,10,133
+Auckland,2020-04-06,6,139
+Auckland,2020-04-07,2,141
+Auckland,2020-04-08,4,145
+Auckland,2020-04-09,11,156
+Auckland,2020-04-10,4,160
+Auckland,2020-04-11,3,163
+Auckland,2020-04-12,3,166
+Auckland,2020-04-13,1,167
+Auckland,2020-04-14,1,168
+Auckland,2020-04-16,2,170
+Auckland,2020-04-17,2,172
+Auckland,2020-04-18,1,173
+Auckland,2020-04-21,1,174
+Auckland,2020-04-25,1,175
+Canterbury,2020-03-17,1,1
+Canterbury,2020-03-18,1,2
+Canterbury,2020-03-20,2,4
+Canterbury,2020-03-21,3,7
+Canterbury,2020-03-22,4,11
+Canterbury,2020-03-23,6,17
+Canterbury,2020-03-24,7,24
+Canterbury,2020-03-25,5,29
+Canterbury,2020-03-26,12,41
+Canterbury,2020-03-27,5,46
+Canterbury,2020-03-28,8,54
+Canterbury,2020-03-29,3,57
+Canterbury,2020-03-30,1,58
+Canterbury,2020-03-31,3,61
+Canterbury,2020-04-01,2,63
+Canterbury,2020-04-02,9,72
+Canterbury,2020-04-03,10,82
+Canterbury,2020-04-04,17,99
+Canterbury,2020-04-05,4,103
+Canterbury,2020-04-06,12,115
+Canterbury,2020-04-07,4,119
+Canterbury,2020-04-08,6,125
+Canterbury,2020-04-09,10,135
+Canterbury,2020-04-10,2,137
+Canterbury,2020-04-11,1,138
+Canterbury,2020-04-12,3,141
+Canterbury,2020-04-13,1,142
+Canterbury,2020-04-14,1,143
+Canterbury,2020-04-15,2,145
+Canterbury,2020-04-16,3,148
+Canterbury,2020-04-18,2,150
+Canterbury,2020-04-19,3,153
+Canterbury,2020-04-20,1,154
+Canterbury,2020-04-21,2,156
+Canterbury,2020-04-22,2,158
+Canterbury,2020-04-23,2,160
+Canterbury,2020-04-24,2,162
+Counties Manukau,2020-03-04,1,1
+Counties Manukau,2020-03-05,1,2
+Counties Manukau,2020-03-06,1,3
+Counties Manukau,2020-03-12,1,4
+Counties Manukau,2020-03-17,1,5
+Counties Manukau,2020-03-19,1,6
+Counties Manukau,2020-03-21,4,10
+Counties Manukau,2020-03-22,8,18
+Counties Manukau,2020-03-23,1,19
+Counties Manukau,2020-03-24,2,21
+Counties Manukau,2020-03-25,6,27
+Counties Manukau,2020-03-26,3,30
+Counties Manukau,2020-03-27,6,36
+Counties Manukau,2020-03-28,6,42
+Counties Manukau,2020-03-29,3,45
+Counties Manukau,2020-03-30,9,54
+Counties Manukau,2020-03-31,7,61
+Counties Manukau,2020-04-01,5,66
+Counties Manukau,2020-04-02,6,72
+Counties Manukau,2020-04-03,7,79
+Counties Manukau,2020-04-04,4,83
+Counties Manukau,2020-04-05,10,93
+Counties Manukau,2020-04-06,7,100
+Counties Manukau,2020-04-07,2,102
+Counties Manukau,2020-04-08,2,104
+Counties Manukau,2020-04-09,5,109
+Counties Manukau,2020-04-10,1,110
+Counties Manukau,2020-04-11,1,111
+Counties Manukau,2020-04-13,1,112
+Counties Manukau,2020-04-14,3,115
+Counties Manukau,2020-04-16,1,116
+Counties Manukau,2020-04-18,2,118
+Counties Manukau,2020-04-21,2,120
+Counties Manukau,2020-04-22,1,121
+Counties Manukau,2020-04-24,1,122
+Capital and Coast,2020-03-14,1,1
+Capital and Coast,2020-03-16,2,3
+Capital and Coast,2020-03-17,1,4
+Capital and Coast,2020-03-18,1,5
+Capital and Coast,2020-03-19,2,7
+Capital and Coast,2020-03-21,1,8
+Capital and Coast,2020-03-22,7,15
+Capital and Coast,2020-03-23,9,24
+Capital and Coast,2020-03-24,10,34
+Capital and Coast,2020-03-25,4,38
+Capital and Coast,2020-03-26,3,41
+Capital and Coast,2020-03-27,3,44
+Capital and Coast,2020-03-28,5,49
+Capital and Coast,2020-03-29,8,57
+Capital and Coast,2020-03-30,1,58
+Capital and Coast,2020-03-31,2,60
+Capital and Coast,2020-04-01,3,63
+Capital and Coast,2020-04-02,4,67
+Capital and Coast,2020-04-03,6,73
+Capital and Coast,2020-04-04,6,79
+Capital and Coast,2020-04-06,2,81
+Capital and Coast,2020-04-08,3,84
+Capital and Coast,2020-04-09,2,86
+Capital and Coast,2020-04-12,2,88
+Capital and Coast,2020-04-15,3,91
+Capital and Coast,2020-04-16,1,92
+Capital and Coast,2020-04-17,1,93
+Capital and Coast,2020-04-20,2,95
+Nelson Marlborough,2020-03-20,2,2
+Nelson Marlborough,2020-03-21,2,4
+Nelson Marlborough,2020-03-22,5,9
+Nelson Marlborough,2020-03-23,3,12
+Nelson Marlborough,2020-03-24,4,16
+Nelson Marlborough,2020-03-25,3,19
+Nelson Marlborough,2020-03-28,1,20
+Nelson Marlborough,2020-03-29,1,21
+Nelson Marlborough,2020-03-30,2,23
+Nelson Marlborough,2020-03-31,2,25
+Nelson Marlborough,2020-04-01,4,29
+Nelson Marlborough,2020-04-02,3,32
+Nelson Marlborough,2020-04-03,2,34
+Nelson Marlborough,2020-04-04,5,39
+Nelson Marlborough,2020-04-05,5,44
+Nelson Marlborough,2020-04-06,2,46
+Nelson Marlborough,2020-04-07,2,48
+Bay of Plenty,2020-03-21,1,1
+Bay of Plenty,2020-03-24,3,4
+Bay of Plenty,2020-03-25,2,6
+Bay of Plenty,2020-03-26,3,9
+Bay of Plenty,2020-03-27,3,12
+Bay of Plenty,2020-03-28,2,14
+Bay of Plenty,2020-03-30,4,18
+Bay of Plenty,2020-03-31,3,21
+Bay of Plenty,2020-04-01,5,26
+Bay of Plenty,2020-04-02,4,30
+Bay of Plenty,2020-04-03,1,31
+Bay of Plenty,2020-04-05,1,32
+Bay of Plenty,2020-04-06,4,36
+Bay of Plenty,2020-04-07,1,37
+Bay of Plenty,2020-04-09,2,39
+Bay of Plenty,2020-04-10,2,41
+Bay of Plenty,2020-04-14,3,44
+Bay of Plenty,2020-04-17,1,45
+Bay of Plenty,2020-04-19,2,47
+Hawke's Bay,2020-03-19,1,1
+Hawke's Bay,2020-03-24,2,3
+Hawke's Bay,2020-03-25,3,6
+Hawke's Bay,2020-03-26,4,10
+Hawke's Bay,2020-03-27,1,11
+Hawke's Bay,2020-03-28,1,12
+Hawke's Bay,2020-03-30,3,15
+Hawke's Bay,2020-04-01,4,19
+Hawke's Bay,2020-04-02,5,24
+Hawke's Bay,2020-04-03,5,29
+Hawke's Bay,2020-04-05,4,33
+Hawke's Bay,2020-04-06,1,34
+Hawke's Bay,2020-04-07,1,35
+Hawke's Bay,2020-04-08,1,36
+Hawke's Bay,2020-04-09,2,38
+Hawke's Bay,2020-04-10,1,39
+Hawke's Bay,2020-04-12,2,41
+Hawke's Bay,2020-04-22,1,42
+Hawke's Bay,2020-04-26,1,43
+MidCentral,2020-03-19,3,3
+MidCentral,2020-03-21,1,4
+MidCentral,2020-03-23,1,5
+MidCentral,2020-03-24,1,6
+MidCentral,2020-03-25,2,8
+MidCentral,2020-03-27,2,10
+MidCentral,2020-03-29,3,13
+MidCentral,2020-03-31,4,17
+MidCentral,2020-04-01,2,19
+MidCentral,2020-04-02,1,20
+MidCentral,2020-04-04,3,23
+MidCentral,2020-04-05,3,26
+MidCentral,2020-04-06,2,28
+MidCentral,2020-04-15,1,29
+MidCentral,2020-04-17,2,31
+Northland,2020-03-17,1,1
+Northland,2020-03-22,1,2
+Northland,2020-03-24,2,4
+Northland,2020-03-25,2,6
+Northland,2020-03-26,2,8
+Northland,2020-03-29,2,10
+Northland,2020-03-30,1,11
+Northland,2020-03-31,1,12
+Northland,2020-04-01,1,13
+Northland,2020-04-02,1,14
+Northland,2020-04-03,2,16
+Northland,2020-04-04,1,17
+Northland,2020-04-05,2,19
+Northland,2020-04-06,1,20
+Northland,2020-04-07,2,22
+Northland,2020-04-09,1,23
+Northland,2020-04-10,2,25
+Northland,2020-04-11,1,26
+Northland,2020-04-13,1,27
+Northland,2020-04-16,1,28
+Hutt Valley,2020-03-19,2,2
+Hutt Valley,2020-03-22,1,3
+Hutt Valley,2020-03-23,2,5
+Hutt Valley,2020-03-25,1,6
+Hutt Valley,2020-03-26,4,10
+Hutt Valley,2020-03-27,3,13
+Hutt Valley,2020-03-31,1,14
+Hutt Valley,2020-04-02,4,18
+Hutt Valley,2020-04-03,1,19
+Hutt Valley,2020-04-05,1,20
+Lakes,2020-03-17,1,1
+Lakes,2020-03-20,1,2
+Lakes,2020-03-23,1,3
+Lakes,2020-03-24,1,4
+Lakes,2020-03-25,3,7
+Lakes,2020-03-26,1,8
+Lakes,2020-03-28,1,9
+Lakes,2020-03-30,2,11
+Lakes,2020-04-04,1,12
+Lakes,2020-04-10,1,13
+Lakes,2020-04-12,2,15
+Lakes,2020-04-17,1,16
+South Canterbury,2020-03-23,2,2
+South Canterbury,2020-03-27,4,6
+South Canterbury,2020-03-28,1,7
+South Canterbury,2020-03-29,2,9
+South Canterbury,2020-03-30,1,10
+South Canterbury,2020-04-08,1,11
+South Canterbury,2020-04-11,1,12
+South Canterbury,2020-04-14,1,13
+South Canterbury,2020-04-15,1,14
+South Canterbury,2020-04-17,1,15
+South Canterbury,2020-04-19,1,16
+Taranaki,2020-03-16,2,2
+Taranaki,2020-03-21,2,4
+Taranaki,2020-03-25,1,5
+Taranaki,2020-03-26,2,7
+Taranaki,2020-03-27,5,12
+Taranaki,2020-03-30,1,13
+Taranaki,2020-04-01,1,14
+Taranaki,2020-04-25,1,15
+Taranaki,2020-04-26,1,16
+Whanganui,2020-03-27,3,3
+Whanganui,2020-04-01,2,5
+Whanganui,2020-04-02,2,7
+Whanganui,2020-04-17,1,8
+Whanganui,2020-04-19,1,9
+Wairarapa,2020-03-19,1,1
+Wairarapa,2020-03-21,2,3
+Wairarapa,2020-03-24,2,5
+Wairarapa,2020-03-31,1,6
+Wairarapa,2020-04-02,2,8
+West Coast,2020-03-22,1,1
+West Coast,2020-03-26,2,3
+West Coast,2020-04-01,1,4
+West Coast,2020-04-05,1,5
+Tairawhiti,2020-03-26,1,1
+Tairawhiti,2020-04-11,1,2
+Tairawhiti,2020-04-14,2,4

@@ -242,8 +242,10 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/25/20",1461))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/26/20",1470))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/27/20",1469))
-															 	
-															 	
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/28/20",1472))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/29/20",1474))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/30/20",1476))
+
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
 															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -413,7 +415,7 @@ server <- function(input, output,session) {
 		
 		ts.g <- ggplot(data = ts.df) +
 			geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
-			geom_point(mapping = aes(x = variable,y = value,group = 1)) +
+			geom_point(mapping = aes(x = variable,y = value,group = 1),size = 0.5) +
 			labs(title = "NZ COVID19 Cases: Time Series (Cumulative)",
 			     subtitle = paste0(date_stamp,data_note_1),
 			     x = "Date",

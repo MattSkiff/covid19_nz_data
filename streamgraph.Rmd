@@ -1,0 +1,400 @@
+---
+title: "NZ COVID19  Cases by DHB"
+author: "Matthew Skiffington"
+date: "28/04/2020"
+output: html_document
+---
+<style type="text/css">
+.main-container {
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+<style type="text/css">
+.new-cases {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cumulative-cases {
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+knitr::opts_chunk$set(message  = F)
+knitr::opts_chunk$set(warning = F)
+mbie_colours <- c("#191E50", "#753BBD", "#E33049", "#006272", "#138A5C", "#7A9A01", "#009CBD", "#C6007E", "#BE6A14", "#BB890B")
+```
+
+Data sourced from the Ministry of Health database snapshot, provided on the COVID19 cases page. <https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases/covid-19-current-cases-details>
+
+New cases smoothed using a 7-day rolling average. Only the 7 (of 20) most prevalent DHBs have been kept (all others are grouped in "other").
+
+streamgraph:
+
+```{r grooming}
+library(streamgraph)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(zoo)
+library(readxl)
+library(forcats)
+library(lubridate)
+library(ggplot2)
+library(hrbrthemes)
+library(zoo)
+library(viridis)
+library(plotly)
+
+DHB_keep.vec <- c(
+"Auckland",
+"Waikato",
+"Waitematā",
+"Counties Manukau",
+"Capital and Coast",
+"Canterbury",
+"Southern"
+)
+
+excel_file <- "moh_data.xlsx"
+
+	covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3)
+															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3)
+															
+															covid_p.df %<>% rename(`Report Date` = `Date of report`)
+															covid.df %<>% rename(`Report Date` = `Date of report`)
+															
+															
+															covid.df <- rbind(covid.df,covid_p.df)
+															
+															covid.df$Gender <- covid.df$Sex
+															covid.df$Gender[covid.df$Gender == ""] <- "Not Reported"
+															covid.df$Gender <- as.factor(covid.df$Gender) 
+															
+															levels(covid.df$Gender)[levels(covid.df$Gender) == ""] <- "Not Reported"
+															levels(covid.df$DHB)[levels(covid.df$DHB) == ""] <- "Not Reported"
+															covid.df$DHB[covid.df$DHB == "TBC"] <- "Not Reported"
+															
+															covid.df$Age <- as.character(covid.df$`Age group`)
+															covid.df$Age[covid.df$Age == ""] <- "Not Reported"
+															covid.df$Age[covid.df$Age == "Teen"] <- "Teens"
+															
+															covid.df$Age[covid.df$Age == "Unknown"] <- "Not Reported"
+															covid.df$Age <- as.factor(covid.df$Age) 
+															
+															levels(covid.df$Age)[levels(covid.df$Age) == "Not provided"] <- "Not Reported"
+															
+															
+															covid.df <- covid.df %>%  mutate(Gender = recode(Gender, 
+																																							 `Male` = "M",
+																																							 `Female` = "F",
+																																							 `Not provided` = "Not Reported"))
+															
+															
+															# sort levels by frequency of DHB
+															#	covid.df$DHB <- fct_recode(covid.df$DHB, c("Hawkes Bay" = "Hawke’s Bay")) 
+															covid.df$DHB <- fct_infreq(covid.df$DHB, ordered = NA)
+															
+															covid.df$DHB <- fct_lump_min(covid.df$DHB,min = 95)
+
+															#	covid.df$Age <- fct_recode(covid.df$Age, c("60s" = "64")) #fct_infreq(covid.df$Age, ordered = NA)     
+															
+															#write.csv(covid.df,"covid19.csv")
+															#write.csv(covid.df,"covid19.csv")
+															covid.df$Age <- fct_relevel(covid.df$Age, c("<1",
+																																					"1 to 4",
+																																					"5 to 9",
+																																					"10 to 14",
+																																					"15 to 19",
+																																					"20 to 29",
+																																					"30 to 39",
+																																					"40 to 49",
+																																					"50 to 59",
+																																					"60 to 69",
+																																					"70+",
+																																					"Not Reported")) 
+															
+															covid.df$`Report Date` <- as_date(parse_date_time(covid.df$`Report Date`, orders = c("d m y", "d B Y", "dmy")))
+															#covid.df
+															
+#' Add a vertical marker (with optional label) to streamgraph
+#'
+#' This is useful for marking/labeling notable events along the streams.
+#'
+#' @param sg streamgraph object
+#' @param x horizontal position
+#' @param label text for the annotation
+#' @param stroke_width line width
+#' @param stroke line color
+#' @param space space (in points) from the marker to place the label
+#' @param y vertical position
+#' @param color color of the label
+#' @param size font size#' @export
+#' @param anchor how to justify the label (one of \code{start} [left],
+#'     \code{middle} [center] or \code{end} [right])
+sg_add_marker <- function(sg, x, label="", stroke_width=0.5, stroke="#7f7f7f", space=5,
+                          y=0, color="#7f7f7f", size=12, anchor="start") {
+
+  if (inherits(x, "Date")) { x <- format(x, "%Y-%m-%d") }
+
+  mark <- data.frame(x=x, y=y, label=label, color=color, stroke_width=stroke_width, stroke=stroke,
+                     space=space, size=size, anchor=anchor, stringsAsFactors=FALSE)
+
+  if (is.null(sg$x$markers)) {
+    sg$x$markers <- mark
+  } else {
+    sg$x$markers <- bind_rows(mark, sg$x$markers)
+  }
+
+  sg
+
+}
+```
+
+```{r stream chart grooming}
+# j_covid.df <- covid.df %>% group_by(DHB) %>% rename(Date = `Report Date`)
+# join_dates <- data.frame(Date = seq(min(covid.df$`Report Date`),
+#                                     max(covid.df$`Report Date`),
+#                                     by = "days"))
+# 
+# full_join(j_covid.df,join_dates,by = "Date")
+
+na.locf2 <- function(x) na.locf(x, na.rm = FALSE)
+
+covid_cumulative_dhb.df <- covid.df %>%
+  rename(Date = `Report Date`) %>%
+  group_by(DHB,Date) %>%
+  tally() %>%
+  mutate(c_n = cumsum(n)) %>%
+  ungroup() %>%
+  complete(Date = seq(min(covid.df$`Report Date`),
+                      max(covid.df$`Report Date`),
+                      by = "days")
+           ,DHB) %>%
+  group_by(DHB) %>%
+  arrange(Date,DHB) %>%
+  do(na.locf2(.)) 
+  #fill(c_n,.direction = "up")
+
+# write.csv(covid_cumulative_dhb.df,file = "cum_dhb.csv",quote = F,row.names = F)
+# read.csv()
+
+# covid_cumulative_dhb.df$c_n <- na.locf(covid_cumulative_dhb.df$c_n,fromLast = F,na.rm = F)
+covid_cumulative_dhb.df$n[is.na(covid_cumulative_dhb.df$n)] <- 0
+
+covid_cumulative_dhb.df %<>% mutate(n_roll = round(rollmean(n,7, na.pad = TRUE, align = "right")),3)
+covid_cumulative_dhb.df$n_roll[is.na(covid_cumulative_dhb.df$n_roll)] <- 0
+covid_cumulative_dhb.df$c_n[is.na(covid_cumulative_dhb.df$c_n)] <- 0
+```
+
+## Cumulative Cases
+
+COVID19 cases by DHB - cumulative cases. 
+
+```{r cumulative,out.width = '100%'}
+# covid_cumulative_dhb.df <- na.omit(covid_cumulative_dhb.df)
+pp <- streamgraph(covid_cumulative_dhb.df, 
+                  key = "DHB", 
+                  value = "c_n", 
+                  date = "Date", 
+                  height = "800px", 
+                  width = "100%") %>%
+  sg_fill_manual(mbie_colours)  %>%
+  sg_annotate(levels(covid_cumulative_dhb.df$DHB)[1], as.Date("25/03/2020"), 5, color = "white", size = 12) %>%
+  sg_annotate(levels(covid_cumulative_dhb.df$DHB)[2], as.Date("25/03/2020"), 20, color = "white", size = 12) %>%
+  sg_annotate(levels(covid_cumulative_dhb.df$DHB)[3], as.Date("25/03/2020"), 30, color = "white", size = 12) %>%
+  sg_axis_x(4, "day", "%m-%d")  %>%
+  sg_axis_y(10)  %>%
+  sg_legend(show=TRUE, label="DHB: ") %>%
+  sg_add_marker(as.Date("25/03/2020"), label = "Level 4 Starts", stroke_width = 0.5,
+  stroke = "#7f7f7f", space = 5, y = 0, color = "#7f7f7f",
+  size = 12, anchor = "start") %>%
+  sg_add_marker(as.Date("28/03/2020"), label = "Level 3 Starts", stroke_width = 0.5,
+  stroke = "#7f7f7f", space = 5, y = 0, color = "#7f7f7f",
+  size = 12, anchor = "start") 
+  
+
+pp %>% sg_title(title = "Cumulative COVID19 Cases by DHB")
+
+# save the widget
+# library(htmlwidgets)
+# saveWidget(pp, file=paste0( getwd(), "/HtmlWidget/streamgraphBasic.html"))
+```
+
+## New Cases
+
+COVID19 cases by DHB - daily new cases. 
+
+```{r new cases, echo=FALSE,out.width = '100%'}
+# requires covid.df
+pp <- streamgraph(covid_cumulative_dhb.df, 
+                  key = "DHB", 
+                  value = "n_roll", 
+                  date = "Date", 
+                  height = "800px", 
+                  width = "100%") %>%
+  sg_fill_manual(mbie_colours) %>%
+  sg_axis_x(4, "day", "%m-%d")  %>%
+  sg_axis_y(10)  %>%
+  sg_legend(show=TRUE, label="DHB: ")  %>%
+  sg_add_marker(as.Date("25/03/2020"), label = "Level 4 Starts", stroke_width = 0.5,
+  stroke = "#7f7f7f", space = 5, y = 0, color = "#7f7f7f",
+  size = 12, anchor = "start") %>%
+  sg_add_marker(as.Date("28/03/2020"), label = "Level 3 Starts", stroke_width = 0.5,
+  stroke = "#7f7f7f", space = 5, y = 0, color = "#7f7f7f",
+  size = 12, anchor = "start") 
+
+pp %>% sg_title(title = "New COVID19 Cases by DHB : 7 Day Moving Average") 
+
+# save the widget
+# library(htmlwidgets)
+# saveWidget(pp, file=paste0( getwd(), "/HtmlWidget/streamgraphBasic.html"))
+```
+
+<!-- # ```{r stream cum %} -->
+<!-- # pp <- streamgraph(covid_cumulative_dhb.df,  -->
+<!-- #                   key = "DHB",  -->
+<!-- #                   value = "n_roll",  -->
+<!-- #                   date = "Date",  -->
+<!-- #                   height = "800px",  -->
+<!-- #                   width = "100%", -->
+<!-- #                   offset = "expand") -->
+<!-- #  -->
+<!-- # pp %>% sg_title(title = "New COVID19 Cases by DHB (%) : 7 Day Moving Average") -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # ```{r stream new cases %} -->
+<!-- # pp <- streamgraph(covid_cumulative_dhb.df,  -->
+<!-- #                   key = "DHB",  -->
+<!-- #                   value = "c_n",  -->
+<!-- #                   date = "Date",  -->
+<!-- #                   height = "800px",  -->
+<!-- #                   width = "100%", -->
+<!-- #                   offset = "expand") -->
+<!-- #  -->
+<!-- # pp %>% sg_title(title = "Cumulative COVID19 Cases by DHB (%) : 7 Day Moving Average") -->
+<!-- # ``` -->
+
+ggplot2 / plotly:
+
+```{r cumulative ggplot2,out.width = '100%'}
+events = data.frame(date_events = seq(as.POSIXct("2020-03-25", tz = "UTC", format = "%Y-%m-%d"),
+                           as.POSIXct("2020-04-28", tz = "UTC", format = "%Y-%m-%d"),
+                           "1 month"),
+                measure = runif(10, 0, 20))
+events = data.frame(date_events = as.POSIXct(c("2020-03-25"), tz = "UTC", format = "%Y-%m-%d"))
+
+p <- covid_cumulative_dhb.df %>% 
+  ggplot( aes(x=Date, y=c_n, fill=DHB)) + 
+    geom_area( ) +
+    scale_fill_manual(values = mbie_colours) +
+    scale_color_manual(values =  mbie_colours) +
+    theme(legend.position="bottom") +
+    ggtitle("COVID19 NZ Cumulative Cases") +
+    ylab("New Cases - Cumulative") + xlab("Date") +
+    theme_ipsum() +
+    theme(legend.position="bottom") + 
+    geom_segment(data = events, aes(x = as.Date(events$date_events, "%Y-%m-%d"),
+                                    y = rep(0,nrow(events)),
+                                    fill = "Lockdown Starts",
+                                    color = "red",
+                                    xend = as.Date(events$date_events, "%Y-%m-%d"),
+                                    yend = rep(1500,
+                                               nrow(events))),color = "red",show.legend = F)
+
+ggplotly(p, tooltip="all") %>% config(displayModeBar = F) %>%
+  layout(legend = list(
+      orientation = "b"
+    )
+  ) 
+```
+
+```{r new cases ggplot2,out.width = '100%'}
+p <- covid_cumulative_dhb.df %>% 
+     mutate(n_roll = round(n_roll,1)) %>%
+  ggplot( aes(x=Date, y = n_roll, fill = DHB)) +
+    geom_area( ) +
+    scale_fill_manual( values = mbie_colours) +
+    scale_color_manual(values =  mbie_colours) +
+    theme(legend.position ="bottom") +
+    ggtitle("COVID19 NZ New Cases") +
+    labs(subtitle = "7 day moving average") +
+    ylab("New Cases") + xlab("Date") +
+    theme_ipsum() +
+    geom_segment(data = events, aes(x = as.Date(events$date_events, "%Y-%m-%d"),
+                                    y = rep(0,nrow(events)),
+                                    fill = "Lockdown Starts",
+                                    color = "red",
+                                    xend = as.Date(events$date_events, "%Y-%m-%d"),
+                                    yend = rep(70,nrow(events))),color = "red",show.legend = F) +
+    theme(legend.position = "bottom")
+ggplotly(p, tooltip ="all") %>% config(displayModeBar = F) %>%
+  layout(legend = list(
+      orientation = "b"
+    )
+  )
+```
+
+```{r cumulative % ggplot2,out.width = '100%'}
+p <- covid_cumulative_dhb.df %>% 
+  group_by(Date) %>%
+  mutate(percent = round(c_n / sum(c_n),4)*100) %>%
+  ungroup() %>%
+  ggplot( aes(x=Date, y=percent, fill=DHB, color=DHB)) +
+    geom_area(  ) +
+    scale_fill_manual(values =  mbie_colours) +
+    scale_color_manual(values =  mbie_colours) +
+    theme(legend.position="bottom") +
+    ggtitle("COVID19 NZ Cumulative Cases (%)") +
+    geom_segment(data = events, aes(x = as.Date(events$date_events, "%Y-%m-%d"),
+                                    y = rep(0,nrow(events)),
+                                    fill = "Lockdown Starts",
+                                    color = "red",
+                                    xend = as.Date(events$date_events, "%Y-%m-%d"),
+                                    yend = rep(100,nrow(events))),color = "red",show.legend = F) +
+    ylab("New Cases - Cumulative (%)") + xlab("Date") +
+    theme_ipsum() +
+    theme(legend.position="bottom")
+ggplotly(p, tooltip="all") %>% config(displayModeBar = F) %>%
+  layout(legend = list(
+      orientation = "b"
+    )
+  )
+```
+
+```{r new cases % ggplot2,out.width = '100%'}
+df2 <- covid_cumulative_dhb.df %>% 
+  na.omit() %>%
+  group_by(Date) %>%
+  mutate(percent = round(n_roll / sum(n_roll),4)*100) %>%
+  ungroup() 
+
+p <- ggplot(data = df2,
+    aes(x=Date, y=percent, fill=DHB, color=DHB)) +
+    geom_area(  ) + 
+    scale_fill_manual(values =  mbie_colours) +
+    scale_color_manual(values =  mbie_colours) +
+    theme(legend.position="bottom") +
+    ggtitle("COVID19 NZ New Cases (%)") +
+    ylab("New Cases (%)") + xlab("Date") +
+    labs(subtitle = "7 day moving average") +
+    theme_ipsum() +
+    theme(legend.position = "bottom")  + 
+    geom_segment(data = events, aes(x = as.Date(events$date_events, "%Y-%m-%d"),
+                                    y = rep(0,nrow(events)),
+                                    fill = "Lockdown Starts",
+                                    color = "red",
+                                    xend = as.Date(events$date_events, "%Y-%m-%d"),
+                                    yend = rep(100,nrow(events))),color = "red",show.legend = F)
+ggplotly(p, tooltip="all") %>% config(displayModeBar = F) %>%
+  layout(legend = list(
+      orientation = "b"
+    )
+  )  
+  
+```
