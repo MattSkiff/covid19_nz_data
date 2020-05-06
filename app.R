@@ -248,6 +248,9 @@ server <- function(input, output,session) {
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/01/20",1479))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/02/20",1485))
 															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/03/20",1487))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/04/20",1487))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/05/20",1486))
+															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/06/20",1488))
 
 															 	
 															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
@@ -343,6 +346,10 @@ server <- function(input, output,session) {
 		dhb.sdf <- dhb.sdf()
 		dhb.sdf <- dhb.sdf[dhb.sdf$DHB2015_Na != "Area outside District Health Board",]
 		virpal <- colorNumeric( palette = "viridis", domain = dhb.sdf@data$value, na.color = "transparent")
+		
+		covid_dhb.df$DHB2015_Na <- as.character(covid_dhb.df$DHB2015_Na)
+		covid_dhb.df$DHB2015_Na[covid_dhb.df$DHB2015_Na == "Waitematā"] <- "Waitemata"
+		covid_dhb.df$DHB2015_Na[covid_dhb.df$DHB2015_Na == "Tairāwhiti"] <- "Tairawhiti"
 		
 		dhb.sdf@data <- left_join(x = dhb.sdf@data,
 															y = covid_dhb.df,
