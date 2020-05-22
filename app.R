@@ -205,64 +205,26 @@ server <- function(input, output,session) {
 	## Time Series Data Frame Creation ------------
 	covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 															 valueExpr = {
-															 	
-															 	covid_ts.df <- read.csv(file = "covid_ts.csv",header = T)
-															 	covid_ts.df$variable <- as.character(covid_ts.df$variable)
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/25/20",205))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/26/20",283))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/27/20",368))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/28/20",451))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/29/20",514))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/30/20",589))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","3/31/20",647))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/01/20",708))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/02/20",797))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/03/20",868))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/04/20",950)) 
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/05/20",1039))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/06/20",1106))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/07/20",1160))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/08/20",1210))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/09/20",1239))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/10/20",1283))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/11/20",1312)) 
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/12/20",1330))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/13/20",1349))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/14/20",1366))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/15/20",1386))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/16/20",1401))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/17/20",1409))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/18/20",1422))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/19/20",1431))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/20/20",1440))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/21/20",1445))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/22/20",1451))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/23/20",1451))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/24/20",1456))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/25/20",1461))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/26/20",1470))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/27/20",1469))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/28/20",1472))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/29/20",1474))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","4/30/20",1476))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/01/20",1479))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/02/20",1485))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/03/20",1487))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/04/20",1487))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/05/20",1486))
-															 	covid_ts.df <- rbind(covid_ts.df,c("New Zealand","5/06/20",1488))
-
-															 	
-															 	covid_ts.df$variable <- as.factor(covid_ts.df$variable)
-															 	covid_ts.df$value <- as.numeric(covid_ts.df$value)
-															 	covid_ts.df
-															 	
-															 	covid.lag <- lag(covid_ts.df$value,1)
-															 	covid.lag[is.na(covid.lag)] <- 0
-															 	
-															 	covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
-															 	
-															 	covid_ts.df # write.csv(x = covid_ts.df,file = "covid_ts.csv",quote = F,row.names = F)
+															   covid_ts.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3) %>%
+															     rename(variable = `Date notified of potential case`) %>%
+															     mutate(variable = as_date(parse_date_time(variable, orders = c("d m y", "d B Y", "dmy")))) %>%
+															     group_by(variable) %>%
+															     tally(name = "value") %>%
+															     mutate(value = cumsum(value)) %>%
+															     arrange(variable) %>%
+															     mutate(Country = rep("New Zealand",nrow(.))) %>% #format(X$newdate, "%Y-%m-%d")
+															     select(Country,variable,value)
+															   
+															  # covid_ts.df$variable <- as.character(format(covid_ts.df$variable,"%d/%m/%Y"))
+															   covid_ts.df$value <- as.numeric(covid_ts.df$value)
+															   covid_ts.df
+															   
+															   covid.lag <- lag(covid_ts.df$value,1)
+															   covid.lag[is.na(covid.lag)] <- 0
+															   
+															   covid_ts.df$new_cases <- covid_ts.df$value - covid.lag
+															   
+															   covid_ts.df
 															 })
 	
 	## Core Data Frame Creation ------------
@@ -272,8 +234,8 @@ server <- function(input, output,session) {
 															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3)
 															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3)
 															
-															covid_p.df %<>% rename(`Report Date` = `Date of report`)
-															covid.df %<>% rename(`Report Date` = `Date of report`)
+															covid_p.df %<>% rename(`Report Date` = `Date notified of potential case`)
+															covid.df %<>% rename(`Report Date` = `Date notified of potential case`)
 															
 															
 															covid.df <- rbind(covid.df,covid_p.df)
@@ -322,7 +284,8 @@ server <- function(input, output,session) {
 																																					"70+",
 																																					"Not Reported")) 
 															
-															covid.df$`Report Date` <- as_date(parse_date_time(covid.df$`Report Date`, orders = c("d m y", "d B Y", "dmy")))
+															covid.df$`Report Date` <- as_date(parse_date_time(covid.df$`Report Date`, 
+															                                                  orders = c("d m y", "d B Y", "dmy")))
 															covid.df
 														})
 	## DHB Spatial Reactive -------------------
@@ -341,7 +304,7 @@ server <- function(input, output,session) {
 		covid_dhb.df %<>% 
 			mutate(value = as.numeric(n)) %>% 
 			select(-n)
-		
+	
 		colnames(covid_dhb.df)[1] <- "DHB2015_Na"
 		dhb.sdf <- dhb.sdf()
 		dhb.sdf <- dhb.sdf[dhb.sdf$DHB2015_Na != "Area outside District Health Board",]
@@ -420,15 +383,14 @@ server <- function(input, output,session) {
 		ts.df <- covid_ts.df()
 		
 		# recode dates
-		ts.df$variable <- as.Date(ts.df[,2],
-															format = "%m/%d/%y")
+		ts.df$variable <- as.Date(as.character(ts.df[,2]$variable),"%Y-%m-%d")
 		
 		ts.g <- ggplot(data = ts.df) +
 			geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_point(mapping = aes(x = variable,y = value,group = 1),size = 0.5) +
 			labs(title = "NZ COVID19 Cases: Time Series (Cumulative)",
 			     subtitle = paste0(date_stamp,data_note_1),
-			     x = "Date",
+			     x = "Date of Report",
 			     y = "Cumulative number of cases") +
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
@@ -454,15 +416,14 @@ server <- function(input, output,session) {
 		nc.df <- covid_ts.df()
 		
 		# recode dates
-		nc.df$variable <- as.Date(nc.df[,2],
-															format = "%m/%d/%y")
+		nc.df$variable <- as.Date(as.character(nc.df[,2]$variable),"%Y-%m-%d") #as.Date(nc.df[,2],		format = "%d/%m/%y")
 		
 		nc.g <- ggplot(data = nc.df) +
 			#geom_line(mapping = aes(x = variable,y = new_cases,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_col(mapping = aes(x = variable,y = new_cases,group = 1)) +
 			labs(title = 'NZ COVID19 Cases: New Cases',
 			     subtitle = paste0(date_stamp,data_note_1),
-			     x = "Date",
+			     x = "Date of Report",
 			     y = "Number of new cases") +
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
