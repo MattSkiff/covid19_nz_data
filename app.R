@@ -11,6 +11,11 @@ ui <- dashboardPage(
 	
 	## UI: Side bar content ----------------
 	dashboardSidebar(
+	  
+	  tags$head(
+	    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+	  ),
+	  
 		sidebarMenu(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
 			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
@@ -63,7 +68,7 @@ ui <- dashboardPage(
 		),
 		# Change Theme
 		shinyDashboardThemes(
-			theme = "purple_gradient" #"grey_dark"
+			theme = "grey_dark"
 		),
 		# tab-dashboard
 		tabItems(
@@ -970,7 +975,8 @@ server <- function(input, output,session) {
 		df <- covid.df()
 		
 		DT::datatable(df,options = list(
-			pageLength = 60))
+			pageLength = 60)) %>% 
+		  formatStyle(colnames(.),color = table_text_colour)
 	})
 	output$cluster_table = DT::renderDataTable({
 		
@@ -984,7 +990,8 @@ server <- function(input, output,session) {
 		df <- covid.df
 		
 		DT::datatable(df,options = list(
-			pageLength = 60))
+			pageLength = 60)) %>% 
+		  formatStyle(colnames(.),color = table_text_colour)
 	})
 	#### DHB Table --------------------------
 	output$dhb_table = DT::renderDataTable({
@@ -994,7 +1001,8 @@ server <- function(input, output,session) {
 			tally()
 		
 		DT::datatable(covid_dhb.df,options = list(
-			pageLength = 60))
+			pageLength = 60)) %>% 
+		  formatStyle(colnames(.),color = table_text_colour)
 	})
 	#### Gender Table --------------------------
 	output$gender_table = DT::renderDataTable({
@@ -1004,7 +1012,8 @@ server <- function(input, output,session) {
 			tally()
 		
 		DT::datatable(covid_gender.df,options = list(
-			pageLength = 60))
+			pageLength = 60)) %>% 
+		  formatStyle(colnames(.),color = table_text_colour)
 	})
 	#### Age Table --------------------------
 	output$age_table = DT::renderDataTable({
@@ -1014,7 +1023,8 @@ server <- function(input, output,session) {
 			tally()
 		
 		DT::datatable(covid_age.df,options = list(
-			pageLength = 60))
+			pageLength = 60)) %>% 
+		  formatStyle(colnames(.),color = table_text_colour)
 	})
 	
 	# Downloadable csv of cases dataset ----

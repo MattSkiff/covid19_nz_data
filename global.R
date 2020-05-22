@@ -20,10 +20,11 @@ library(lubridate) # date handling - in particular,
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Last Updated: Wednesday, 06/05/2020: Notice - an official Ministry of Health dashboard is now available"
-date_stamp <- "Current to Wednesday, 06/05/2020"
+app_status <- "Last Updated: Friday, 22/05/2020: Notice - an official Ministry of Health dashboard is now available"
+date_stamp <- "Current to Friday, 22/05/2020"
 data_note_1 <- " | probable and confirmed infections"
 omission_string <- " unreported age cases omitted"
+table_text_colour <- "white"
 
 `%nin%` = Negate(`%in%`)
 
