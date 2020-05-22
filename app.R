@@ -28,7 +28,8 @@ ui <- dashboardPage(
 							 menuSubItem("Cases", tabName = "dhb", icon = icon("arrows-alt")),
 							 menuSubItem("Travel over Time", tabName = "dhb_travel_time", icon = icon("chart-line")),
 							 menuSubItem("International Travel", tabName = "dhb_travel", icon = icon("arrows-alt-h")),
-							 menuSubItem("Hospitalisations", tabName = "dhb_hospital", icon = icon("hospital")),
+							 # irrelevant now
+							# menuSubItem("Hospitalisations", tabName = "dhb_hospital", icon = icon("hospital")),
 							 menuSubItem("Gender", tabName = "dhb_gender", icon = icon("bookmark")),
 							 menuSubItem("Age", tabName = "dhb_age", icon = icon("bookmark"))
 			),
@@ -393,7 +394,7 @@ server <- function(input, output,session) {
 		ts.g <- ggplot(data = ts.df) +
 			geom_line(mapping = aes(x = variable,y = value,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_point(mapping = aes(x = variable,y = value,group = 1),size = 0.5) +
-			labs(title = "NZ COVID19 Cases: Time Series (Cumulative)",
+			labs(title = "COVID19 Cases (Cumulative)",
 			     subtitle = paste0(date_stamp,data_note_1),
 			     x = "Date of Report",
 			     y = "Cumulative number of cases") +
@@ -407,7 +408,7 @@ server <- function(input, output,session) {
 		ts.g %>% 
 			ggplotly() %>% #tooltip = c("Number of cases")
 			config(displayModeBar = F) %>% 
-			layout(title = list(text = paste0('NZ COVID19 Cases: Time Series (Cumulative)',
+			layout(title = list(text = paste0('COVID19 Cases (Cumulative)',
 																				'<br>',
 																				'<sup>',
 																				date_stamp,data_note_1,
@@ -426,7 +427,7 @@ server <- function(input, output,session) {
 		nc.g <- ggplot(data = nc.df) +
 			#geom_line(mapping = aes(x = variable,y = new_cases,group = 1)) + # reorder(covid_main.df$Location,left_join(covid_main.df,order.df)$order)
 			geom_col(mapping = aes(x = variable,y = new_cases,group = 1)) +
-			labs(title = 'NZ COVID19 Cases: New Cases',
+			labs(title = 'COVID19 Cases: New Cases',
 			     subtitle = paste0(date_stamp,data_note_1),
 			     x = "Date of Report",
 			     y = "Number of new cases") +
@@ -440,7 +441,7 @@ server <- function(input, output,session) {
 		nc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")
 			config(displayModeBar = F) %>%
-			layout(title = list(text = paste0('NZ COVID19 Cases: New Cases',
+			layout(title = list(text = paste0('COVID19 Cases: New Cases',
 																				'<br>',
 																				'<sup>',
 																				date_stamp,data_note_1,
