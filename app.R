@@ -1070,7 +1070,7 @@ server <- function(input, output,session) {
 				 Data is sourced from Ministry of Health Excel Spreadsheets and scraped from some web tables, which are updated daily.<br> 
 				 <br> 
 				 Made by Matthew Skiffington <br> 
-				 Contact: skiffcoffee@gmail.com. Feedback and suggestions are welcome. Stay safe out there.')
+				 Contact: skiffcoffee@gmail.com. Feedback and suggestions are welcome.')
 	})
 	
 	}
