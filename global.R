@@ -7,6 +7,7 @@ library(leaflet) # interactive map
 library(shiny) # app
 library(reshape2) # melting
 library(dplyr) # wrangling
+library(stringr) # string detection
 library(magrittr) # piping
 library(ggplot2) # core plot package
 library(viridis) # nice colour scale
@@ -20,8 +21,7 @@ library(lubridate) # date handling - in particular,
 #library(rgeos) # centroids
 
 app_title <- "NZ COVID19 Data Explorer"
-app_status <- "Last Updated: Thursday, 04/06/2020: Notice - an official Ministry of Health dashboard is now available"
-date_stamp <- "Current to Thursday, 04/06/2020"
+excel_file <- "moh_data.xlsx"
 data_note_1 <- ""
 omission_string <- ""
 table_text_colour <- "white"

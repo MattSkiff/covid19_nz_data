@@ -3,8 +3,6 @@
 
 # Define UI for application 
 ## UI -----------
-
-excel_file <- "moh_data.xlsx"
 source("global.R")
 ui <- dashboardPage(
 	dashboardHeader(title = app_title),
@@ -203,23 +201,50 @@ ui <- dashboardPage(
 	)
 )
 
+# Server ----
 # Define server logic 
 server <- function(input, output,session) {
 	
+	url <- "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-situation/covid-19-current-cases/covid-19-current-cases-details"
+	html <- paste(readLines(url), collapse="\n")
+	base_url <- "https://www.health.govt.nz/system/files/documents/pages/"
+	matched <- str_match_all(html, "covid-cases.*xlsx")
+	if (read.table("last_match.txt")[1,1] == matched) download_data <- F else download_data <- T
+	write.table(matched,"last_match.txt")
+	
+	if (download_data) {
+		withProgress(message = 'Downloading MOH data', 
+								 value = 0, 
+								 {download.file(paste0(base_url,matched),destfile="moh_data.xlsx",mode="wb")})
+	}
+	
+	app_status <- sprintf("Last Updated: %s, %s: Notice - an official Ministry of Health dashboard is now available",
+												today(),
+												weekdays(as.Date(today())))
+												
+	date_stamp <- sprintf("Current to %s, %s",
+												today(),
+												weekdays(as.Date(today())))
 	rv <- reactiveValues()
 	rv$run <- 0
 	## Time Series Data Frame Creation ------------
 	covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 															 valueExpr = {
-															   covid_ts.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3) %>%
+															   covid_ts_confirmed.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3) %>%
 															     rename(variable = `Date notified of potential case`) %>%
-															     mutate(variable = as_date(parse_date_time(variable, orders = c("d m y", "d B Y", "dmy")))) %>%
-															     group_by(variable) %>%
-															     tally(name = "value") %>%
-															     mutate(value = cumsum(value)) %>%
-															     arrange(variable) %>%
-															     mutate(Country = rep("New Zealand",nrow(.))) %>% #format(X$newdate, "%Y-%m-%d")
-															     select(Country,variable,value)
+															     mutate(variable = as_date(parse_date_time(variable, "y-m-d"))) 
+															   
+															   covid_ts_prob.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3) %>%
+															   	rename(variable = `Date notified of potential case`) %>%
+															   	mutate(variable = as_date(parse_date_time(variable, "y-m-d")))
+															   
+															  covid_ts.df <- bind_rows(covid_ts_confirmed.df,covid_ts_prob.df) %>%
+															   	group_by(variable) %>%
+															   	tally(name = "value") %>%
+															   	mutate(value = cumsum(value)) %>%
+															   	arrange(variable) %>%
+															   	mutate(Country = rep("New Zealand",nrow(.))) %>% #format(X$newdate, "%Y-%m-%d")
+															   	select(Country,variable,value)
 															   
 															  # covid_ts.df$variable <- as.character(format(covid_ts.df$variable,"%d/%m/%Y"))
 															   covid_ts.df$value <- as.numeric(covid_ts.df$value)
@@ -291,8 +316,8 @@ server <- function(input, output,session) {
 																																					"Not Reported")) 
 															
 															covid.df$`Report Date` <- as_date(parse_date_time(covid.df$`Report Date`, 
-															                                                  orders = c("d m y", "d B Y", "dmy")))
-															covid.df
+																																								"y-m-d"))
+															return(covid.df)
 														})
 	## DHB Spatial Reactive -------------------
 	dhb.sdf <- reactive({
@@ -302,10 +327,13 @@ server <- function(input, output,session) {
 	## Map DHB -------------------
 	output$mapDHB <- renderLeaflet({
 		covid_dhb.df <- covid.df()
+		message("creating covid_dhb.df")
+		print(covid_dhb.df)
 		
-		covid_dhb.df %<>% 
-			group_by(DHB) %>%
-			tally()
+		covid_dhb.df<- data.frame(table(covid_dhb.df$DHB)) %>%
+			rename(DHB = Var1) %>%
+			rename(n = Freq)
+		
 		
 		covid_dhb.df %<>% 
 			mutate(value = as.numeric(n)) %>% 
@@ -367,7 +395,6 @@ server <- function(input, output,session) {
 			setView(lng = lng_init, 
 							lat = lat_init, 
 							zoom = zoom_level_init) 
-		#addControl(map_title, position = "topleft")
 	})
 	
 	## COVID LOC Reactive -------
@@ -380,7 +407,6 @@ server <- function(input, output,session) {
 		
 		covid_dhb.df <- melt(covid.ls[[2]])
 		covid_dhb.df
-		
 	})
 	## Time Series Plots -------------------
 	output$time_series_cumulative_plot <- renderPlotly({
@@ -475,7 +501,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
 			facet_wrap(~DHB) +
-			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") 
 		
 		ts_rc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")
@@ -966,10 +992,19 @@ server <- function(input, output,session) {
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static 
 			html_table()
 		
-		core_stats.df <- covid.ls[[1]]
+		core_stats.df <- covid.ls[[1]] 
+		
+		core_stats.df[,2] <- as.numeric(gsub(x = core_stats.df[,2],
+															pattern = ",",
+															replacement = ""))
+		
+		core_stats.df[,3] <- as.numeric(gsub(x = core_stats.df[,3],
+																				 pattern = ",",
+																				 replacement = ""))
 		
 		DT::datatable(core_stats.df,
-									options = list(dom = "t"),colnames = c("Statistic","Total","Change in 24 hours")) 
+									options = list(dom = "t"),
+									colnames = c("Statistic","Total","Change in 24 hours")) 
 	})
 	#### Raw Data Table --------------------------
 	output$raw_table <- DT::renderDataTable({
