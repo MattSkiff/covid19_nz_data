@@ -4,6 +4,15 @@
 # Define UI for application 
 ## UI -----------
 source("global.R")
+
+app_status <- sprintf("Last Updated: %s, %s: Notice - an official Ministry of Health dashboard is now available",
+                      today(),
+                      weekdays(as.Date(today())))
+
+date_stamp <- sprintf("Current to %s, %s",
+                      today(),
+                      weekdays(as.Date(today())))
+
 ui <- dashboardPage(
 	dashboardHeader(title = app_title),
 	
@@ -215,16 +224,9 @@ server <- function(input, output,session) {
 	if (download_data) {
 		withProgress(message = 'Downloading MOH data', 
 								 value = 0, 
-								 {download.file(paste0(base_url,matched),destfile="moh_data.xlsx",mode="wb")})
+								 {download.file(paste0(base_url,matched),destfile="moh_data.xlsx",mode ="wb")})
 	}
 	
-	app_status <- sprintf("Last Updated: %s, %s: Notice - an official Ministry of Health dashboard is now available",
-												today(),
-												weekdays(as.Date(today())))
-												
-	date_stamp <- sprintf("Current to %s, %s",
-												today(),
-												weekdays(as.Date(today())))
 	rv <- reactiveValues()
 	rv$run <- 0
 	## Time Series Data Frame Creation ------------
@@ -427,7 +429,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "7 day"), minor_breaks = "7 day",date_labels = "%d/%m") #+
 		#geom_text(data = tail(ts.df),aes(x = variable - 0.5,y = value + max(new_cases)/20,label = value))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -460,7 +462,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "7 day"), minor_breaks = "7 day",date_labels = "%d/%m") #+
 		#geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -501,7 +503,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
 			facet_wrap(~DHB) +
-			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "4 day"), minor_breaks = "2 day",date_labels = "%d/%m") 
+			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "7 day"), minor_breaks = "7 day",date_labels = "%d/%m") 
 		
 		ts_rc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")
