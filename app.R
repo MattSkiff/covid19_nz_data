@@ -429,7 +429,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "7 day"), minor_breaks = "7 day",date_labels = "%d/%m") #+
+		  scale_x_date(breaks = seq(min(ts.df$variable), max(ts.df$variable), by = "1 month"), minor_breaks = "1 month",date_labels = "%b") 
 		#geom_text(data = tail(ts.df),aes(x = variable - 0.5,y = value + max(new_cases)/20,label = value))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -462,7 +462,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			#annotate(geom = "text", x = 1, y = max(ts.df$value)/2, label = paste0("N = ",nrow(ts.df)),color = "black") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
-			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "7 day"), minor_breaks = "7 day",date_labels = "%d/%m") #+
+			scale_x_date(breaks = seq(min(nc.df$variable), max(nc.df$variable), by = "1 month"), minor_breaks = "1 month",date_labels = "%b") #+
 		#geom_text(data = tail(nc.df),aes(x = variable,y = new_cases + max(new_cases)/20,label = new_cases))
 		#scale_x_date(breaks = ts.df$variable[seq(1, length(ts.df$variable), by = 3)])
 		
@@ -503,7 +503,7 @@ server <- function(input, output,session) {
 			theme_bw() +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1,size = text_size)) +
 			facet_wrap(~DHB) +
-			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "7 day"), minor_breaks = "7 day",date_labels = "%d/%m") 
+			scale_x_date(breaks = seq(min(ts_rc.df$`Report Date`), max(ts_rc.df$`Report Date`), by = "1 month"), minor_breaks = "1 month",date_labels = "%b") 
 		
 		ts_rc.g %>%
 			ggplotly() %>% #tooltip = c("Number of cases")
@@ -728,9 +728,8 @@ server <- function(input, output,session) {
 			na.omit()
 		
 		age.g <- ggplot(data = covid_age.df) +
-			geom_col(mapping = aes(x = Age,y = n,fill = Age)) + # reorder(covid_age.df$Age, -n)
+			geom_col(mapping = aes(x = Age,y = n)) + # reorder(covid_age.df$Age, -n)
 			labs(title = "NZ COVID19 cases - Age",subtitle = paste(Sys.time(),Sys.timezone()),x = "Age",y = "Number of cases") +
-			scale_fill_viridis(discrete = T) +
 			theme_light(base_size = text_size) + 
 			theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
@@ -786,7 +785,7 @@ server <- function(input, output,session) {
 		covid.ls <- read_html(url) %>% # "23_03_2020.html" # for static
 			html_table()
 		
-		transmission.df <- covid.ls[[5]]
+		transmission.df <- covid.ls[[6]]
 		#transmission.df %<>% rename(`Transmission type` = X1)
 		#transmission.df %<>% rename(`% of cases` = X2)
 		transmission.df$`% of cases` <- as.numeric(gsub(pattern = "%",
@@ -832,11 +831,10 @@ server <- function(input, output,session) {
 			na.omit()
 		
 		dhb.g <- ggplot(data = dhb.df) +
-			geom_col(mapping = aes(x = reorder(dhb.df$DHB, -n),y = n,fill = DHB)) +
+			geom_col(mapping = aes(x = reorder(dhb.df$DHB, -n),y = n)) +
 			labs(title = "NZ COVID19 cases - DHB",subtitle = paste(Sys.time(),Sys.timezone()),x = "Location",y = "Number of cases") +
 			theme_light(base_size = text_size) +
 			theme(legend.position = "bottom") +
-			scale_fill_viridis(discrete = T) +
 			theme(legend.position = "none") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
 		
@@ -900,8 +898,9 @@ server <- function(input, output,session) {
 			theme_light(base_size = text_size) +
 			theme(legend.position = "bottom") +
 			scale_fill_viridis(discrete = T,name = "International\nTravel") +
-			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) 
-
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) +
+		  scale_x_date(breaks = seq(min(dhb.df$`Report Date`), max(dhb.df$`Report Date`), by = "1 month"), minor_breaks = "1 month",date_labels = "%b") 
+		
 		dhb.g %>%
 			ggplotly(tooltip = c("DHB","n","Overseas travel")) %>%
 			config(displayModeBar = F) %>%
@@ -945,7 +944,8 @@ server <- function(input, output,session) {
 			theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) +
 			facet_wrap(~DHB) +
-			scale_fill_viridis(discrete = T) 
+			scale_fill_viridis(discrete = T) +
+		  scale_x_date(breaks = seq(min(dhb.df$ `Report Date`), max(dhb.df$ `Report Date`), by = "1 month"), minor_breaks = "1 month",date_labels = "%b") 
 		
 		dhb.g
 
@@ -968,9 +968,8 @@ server <- function(input, output,session) {
 			na.omit()
 		
 		gender.g <- ggplot(data = covid_gender.df) +
-			geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n,fill = Gender)) +
+			geom_col(mapping = aes(x = reorder(covid_gender.df$Gender, -n),y = n)) +
 			labs(title = "NZ COVID19 cases - Gender",subtitle = paste(Sys.time(),Sys.timezone()),x = "Gender",y = "Number of cases") +
-			scale_fill_viridis(discrete = T) +
 			theme_light(base_size = text_size) + 
 			theme(legend.position = "bottom") +
 			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))
