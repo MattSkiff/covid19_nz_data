@@ -898,8 +898,7 @@ server <- function(input, output,session) {
 			theme_light(base_size = text_size) +
 			theme(legend.position = "bottom") +
 			scale_fill_viridis(discrete = T,name = "International\nTravel") +
-			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size)) +
-		  scale_x_date(breaks = seq(min(dhb.df$`Report Date`), max(dhb.df$`Report Date`), by = "1 month"), minor_breaks = "1 month",date_labels = "%b") 
+			theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust  = 1,size = text_size))  
 		
 		dhb.g %>%
 			ggplotly(tooltip = c("DHB","n","Overseas travel")) %>%
