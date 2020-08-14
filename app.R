@@ -380,7 +380,7 @@ server <- function(input, output,session) {
 																 padding = "2px 2px"),
 										textsize = "12px",
 										direction = "auto")) %>% 
-			addLegend(pal = virpal, values = ~dhb.sdf$value, opacity = 0.7, title = "COVID19 Cases by DHB",
+			addLegend(pal = virpal, values = ~dhb.sdf$value, opacity = 0.7, title = "Total COVID19 Cases by DHB",
 								position = "bottomright") %>%
 			addMarkers(
 				lng = dgb_centres@coords[1:20,1], lat = dgb_centres@coords[1:20,2],
@@ -530,7 +530,7 @@ server <- function(input, output,session) {
 		cases_no <- nrow(geo.df)
 		
 		geo.df %<>% 
-			rename(Country = `Last country before return`) %>%
+			rename(Country = `Last location before return`) %>%
 				filter(!is.na(Country))
 		
 		#cities.df <- read.csv('worldcities.csv')
