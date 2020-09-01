@@ -15,7 +15,7 @@ If there is something you would like me to add, please let me know.
 
 ## Features
 
-* A 3D world map showing the locations of cases prior to getting coronavirus
+* A 3D world map showing the locations of cases prior to getting coronavirus - removed, MOH no longer publishes country of origin data
 * Univariate breakdowns - age, gender, dhb, ethnicity
 * Bivariate breakdowns
 * Searchable tables of information (cluster,age,raw data, dhb, etc)
