@@ -25,7 +25,7 @@ ui <- dashboardPage(
 	  
 		sidebarMenu(
 			menuItem("Figures & Maps", tabName = "dashboard", icon = icon("dashboard")),
-			menuItem("World Map", tabName = "world_map", icon = icon("globe")),
+			# menuItem("World Map", tabName = "world_map", icon = icon("globe")),
 			menuItem("Age", tabName = "age", icon = icon("birthday-cake")),
 			menuItem("Transmission", tabName = "transmission", icon = icon("user-friends")),
 			#menuItem("Ethnicity", tabName = "ethnicity", icon = icon("user-friends")),
@@ -81,7 +81,7 @@ ui <- dashboardPage(
 		# tab-dashboard
 		tabItems(
 			tabItem(tabName = "dashboard",
-							## UI: - Map & Core Stats ---------------------------
+							## UI: Map & Core Stats ---------------------------
 							fluidRow(
 								box(DT::dataTableOutput("core_stats_table"),width = 12)
 							),
@@ -232,11 +232,11 @@ server <- function(input, output,session) {
 	## Time Series Data Frame Creation ------------
 	covid_ts.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 															 valueExpr = {
-															   covid_ts_confirmed.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3) %>%
+															   covid_ts_confirmed.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = skip_rows) %>%
 															     rename(variable = `Date notified of potential case`) %>%
 															     mutate(variable = as_date(parse_date_time(variable, "y-m-d"))) 
 															   
-															   covid_ts_prob.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3) %>%
+															   covid_ts_prob.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = skip_rows) %>%
 															   	rename(variable = `Date notified of potential case`) %>%
 															   	mutate(variable = as_date(parse_date_time(variable, "y-m-d")))
 															   
@@ -264,8 +264,8 @@ server <- function(input, output,session) {
 	covid.df <- eventReactive(eventExpr = c(input$updateButton,rv),
 														valueExpr = {
 															
-															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = 3)
-															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = 3)
+															covid.df <- read_excel(excel_file, sheet = 1, col_names = TRUE, na = "", skip = skip_rows)
+															covid_p.df <- read_excel(excel_file, sheet = 2, col_names = TRUE, na = "", skip = skip_rows)
 															
 															covid_p.df %<>% rename(`Report Date` = `Date notified of potential case`)
 															covid.df %<>% rename(`Report Date` = `Date notified of potential case`)
@@ -516,134 +516,134 @@ server <- function(input, output,session) {
 						 uniformtext=list(minsize=plotly_text_size, mode='hide'),margin = m)
 	})
 	# ## World Map - Links to NZ -------------------
-	output$world_map <- renderPlotly({
-		
-		m_world <- list(
-			l = 50,
-			r = 50,
-			b = 50,
-			t = 150,
-			pad = 2
-		)
-		
-		geo.df <- covid.df()
-		cases_no <- nrow(geo.df)
-		
-		geo.df %<>% 
-			rename(Country = `Last location before return`) %>%
-				filter(!is.na(Country))
-		
-		#cities.df <- read.csv('worldcities.csv')
-		countries.df <- read.csv('countries.csv')
-		
-		geo.df$Country <- as.character(geo.df$Country)
-		geo.df$Country[geo.df$Country == "Polynesia (excludes Hawaii)"] <- "Vanuatu"
-		geo.df$Country[geo.df$Country == "Hong Kong (Special Administrative Region)"] <- "Hong Kong"
-		geo.df$Country[geo.df$Country == "Viet Nam"] <- "Vietnam"
-		geo.df$Country[geo.df$Country == "Northern America"] <- "United States of America"
-		geo.df$Country[geo.df$Country == "Middle East"] <- "Qatar"
-		geo.df$Country[geo.df$Country == "England"] <- "United Kingdom"
-		
-		countries.df$name <- as.character(countries.df$name)
-		countries.df$name[countries.df$name == "United States"] <- "United States of America"
-		
-		countries.df %<>%  
-			rename(lat = Latitude,lng = Longitude,Country = name) %>%
-			select(lat,lng,Country) 
-		
-		joined.df <- left_join(geo.df,countries.df,by = "Country")
-		
-		joined.df %<>% 
-			select(Country,lat,lng) %>%
-			na.omit()
-		
-		tally.df <- joined.df %>% group_by(Country,lat,lng) %>% tally()
-		
-		nz_lat.vec <- rep(-39.095963,nrow(tally.df))
-		nz_lng.vec <- rep(175.776594,nrow(tally.df))
-		
-		nz_orig.df <- data.frame(lat = nz_lat.vec,
-														 lng = nz_lng.vec,
-														 line = seq_len(nrow(tally.df)),
-														 Country = rep("New Zealand",nrow(tally.df)),
-														 id = seq_len(nrow(tally.df)))
-		
-		tally.df$id <- seq_len(nrow(tally.df))
-		
-		tally.df %<>% mutate(line = id) %>% select(lat,lng,line,Country,id,n) 
-		
-		nz_orig.df$n <- tally.df$n
-		
-		lines.df <- rbind(as.data.frame(tally.df),nz_orig.df)
-		
-		lines.df %<>% na.omit()
-		
-		overseas.df <- lines.df %>% filter(Country != "New Zealand")
-		
-		geo <- list(
-			showland = TRUE,
-			showlakes = TRUE,
-			showcountries = TRUE,
-			showocean = TRUE,
-			countrywidth = 0.5,
-			landcolor = toRGB("black"),
-			lakecolor = toRGB("grey"),
-			oceancolor = toRGB("grey"),
-			projection = list(
-				type = 'orthographic',
-				rotation = list(
-					lon = -100,
-					lat = 40,
-					roll = 0
-				)
-			),
-			lonaxis = list(
-				showgrid = TRUE,
-				gridcolor = toRGB("gray40"),
-				gridwidth = 0.5
-			),
-			lataxis = list(
-				showgrid = TRUE,
-				gridcolor = toRGB("gray40"),
-				gridwidth = 0.5
-			)
-		)
-		
-		fig <- plot_geo(lines.df)
-		fig <- fig %>% group_by(line)
-		fig <- fig %>% add_lines(x = ~lng, y = ~lat,
-														 hoverinfo = "text",
-														 hovertext = paste("Country :", lines.df$Country,
-														 									"<br> Longitude :", lines.df$lng,
-														 									"<br> Longitude :", lines.df$lat,
-														 									"<br> N :", lines.df$n),
-														 size = I(1)) %>%
-			add_markers(data = overseas.df,
-									y=~lat, x=~lng, hoverinfo="text",
-									color=~n, text=~n, size=~n, 
-									hoverinfo = "text",
-									hovertext = paste("Country :", overseas.df$Country,
-																		"<br> Longitude :", overseas.df$lng,
-																		"<br> Longitude :", overseas.df$lat,
-																		"<br> N :", overseas.df$n),
-									marker=list(sizeref=0.1, sizemode="area"))
-		fig <- fig %>% layout(
-			showlegend = FALSE, geo = geo,
-			title = 'COVID19 Cases into NZ : Data from the Ministry of Health'
-		) %>% 
-			layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
-																				'<br>',
-																				'<sup>',
-																				date_stamp," | Lines do not indicate flight paths | Includes confirmed & probable cases <br> 'Middle East' coded to Qatar | England coded to UK | 'Polynesia' coded to Tonga <br>",
-																				cases_no - nrow(geo.df),"/",cases_no,
-																				" people do not have prior overseas travel information",
-																				'</sup>')),
-						 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
-						 margin = m_world)  %>% 
-			config(displayModeBar = F)
-		
-		fig
-	})
+	# output$world_map <- renderPlotly({
+	# 	
+	# 	m_world <- list(
+	# 		l = 50,
+	# 		r = 50,
+	# 		b = 50,
+	# 		t = 150,
+	# 		pad = 2
+	# 	)
+	# 	
+	# 	geo.df <- covid.df()
+	# 	cases_no <- nrow(geo.df)
+	# 	
+	# 	geo.df %<>% 
+	# 		rename(Country = `Last location before return`) %>%
+	# 			filter(!is.na(Country))
+	# 	
+	# 	#cities.df <- read.csv('worldcities.csv')
+	# 	countries.df <- read.csv('countries.csv')
+	# 	
+	# 	geo.df$Country <- as.character(geo.df$Country)
+	# 	geo.df$Country[geo.df$Country == "Polynesia (excludes Hawaii)"] <- "Vanuatu"
+	# 	geo.df$Country[geo.df$Country == "Hong Kong (Special Administrative Region)"] <- "Hong Kong"
+	# 	geo.df$Country[geo.df$Country == "Viet Nam"] <- "Vietnam"
+	# 	geo.df$Country[geo.df$Country == "Northern America"] <- "United States of America"
+	# 	geo.df$Country[geo.df$Country == "Middle East"] <- "Qatar"
+	# 	geo.df$Country[geo.df$Country == "England"] <- "United Kingdom"
+	# 	
+	# 	countries.df$name <- as.character(countries.df$name)
+	# 	countries.df$name[countries.df$name == "United States"] <- "United States of America"
+	# 	
+	# 	countries.df %<>%  
+	# 		rename(lat = Latitude,lng = Longitude,Country = name) %>%
+	# 		select(lat,lng,Country) 
+	# 	
+	# 	joined.df <- left_join(geo.df,countries.df,by = "Country")
+	# 	
+	# 	joined.df %<>% 
+	# 		select(Country,lat,lng) %>%
+	# 		na.omit()
+	# 	
+	# 	tally.df <- joined.df %>% group_by(Country,lat,lng) %>% tally()
+	# 	
+	# 	nz_lat.vec <- rep(-39.095963,nrow(tally.df))
+	# 	nz_lng.vec <- rep(175.776594,nrow(tally.df))
+	# 	
+	# 	nz_orig.df <- data.frame(lat = nz_lat.vec,
+	# 													 lng = nz_lng.vec,
+	# 													 line = seq_len(nrow(tally.df)),
+	# 													 Country = rep("New Zealand",nrow(tally.df)),
+	# 													 id = seq_len(nrow(tally.df)))
+	# 	
+	# 	tally.df$id <- seq_len(nrow(tally.df))
+	# 	
+	# 	tally.df %<>% mutate(line = id) %>% select(lat,lng,line,Country,id,n) 
+	# 	
+	# 	nz_orig.df$n <- tally.df$n
+	# 	
+	# 	lines.df <- rbind(as.data.frame(tally.df),nz_orig.df)
+	# 	
+	# 	lines.df %<>% na.omit()
+	# 	
+	# 	overseas.df <- lines.df %>% filter(Country != "New Zealand")
+	# 	
+	# 	geo <- list(
+	# 		showland = TRUE,
+	# 		showlakes = TRUE,
+	# 		showcountries = TRUE,
+	# 		showocean = TRUE,
+	# 		countrywidth = 0.5,
+	# 		landcolor = toRGB("black"),
+	# 		lakecolor = toRGB("grey"),
+	# 		oceancolor = toRGB("grey"),
+	# 		projection = list(
+	# 			type = 'orthographic',
+	# 			rotation = list(
+	# 				lon = -100,
+	# 				lat = 40,
+	# 				roll = 0
+	# 			)
+	# 		),
+	# 		lonaxis = list(
+	# 			showgrid = TRUE,
+	# 			gridcolor = toRGB("gray40"),
+	# 			gridwidth = 0.5
+	# 		),
+	# 		lataxis = list(
+	# 			showgrid = TRUE,
+	# 			gridcolor = toRGB("gray40"),
+	# 			gridwidth = 0.5
+	# 		)
+	# 	)
+	# 	
+	# 	fig <- plot_geo(lines.df)
+	# 	fig <- fig %>% group_by(line)
+	# 	fig <- fig %>% add_lines(x = ~lng, y = ~lat,
+	# 													 hoverinfo = "text",
+	# 													 hovertext = paste("Country :", lines.df$Country,
+	# 													 									"<br> Longitude :", lines.df$lng,
+	# 													 									"<br> Longitude :", lines.df$lat,
+	# 													 									"<br> N :", lines.df$n),
+	# 													 size = I(1)) %>%
+	# 		add_markers(data = overseas.df,
+	# 								y=~lat, x=~lng, hoverinfo="text",
+	# 								color=~n, text=~n, size=~n, 
+	# 								hoverinfo = "text",
+	# 								hovertext = paste("Country :", overseas.df$Country,
+	# 																	"<br> Longitude :", overseas.df$lng,
+	# 																	"<br> Longitude :", overseas.df$lat,
+	# 																	"<br> N :", overseas.df$n),
+	# 								marker=list(sizeref=0.1, sizemode="area"))
+	# 	fig <- fig %>% layout(
+	# 		showlegend = FALSE, geo = geo,
+	# 		title = 'COVID19 Cases into NZ : Data from the Ministry of Health'
+	# 	) %>% 
+	# 		layout(title = list(text = paste0("COVID19 Cases into NZ : Data from the Ministry of Health",
+	# 																			'<br>',
+	# 																			'<sup>',
+	# 																			date_stamp," | Lines do not indicate flight paths | Includes confirmed & probable cases <br> 'Middle East' coded to Qatar | England coded to UK | 'Polynesia' coded to Tonga <br>",
+	# 																			cases_no - nrow(geo.df),"/",cases_no,
+	# 																			" people do not have prior overseas travel information",
+	# 																			'</sup>')),
+	# 					 uniformtext=list(minsize=plotly_text_size, mode='hide'), 
+	# 					 margin = m_world)  %>% 
+	# 		config(displayModeBar = F)
+	# 	
+	# 	fig
+	# })
 	## Stacked Bar Charts ----------------
 	## 
 	#### DHB & Age ---------------
@@ -980,7 +980,7 @@ server <- function(input, output,session) {
 																				'<sup>',
 																				date_stamp,data_note_1," | unreported gender cases omitted",
 																				'</sup>')),
-						 uniformtext = list(minsize = plotly_text_size, mode='hide'), 
+						 uniformtext = list(minsize = plotly_text_size, mode = 'hide'), 
 						 margin = m) 
 	})
 	## Tables -------------------

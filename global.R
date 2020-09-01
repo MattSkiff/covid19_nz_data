@@ -22,6 +22,11 @@ library(lubridate) # date handling - in particular,
 
 app_title <- "NZ COVID19 Data Explorer"
 excel_file <- "moh_data.xlsx"
+
+skip_rows <- 2
+location_var_name <- "Last location before return"
+report_var_name <- "Date notified of potential case"
+
 data_note_1 <- ""
 omission_string <- ""
 table_text_colour <- "white"
