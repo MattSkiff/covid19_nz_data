@@ -1098,9 +1098,8 @@ server <- function(input, output,session) {
 				 Source Ministry of Health data: <a href = "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-current-cases">Ministry of Health Data, Maps and Charts</a><br>
 				 This tool was developed as a personal project and is not official. Please check the Ministry of Health for all official statistics.<br><br>
 				 On Saturday, the 21st of March, 2020, Alert Level 2 in New Zealand was announced. Data visualisation and tool kits in New Zealand was limited at this stage. 
-				 Consequently, I decided to develop a simple tool to view cases day by day, and by gender and region. Since then, I have been and continue to add features as time permits and as new data is available. <br><br>
+				 Consequently, I decided to develop a simple tool to view cases day by day, and by gender and region. <br><br>
 				 The purpose of this tool is to visualise the descriptive statistics released by the Ministry of Health. <br> 
-				 This tool does not perform any predictive or inferential modelling and has been written by a non-expert.<br> 
 				 Best viewed on a desktop PC - this tool is not optimised for mobile. <br>
 				 Data is sourced from Ministry of Health Excel Spreadsheets and scraped from some web tables, which are updated daily.<br> 
 				 <br> 
