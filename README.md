@@ -1,3 +1,5 @@
+07/09/2020: this is now archived
+
 # COVID19 NZ Data Explorer
 
 UPDATE: The Ministry of Health / ESR now provides a dashboard for COVID19 data:
