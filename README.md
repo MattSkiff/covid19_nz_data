@@ -25,7 +25,3 @@ If there is something you would like me to add, please let me know.
 * Basic time series plots of new and cumulative cases
 * Cumulative time series by region
 
-## Contact
-
-skiffcoffee@gmail.com
-
